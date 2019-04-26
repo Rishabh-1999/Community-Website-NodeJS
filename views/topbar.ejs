@@ -1,0 +1,150 @@
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<nav class="navbar navbar-default-bar no-margin navbar-bar-head-fixed bg-dark"  id="nav-header">
+
+	 	<div class="navbar-header fixed-brand">
+      
+            <span class="label label-success mobile" style="margin-top:20px;float:right;visibility: hidden; color: white; "id="admin_display">Admin</span>
+
+            <i class="fa fa-bars" class="menu-item" id="sideBtn" style="margin-top: 12px;"></i>
+        
+            <a class="navbar-brand" href="#" style="color: white;font-weight: bold;">cq</a>
+     	</div>
+
+     	<div class="label-success mobile">
+     		
+     		<img src="images/default.png" class="profilePic">
+     		<span class="label label-success" style="float:right;margin-top:17px;margin-left:5px;color: white;">Admin</span>
+     	</div>
+
+	 </nav>
+    <style>
+    body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
+}
+html {
+    font-size: 10px;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.navbar-default-bar {
+    background-color: #222D3C;
+    color: #fff;
+    border-radius: 0;
+    border: 0;
+    height: 60px;
+}
+
+.navbar-collapse {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.navbar-brand {
+    float: left;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+}
+
+
+.none-mobile-view-dp {
+    float: right;
+    margin-right: 10px;
+}
+
+.profilePic {
+    width: 40px;
+    height: 40px;
+    margin-left: 30px;
+    margin-top: 4px;
+    margin-right: 10px;
+    float: right;
+    border-radius: 50%;
+}
+
+.label {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+
+.mobile .label-success {
+    background-color: #5cb85c;
+}
+
+#menu {
+    height: 92vh;
+    background-color: #222D3C;
+    width: 50px;
+    transition-property: width;
+    transition-duration: 0.7s;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.fa {
+    color: #fff;
+    font-size: 25px;
+    width: 30px;
+    margin: 6px 15px;
+    margin-left: 11px;
+    box-sizing: border-box;
+}
+
+#menu span {
+    display: none;
+}
+
+.menu-item {
+    cursor: pointer;
+    opacity: 0.8;
+    color: #fff;
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+.raj {
+    display: inline-block;
+}
+.menu-item:hover {
+    opacity: 1;
+    background-color: #4d5866;
+}
+
+.active {
+    background-color: #51a1e2 !important;
+}
+
+@media (max-width: 768px) {
+
+.none-mobile-view-dp {
+    visibility: hidden;
+    
+}
+
+.mobile {
+    visibility: visible;
+}
+
+}
+</style>

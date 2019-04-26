@@ -1,0 +1,104 @@
+<div class="content-div">
+        <div class="container">
+            <div class="card shadow">
+            
+                    <div class="image-container">
+                        <img src="images/logo.png" id="user-profile-image" class="image-content" />
+                    </div>
+                    
+              
+            <div class="con">
+                <div class="col-div shadow">
+                    <div class="panel-heading">Email</div>
+                    <div class="panel-body"><%= data.email %></div>
+                </div>
+                <div class="col-div shadow">
+                    <div class="panel-heading">Gender</div>
+                    <div class="panel-body"><%= data.gender %></div>
+                </div>
+            </div>
+
+            <div class="con">
+                <div class="col-div shadow">
+                    <div class="panel-heading">Name</div>
+                    <div class="panel-body"><%= data.name %></div>
+                </div>
+                <div class="col-div shadow">
+                    <div class="panel-heading">City</div>
+                    <div class="panel-body"><%= data.city %></div>
+                </div>
+            </div>
+
+            <div class="con">
+                <div class="col-div shadow">
+                    <div class="panel-heading">D.O.B</div>
+                    <div class="panel-body"><%= data.DOB %></div>
+                </div>
+                <div class="col-div shadow">
+                    <div class="panel-heading">Phone</div>
+                    <div class="panel-body"><%= data.phoneno %></div>
+                </div>
+            </div>
+            
+    </div>
+    </div>
+</div>
+<style type="text/css">
+.content-div
+{
+    padding:3%;
+    display:flex;
+    background:rgb(249, 249, 249);
+}
+.con
+{
+    display:flex;
+    flex-direction:row;
+}
+@media (max-width:768px)
+{
+.image-container{
+    visibility:hidden;
+    width:0px;
+    height:0px;
+}
+    .con
+    {
+        flex-direction:column;
+    }
+}
+  .card {
+    position: relative;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+.col-div
+{
+    margin-right: 7%;
+    flex:1;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 4px;
+    margin-left: 7%;
+}
+.panel-heading {
+    color: #333;
+    padding:10px;
+    font-weight:bold;
+    background-color: #f5f5f5;
+}
+.panel-body
+{
+    padding:10px;
+}
+.image-content {
+    width: 150px; 
+    height: 150px;
+    padding: 20px;
+    margin:2%;
+    background-color: #FCFCFC;
+}
+.shadow {
+    box-shadow: 0px 20px 20px -12px gray;
+}
+</style>
