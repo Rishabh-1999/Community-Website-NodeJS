@@ -1,0 +1,60 @@
+<style>
+* {
+    box-sizing: border-box;
+}
+.navbar {
+    background-color:#222D3C;
+    height: 60px;
+    font-family: "Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+.navbar-brand {
+    color: white;
+    font-weight: bold;
+}
+.profilePic {
+    width: 40px;
+    height: 40px;
+    margin-left:13px;
+    margin-right:13px;
+    vertical-align: baseline;
+    float: right;
+    border-radius: 50%;
+}
+.topbar-label {
+    background-color: #5cb85c;
+    font-weight:bold;
+    font-size: 12px;
+    line-height: 1;
+    color: #fff;
+    margin-top:10px;
+    padding:5px;
+    text-align: center;
+    border-radius: .25em;
+}
+.topbar-sidebtn {
+    color: #fff;
+    font-size: 25px;
+    width: 30px;
+    margin: 6px 15px;
+    margin-left: 11px;
+    box-sizing: border-box;
+    <!--visibility:hidden;-->
+}
+@media (max-width: 768px) {
+.topbar-sidebtn {
+    visibility: visible;
+}
+}
+</style>
+    <nav class="navbar navbar-default-bar no-margin navbar-bar-head-fixed" id="nav-header">
+        <div class="navbar-header fixed-brand" style="font-family: "Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";">
+            <a class="navbar-brand" href="#">cq</a>
+
+            <i class="fa fa-bars topbar-sidebtn" id="sideBtn" style="margin-top: 7px;"></i>
+        </div>
+    <div>
+        <img src="images/logo.png" class="profilePic">
+        <span class="label topbar-label label-success"><%= data.name %></span>
+    </div>
+
+     </nav>

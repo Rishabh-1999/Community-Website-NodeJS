@@ -1,48 +1,11 @@
-<div class="content-div">
-        <div class="container">
-            <div class="card shadow">
-            
-                    <div class="image-container">
-                        <img src="images/logo.png" id="user-profile-image" class="image-content" />
-                    </div>
-                    
-              
-            <div class="con">
-                <div class="col-div shadow">
-                    <div class="panel-heading">Email</div>
-                    <div class="panel-body"><%= data.email %></div>
-                </div>
-                <div class="col-div shadow">
-                    <div class="panel-heading">Gender</div>
-                    <div class="panel-body"><%= data.gender %></div>
-                </div>
-            </div>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<% include paritials/topbar.ejs %>
+<% include paritials/sidebar.ejs %>
 
-            <div class="con">
-                <div class="col-div shadow">
-                    <div class="panel-heading">Name</div>
-                    <div class="panel-body"><%= data.name %></div>
-                </div>
-                <div class="col-div shadow">
-                    <div class="panel-heading">City</div>
-                    <div class="panel-body"><%= data.city %></div>
-                </div>
-            </div>
-
-            <div class="con">
-                <div class="col-div shadow">
-                    <div class="panel-heading">D.O.B</div>
-                    <div class="panel-body"><%= data.DOB %></div>
-                </div>
-                <div class="col-div shadow">
-                    <div class="panel-heading">Phone</div>
-                    <div class="panel-body"><%= data.phoneno %></div>
-                </div>
-            </div>
-            
-    </div>
-    </div>
-</div>
 <style type="text/css">
 .content-div
 {
@@ -102,3 +65,48 @@
     box-shadow: 0px 20px 20px -12px gray;
 }
 </style>
+<div class="content-div">
+        <div class="container">
+            <div class="card shadow">
+            
+                    <div class="image-container">
+                        <img src="images/logo.png" id="user-profile-image" class="image-content" />
+                    </div>
+                    
+              
+            <div class="con">
+                <div class="col-div shadow">
+                    <div class="panel-heading">Email</div>
+                    <div class="panel-body"><%= data.email %></div>
+                </div>
+                <div class="col-div shadow">
+                    <div class="panel-heading">Gender</div>
+                    <div class="panel-body"><%= data.gender %></div>
+                </div>
+            </div>
+
+            <div class="con">
+                <div class="col-div shadow">
+                    <div class="panel-heading">Name</div>
+                    <div class="panel-body"><%= data.name %></div>
+                </div>
+                <div class="col-div shadow">
+                    <div class="panel-heading">City</div>
+                    <div class="panel-body"><%= data.city %></div>
+                </div>
+            </div>
+
+            <div class="con">
+                <div class="col-div shadow">
+                    <div class="panel-heading">D.O.B</div>
+                    <div class="panel-body"><%= data.DOB %></div>
+                </div>
+                <div class="col-div shadow">
+                    <div class="panel-heading">Phone</div>
+                    <div class="panel-body"><%= data.phoneno %></div>
+                </div>
+            </div>
+            
+    </div>
+    </div>
+</div>

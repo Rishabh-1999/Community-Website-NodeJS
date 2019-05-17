@@ -1,82 +1,117 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-<div class="adduser-container">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+<% include paritials/topbar.ejs %>
+<% include paritials/sidebar.ejs %>
+
+<div class="outer">
+<div class="adduser-container">
 	<div class="adduser-head">
-	<h1>Add User</h1>
+		<h1>Add User</h1>
 	</div>
 
 	<div class="adduser-input">
+	<form action="/User" method="POST">
+		<input type="text" id="adduser-name" placeholder="Name" name="name" required="required">
 
-	<input type="text" id="adduser-name" placeholder="Name" name="name">
+		<input type="text" id="adduser-email" placeholder="Email" name="email" required="required">
 
-	<input type="text" id="adduser-email" placeholder="Email" name="email">
+		<input type="text" id="adduser-password" placeholder="User Password" name="password" required="required">
 
-	<input type="text" id="adduser-password" placeholder="User Password" name="password">
+		<input type="text" id="adduser-phoneno" placeholder="Phone" name="phoneno" required="required" required="required">
 
-	<input type="text" id="adduser-phoneno" placeholder="Phone" name="phoneno">
+		<input type="text" id="adduser-city" placeholder="City" name="city" required="required">
 
-	<input type="text" id="adduser-city" placeholder="City" name="city">
-
-	<label>Role :</label><br>
-	<select>
-	<optgroup label="Select User Role">
-        <option value="user">User</option>
-        <option value="commuity manager">Community Builder</option>
-        <option value="admin">Admin</option>
-     </optgroup>
-	</select>
-
-
-
+		<label>Role :</label><br>
+		<select id="addUser-select">
+		<optgroup label="Select User Role" >
+	        <option value="user">User</option>
+	        <option value="commuity manager">Community Builder</option>
+	        <option value="admin">Admin</option>
+	     </optgroup>
+		</select>
 	</div>
-
-<div class="form-group">
-    <input type="submit" value="Add User" class="btn btn-success">
-    <a value="Add User" class="btn btn-danger" href="/admin/profile">Cancel</a>
+	<div class="form-group">
+	    <input type="submit" value="Add User" class="btn btn-success" id="btnaddUser">
+	    <a value="Add User" class="btn btn-danger" href="/admin/profile">Cancel</a>
+	</div>
+	</form>
 </div>
-
-
 </div>
-<style>
-.adduser-container
+<script>
+var submit=document.getElementById('btnaddUser');
+submit.addEventListener('click',function()
 {
-	padding-right: 15px;
-    padding-left: 15px;
-    margin-top: 20px;
+	var obj=new Object();
+	obj.name=document.getElementById('adduser-name').value;
+	obj.email=document.getElementById('adduser-email').value;
+	obj.password=document.getElementById('adduser-password').value;
+	obj.phoneno=document.getElementById('adduser-phoneno').value;
+	obj.city=document.getElementById('adduser-city').value;
+
+	var i = document.getElementById("addUser-select").selectedIndex;
+	obj.role = document.getElementById("addUser-select").options[i].text;
+	console.log(obj)
+	var xml=new XMLHttpRequest();
+		xml.open("POST","/addUserToDataBase");
+		xml.addEventListener('load', function()
+		{
+		})
+		xml.setRequestHeader("Content-Type", "application/json");
+		xml.send(JSON.stringify(obj));
+})
+</script>
+<style>
+.outer {
+	margin:0;
+	padding-top:30px;
+	background:#F3F4F4;
+}
+.adduser-container {
+	padding: 15px;
+    background:#FFF;
     margin-right: 30%;
-        border: 5px solid rgba(0,0,0,0.1);
+    border: 5px solid rgba(0,0,0,0.1);
     margin-left: 30%;
+}
+@media(max-width: 768px)
+{
+	.adduser-container {
+    margin-right: 10%;
+    margin-left: 20%;
+}
 }
 label {
     display: inline-block;
-    max-width: 100%;
-    margin-left:10px;
-    margin-bottom: 5px;
+    padding-left:10px;
     font-weight: 700;
 }
-.adduser-head h1
-{
+.adduser-head h1 {
 	font-size: 36px;
 	margin-top: 20px;
     margin-bottom: 10px;
     font-weight: 500;
-    line-height: 1.1;
-        margin: .67em 0;
 }
-.adduser-input input,select
-{
+.adduser-input input,select {
 	width:100%;
 	font-size:15px;
-	-webkit-rtl-ordering: logical;
 	color: #555;
-	    border: 1px solid #ccc;
+	border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 6px 12px;
-	margin:10px;
+    padding:10px;
+    margin-top:15px;
+    margin-bottom:15px;
 }
 .adduser-input input:focus
 {
-box-shadow:inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+	box-shadow:inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
 	border-color: #66afe9;
 }
 </style>

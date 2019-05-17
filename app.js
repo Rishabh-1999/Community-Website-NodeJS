@@ -9,7 +9,6 @@ app.use(session({
 
 //Acces static files
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.set('view engine', 'ejs');
 app.set('views',path.join(__dirname, 'views'));
 
@@ -24,31 +23,32 @@ var mongoDB = 'mongodb://localhost/myDB';
 mongoose.connection.on('error', (err) => {
     console.log('DB connection Error');
 });
-
 mongoose.connection.on('connected', (err) => {
     console.log('DB connected');
 });
 
-app.get('/topbar' , (req,res)=>{
-  res.render('topbar');
-})
-
-app.get('/main' , (req,res)=>{
-  res.render('main',{data: req.session.data});
+app.get('/home' , (req,res)=>{
+  if(req.session.isLogin){
+    res.render('home',{data: req.session.data});
+  } else {
+    res.redirect('/');
+  }  
 })
 
 app.get('/addUser' , (req,res)=>{
-
-  res.render('addUser');
+  if(req.session.isLogin){
+    res.render('addUser',{data: req.session.data});
+  } else {
+    res.redirect('/');
+  }  
 })
 
-app.get('/index' , (req,res)=>{
-  consle.log('req.session.isLogin')
-  if(req.session.isLogin==1)
-  res.render('main',{data: req.session.data});
-  else {
-  req.send('index')
-}
+app.get('/table' , (req,res)=>{
+  if(req.session.isLogin){
+    res.render('table',{data: req.session.data});
+  } else {
+    res.redirect('/');
+  } 
 })
 
 var user = new mongoose.Schema({
@@ -56,34 +56,39 @@ var user = new mongoose.Schema({
     password: String,
     gender: String,
     phoneno: Number,
-     city: String,
-     name:String,
-     DOB: String,
-     role:String
+    city: String,
+    name:String,
+    DOB: String,
+    role:String
   })
 
-  var UsersNames =  mongoose.model('usernames', user);
+var UsersNames =  mongoose.model('usernames', user);
 
 mongoose.connect(mongoDB);
 
-app.post('/checkLogin',function(req,res){
+/*
+app.use('/login', function(req, res, next){
+  if(req.session.isLogin){
+    console.log("Already loggedIn")
+  } else {
+    req.session.isLogin = 1;
+    res.render('main',{data: req.session.data});
+  }  
+   next();
+  });*/
 
-  var username=req.body.username;
-  console.log(username);
-  var password=req.body.password;
-  console.log(password);
-    UsersNames.findOne({name: username,password:password}, function(err, u) {
-      console.log(u);
-      if(u!=null)
-      {
-        
+app.post('/checkLogin',function(req,res){
+    console.log('login data recieved');
+    UsersNames.findOne({email: req.body.email,password:req.body.password}, function(err, result) {
+    console.log(result);
+      if(result!=null) {
         req.session.isLogin=1;
         req.session.name=req.body.username;
-        req.session.data=u;
-        res.send("true");
+        req.session.data=result;
+        res.send("Logined");
       }
       else
-        res.send("false");  
+        res.send("wrong details");  
       })
       .catch(err => {
         console.error(err)
@@ -91,15 +96,37 @@ app.post('/checkLogin',function(req,res){
       })
 })
 
+app.post('/addUserToDataBase',function (req, res) {
+    console.log(req.body);
+    let newProduct = new UsersNames({
+      email: req.body.email,
+      password: req.body.password,
+      gender: null,
+      DOB: null,
+      phoneno: req.body.phoneno,
+      city: req.body.city,
+      name: req.body.name,
+      role: req.body.role
+    })
+    newProduct.save()
+     .then(data => {
+       console.log(data)
+       res.send(data)
+     })
+     .catch(err => {
+       console.error(err)
+       res.send(error)
+     })
+  })
 
+app.get('/logout',function (req, res) {
+    req.session.destroy();
+    console.log('logout');
+})
 
-
+console.log("Running on port 3000");
+app.listen(3000)
 /*
-
-
-
-
-
   // Add in db
 app.post('/checkLogin',function (req, res) {
     console.log(req.body);
@@ -175,5 +202,3 @@ app.post('/deleteproduct',function(req,res){
         res.send(error)
       })
 })*/
-console.log("Running on port 3000");
-app.listen(3000)
