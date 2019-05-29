@@ -2,6 +2,7 @@ var express = require('express')
 var path = require('path') 
 var app = express()
 var session= require('express-session')
+var nodemailer = require('nodemailer');
 
 app.use(session({
   secret: "abcUCAChitkara"
@@ -35,6 +36,30 @@ app.get('/home' , (req,res)=>{
   }  
 })
 
+app.get('/taglists' , (req,res)=>{
+  if(req.session.isLogin){
+    res.render('taglists',{data: req.session.data});
+  } else {
+    res.redirect('/');
+  }  
+})
+
+app.get('/tagpage' , (req,res)=>{
+  if(req.session.isLogin){
+    res.render('tagpage',{data: req.session.data});
+  } else {
+    res.redirect('/');
+  }  
+})
+
+app.get('/taglists' , (req,res)=>{
+  if(req.session.isLogin){
+    res.render('taglists',{data: req.session.data});
+  } else {
+    res.redirect('/');
+  }  
+})
+
 app.get('/addUser' , (req,res)=>{
   if(req.session.isLogin){
     res.render('addUser',{data: req.session.data});
@@ -51,6 +76,101 @@ app.get('/table' , (req,res)=>{
   } 
 })
 
+app.post('/usersTable' , function(req, res) {
+  console.log(req.body);
+    UsersNames.countDocuments(function(e,count){
+      var start=parseInt(req.body.start);
+      var len=parseInt(req.body.length);
+      console.log(start+" "+len);
+      UsersNames.find({
+      }).skip(start).limit(len)
+    .then(data=> {
+      res.send({"recordsTotal": count, "recordsFiltered" : count, data})
+     })
+     .catch(err => {
+      res.send(err)
+     })
+   });
+  })
+
+/*
+app.get('/users',(req,res) => {
+  var pageNo = parseInt(req.query.pageNo)
+  var size = parseInt(req.query.size)
+  var query = {}
+  if(pageNo < 0 || pageNo === 0) {
+        response = {"error" : true,"message" : "invalid page number, should start with 1"};
+        return res.json(response)
+  }
+  query.skip = size * (pageNo - 1)
+  query.limit = size
+  // Find some documents
+       user.count({},function(err,totalCount) {
+             if(err) {
+               response = {"error" : true,"message" : "Error fetching data"}
+             }
+         user.find({},{},query,function(err,data) {
+              // Mongo command to fetch all data from collection.
+            if(err) {
+                response = {"error" : true,"message" : "Error fetching data"};
+            } else {
+                var totalPages = Math.ceil(totalCount / size)
+                response = {"error" : false,"message" : data,"pages": totalPages};
+            }
+            res.json(response);
+         });
+       })
+})*/
+
+app.get('/changePassPage' , (req,res)=>{
+  if(req.session.isLogin){
+    res.render('changepassword',{data: req.session.data});
+  } else {
+    res.redirect('/');
+  } 
+})
+
+app.post('/checkDuplicate' , (req,res)=>{
+  var data=UsersNames.find({}).exec(function(error,result)    {
+    if(error)
+        // throw error;
+      console.log('helo');
+    else
+    {
+      var da=[];
+      var rew="false";
+      da=result;
+      for(i in result)
+      {
+        console.log(req.body.email+ " "+da[i].email);
+        if(req.body.email==da[i].email)
+        {
+          rew="true";
+        }
+      }
+      res.send(rew);
+    }
+})
+})
+
+app.post('/changepass',(req,res)=>{
+    console.log(req.body);
+    console.log(req.session.password);
+    if(req.body.oldpass!=req.session.password)
+        res.send("0");
+    else{
+        UsersNames.updateOne({"_id":req.session._id},{$set:{"password":req.body.newpass}},function(error,result){
+            
+    if(error)
+        throw error;
+            else
+                req.session.password=req.body.newpass;
+            
+        })
+        res.send("1");
+    }
+})
+
 var user = new mongoose.Schema({
     email: String,
     password: String,
@@ -59,10 +179,19 @@ var user = new mongoose.Schema({
     city: String,
     name:String,
     DOB: String,
-    role:String
+    role:String,
+    status:String,
+    restrict:String
   })
 
 var UsersNames =  mongoose.model('usernames', user);
+
+var tag = new mongoose.Schema({
+    tagname:String,
+    createdby:String,
+    createddate:String
+  })
+var tagmodel =  mongoose.model('taglists', tag);
 
 mongoose.connect(mongoDB);
 
@@ -83,8 +212,10 @@ app.post('/checkLogin',function(req,res){
     console.log(result);
       if(result!=null) {
         req.session.isLogin=1;
-        req.session.name=req.body.username;
+        req.session._id=result._id;
+        req.session.name=result.name;
         req.session.data=result;
+        req.session.password=req.body.password;
         res.send("Logined");
       }
       else
@@ -96,6 +227,123 @@ app.post('/checkLogin',function(req,res){
       })
 })
 
+
+app.get('/getTable',function(req,res)
+{
+   var data=UsersNames.find({}).exec(function(error,result)                           {
+    if(error)
+        throw error;
+    else
+        res.send(JSON.stringify(result));
+  })
+})
+
+app.post('/activateUser',function(req,res)
+{
+   console.log(req.body);
+        UsersNames.updateOne({"email":req.body.email},{$set:{"restrict":"true"}},function(error,result){
+            
+    if(error)
+        throw error;
+             else
+                 {
+                     if(req.session.emailid==req.body.old)
+                req.session.emailid=req.body.emailid;
+                 }
+        })
+})
+
+app.post('/deactivateUser',function(req,res)
+{
+   console.log(req.body);
+        UsersNames.updateOne({"email":req.body.email},{$set:{"restrict":"false"}},function(error,result){
+    if(error)
+        throw error;
+             else
+                 {
+                     if(req.session.emailid==req.body.old)
+                req.session.emailid=req.body.emailid;
+                 }
+        })
+})
+
+app.get('/getTagTable',function(req,res)
+{
+   var data=tagmodel.find({}).exec(function(error,result)                           {
+    if(error)
+        throw error;
+    else
+        res.send(JSON.stringify(result));
+  })
+})
+
+app.post('/addTag',function(req,res){
+    console.log(req.body);
+    let newTag = new tagmodel({
+      tagname: req.body.value,
+    createdby: req.session.name,
+    createddate: req.body.datestr
+    })
+    newTag.save()
+     .then(data => {
+       console.log(data)
+       res.send(data)
+     })
+     .catch(err => {
+       console.error(err)
+       res.send(error)
+     })
+})
+
+let transporter = nodemailer.createTransport({
+  service:'gmail',
+    auth: {
+        user: 'rishabhanand33@gmail.com',
+        pass: 'THMA15/11/99'
+    },
+    tls: {
+          rejectUnauthorized: false
+      }
+});
+
+app.post('/sendMail',function(req,res){
+  console.log(req.body);
+  transporter.sendMail(req.body, (error, info) => {
+    if (error) {
+        return console.log(error.message);
+    }
+    console.log('success');
+});
+})
+
+app.post('/deletetag',function(req,res){
+  console.log(req.body);
+    tagmodel.findOneAndDelete({_id: req.body._id})
+    .then(data => {
+        console.log(data)
+        res.send(data)
+      })
+      .catch(err => {
+        console.error(err)
+        res.send(error)
+      })
+})
+
+app.post('/updatetodatabase',function(req,res)
+       {
+    console.log(req.body);
+        UsersNames.updateOne({"email":req.body.email},{$set:{"email":req.body.email,"phoneno":req.body.phoneno,"city":req.body.city,"status":req.body.status,"role":req.body.role}},function(error,result){
+            
+    if(error)
+        throw error;
+             else
+                 {
+                     if(req.session.emailid==req.body.old)
+                req.session.emailid=req.body.emailid;
+                 }
+        })
+        res.send("1");
+})
 app.post('/addUserToDataBase',function (req, res) {
     console.log(req.body);
     let newProduct = new UsersNames({
@@ -106,7 +354,9 @@ app.post('/addUserToDataBase',function (req, res) {
       phoneno: req.body.phoneno,
       city: req.body.city,
       name: req.body.name,
-      role: req.body.role
+      role: req.body.role,
+      restrict: "true",
+      status:  "Pending"
     })
     newProduct.save()
      .then(data => {
@@ -119,7 +369,7 @@ app.post('/addUserToDataBase',function (req, res) {
      })
   })
 
-app.get('/logout',function (req, res) {
+app.post('/logout',function (req, res) {
     req.session.destroy();
     console.log('logout');
 })

@@ -39,3 +39,11 @@ function addToTableDOM(obj)
 	tr.appendChild(td6);
 	table.appendChild(tr);
 }
+var logout=document.getElementById("logout");
+      logout.setAttribute("data-toggle","modal");
+    logout.setAttribute("data-target","#delModal1");
+    var yas=document.getElementById("log");
+    yas.onclick=function()
+    {
+        location.href="/login.html";
+    }

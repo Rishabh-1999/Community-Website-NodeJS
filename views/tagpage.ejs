@@ -1,0 +1,87 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+
+
+<link rel="stylesheet" type="text/css" href="/css/navBar.css">
+<link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+<link rel="stylesheet" href="css/trumbowyg.css">
+
+<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
+<script src="script/trumbowyg.min.js"></script>
+
+<% include paritials/topbar.ejs %>
+<% include paritials/sidebar.ejs %>
+
+<style type="text/css">
+    .containertag .col-sm-6
+    {
+        border: 5px solid rgba(0,0,0,0.1);
+        padding: 30px;
+    }
+
+
+</style>
+
+<center>
+<div class="containertag" style="padding-top:100px;">
+    <div class="col-sm-6">
+        <h3 class="page-header" style="color:#707070;float: left;border-bottom: 1px solid #eee;padding-top: 5px;">Create Tag</h3>
+        <form id="createTagForm">
+        <div class="form-group" style="padding: 5px;">
+            <input class="form-control" type="text" name="tagName" placeholder="Tag Name" id="tagname" >
+        </div>
+        <div class="form-group">
+            <input class="form-control btn btn-primary" type="submit" value="Submit" id="tagSubmitBtn" onclick="addTag()" autocomplete="off">
+        </div>
+    </div>
+    </form>
+    <a  id="tags" class="btn btn-warning btn-sm" style="margin:10px" onclick="taglists()">Tag Lists</a>
+</div>
+
+    </center>
+    <script>
+        function formatAMPM(date) {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return strTime;
+}
+        function addTag()
+        {
+            var v=document.getElementById('tagname').value;
+            if(v=="")
+            {
+                alert('First Enter some value');
+            }
+            else
+            {
+                var dat= new Date();
+                var datestr="";
+                datestr=dat.getDate();
+                datestr=datestr+"-"+dat.getMonth();
+                datestr=datestr+"-"+dat.getFullYear();
+                datestr=datestr+" ("+formatAMPM(dat)+")";
+                console.log(datestr);
+                var xml=new XMLHttpRequest();
+                xml.open("POST","/addTag");
+                xml.setRequestHeader("Content-Type","application/json");
+                xml.send(JSON.stringify({value :v,datestr:datestr}));
+            }
+        }
+    function taglists()
+    {
+        window.location="/taglists";
+    }
+    </script>

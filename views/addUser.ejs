@@ -1,117 +1,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/navBar.css">
+<link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+<link rel="stylesheet" type="text/css" href="/css/addUser.css">
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
 <% include paritials/topbar.ejs %>
 <% include paritials/sidebar.ejs %>
 
 <div class="outer">
-<div class="adduser-container">
-	<div class="adduser-head">
-		<h1>Add User</h1>
+	<div class="adduser-container">
+		<div class="alert alert-dismissible" style="border: 1px solid rgb(226, 229, 225);" id="alert-div-avilability">
+        	<center>
+            	<label id="avilability" style="color: rgb(139, 139, 139);">admin is Avilable</label>
+          	</center>
+      	</div>
+		<div class="adduser-head">
+			<h1>Add User</h1>
+		</div>
+
+		<div class="adduser-input">
+			<input type="text" id="adduser-name" placeholder="Name" name="name" required="required">
+			<input type="text" id="adduser-email" placeholder="Email" name="email" required="required" onChange="checkDuplicate()">
+			<input type="text" id="adduser-password" placeholder="User Password" name="password" required="required">
+			<input type="text" id="adduser-phoneno" placeholder="Phone" name="phoneno" required="required" required="required">
+			<input type="text" id="adduser-city" placeholder="City" name="city" required="required">
+
+			<label>Role :</label><br>
+			<select id="addUser-select">
+				<optgroup label="Select User Role" >
+			        <option value="user">User</option>
+			        <option value="commuity manager">Community Builder</option>
+			        <option value="admin">Admin</option>
+			     </optgroup>
+			</select>
+		</div>
+		<div class="form-group">
+		    <input type="submit" value="Add User" class="btn btn-success" id="btnaddUser">
+		    <a value="Add User" class="btn btn-danger" href="/home">Cancel</a>
+		</div>
 	</div>
-
-	<div class="adduser-input">
-	<form action="/User" method="POST">
-		<input type="text" id="adduser-name" placeholder="Name" name="name" required="required">
-
-		<input type="text" id="adduser-email" placeholder="Email" name="email" required="required">
-
-		<input type="text" id="adduser-password" placeholder="User Password" name="password" required="required">
-
-		<input type="text" id="adduser-phoneno" placeholder="Phone" name="phoneno" required="required" required="required">
-
-		<input type="text" id="adduser-city" placeholder="City" name="city" required="required">
-
-		<label>Role :</label><br>
-		<select id="addUser-select">
-		<optgroup label="Select User Role" >
-	        <option value="user">User</option>
-	        <option value="commuity manager">Community Builder</option>
-	        <option value="admin">Admin</option>
-	     </optgroup>
-		</select>
-	</div>
-	<div class="form-group">
-	    <input type="submit" value="Add User" class="btn btn-success" id="btnaddUser">
-	    <a value="Add User" class="btn btn-danger" href="/admin/profile">Cancel</a>
-	</div>
-	</form>
 </div>
-</div>
-<script>
-var submit=document.getElementById('btnaddUser');
-submit.addEventListener('click',function()
-{
-	var obj=new Object();
-	obj.name=document.getElementById('adduser-name').value;
-	obj.email=document.getElementById('adduser-email').value;
-	obj.password=document.getElementById('adduser-password').value;
-	obj.phoneno=document.getElementById('adduser-phoneno').value;
-	obj.city=document.getElementById('adduser-city').value;
-
-	var i = document.getElementById("addUser-select").selectedIndex;
-	obj.role = document.getElementById("addUser-select").options[i].text;
-	console.log(obj)
-	var xml=new XMLHttpRequest();
-		xml.open("POST","/addUserToDataBase");
-		xml.addEventListener('load', function()
-		{
-		})
-		xml.setRequestHeader("Content-Type", "application/json");
-		xml.send(JSON.stringify(obj));
-})
-</script>
-<style>
-.outer {
-	margin:0;
-	padding-top:30px;
-	background:#F3F4F4;
-}
-.adduser-container {
-	padding: 15px;
-    background:#FFF;
-    margin-right: 30%;
-    border: 5px solid rgba(0,0,0,0.1);
-    margin-left: 30%;
-}
-@media(max-width: 768px)
-{
-	.adduser-container {
-    margin-right: 10%;
-    margin-left: 20%;
-}
-}
-label {
-    display: inline-block;
-    padding-left:10px;
-    font-weight: 700;
-}
-.adduser-head h1 {
-	font-size: 36px;
-	margin-top: 20px;
-    margin-bottom: 10px;
-    font-weight: 500;
-}
-.adduser-input input,select {
-	width:100%;
-	font-size:15px;
-	color: #555;
-	border: 1px solid #ccc;
-    border-radius: 4px;
-    padding:10px;
-    margin-top:15px;
-    margin-bottom:15px;
-}
-.adduser-input input:focus
-{
-	box-shadow:inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
-	border-color: #66afe9;
-}
-</style>
+<script type="text/javascript" src="script/addUser.js"></script>

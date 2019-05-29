@@ -1,0 +1,63 @@
+.header{
+	padding: 10px;
+	background-color: rgba(34,45,60,1);
+	display: flex;
+	justify-content: space-between;
+	color: white;
+}
+.left,.right{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.left{
+	width: 100px;
+}
+.right{
+	width: 200px;
+}
+.cq{
+	font-size: 25px;
+	font-weight: bold;
+}
+.icon{
+	cursor: pointer;
+}
+.icon2{
+	display: none;
+}
+.userImg{
+	width: 50px;
+	height: 50px;
+}
+.userRole,.userName{
+	font-size: small;
+	padding: 3px 5px;
+	border-radius: 3px;
+}
+.userRole{
+	background-color: rgb(240,173,78);
+}
+.userName{
+	background-color: rgb(87,191,87);
+}
+@media screen and (max-width: 950px) {
+	.userRole{
+		display: none;
+	}
+	.icon2{
+		display: block;
+	}
+	.right{
+		width: 100px;
+	}
+	.left > i{
+		display: none;
+	}
+	.tabBar > .bar{
+		display: none;
+	}
+	.userImg{
+		display: none;
+	}
+}

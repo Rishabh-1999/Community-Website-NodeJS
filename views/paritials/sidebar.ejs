@@ -1,3 +1,20 @@
+<div class="tabBar" id="menu">
+	<a class="bar" id="sideBtn"><i class="fa fa-bars"></i><span>cq</span></a>
+	<a href="/home" id="home"><i class="fa fa-home"></i><span>Home</span></a>
+	<a href="/addUser" id="addUser"><i class="fa fa-plus-square"></i><span>Add User</span></a>
+	<a href="/table" id="showUser"><i class="fa fa-list-ul"></i><span>Users List</span></a>
+	<a href="#" id="communityList" onclick=""><i class="fa fa-list-alt"></i><span>Community List</span></a>
+	<a id="switchUser" onclick="switchState('Switch As User')"><i class="fa fa-toggle-on"></i><span>Switch As User</span></a>
+	<a href="/tagpage" id="tags"><i class="fa fa-tags"></i><span>Tag Panel</span></a>
+	<a href="/changePassPage" id="changePassword""><i class="fa fa-lock"></i><span>Change Password</span></a>
+	<a id="logout" onclick="logout()"><i class="fa fa-sign-out"></i><span>logout</span></a>
+</div>
+<script type="text/javascript">
+</script>
+
+
+<!----------------------------------------------------------------------------------------------->
+<!--
 <style>
 #menu {
 	float:left;
@@ -42,9 +59,9 @@
 		<div class="menu-item" onclick="openAddUser()"><i class="fa fa-plus-square"></i><span>Add User</span></div>
 		<div class="menu-item"><i class="fa fa-list-ul" onclick="openTable()"></i><span>Users List</span></div>
 		<div class="menu-item"><i class="fa fa-list-alt"></i><span>Community List</span></div>
-		<div class="menu-item"><i class="fa fa-toggle-off"></i><span>Switch As User</span></div>
-		<div class="menu-item"><i class="fa fa-tags"></i><span>Tag Panel</span></div>
-		<div class="menu-item"><i class="fa fa-lock"></i><span>Change Password</span></div>
+		<div class="menu-item" onclick="switchState('Switch As User')"><i class="fa fa-toggle-off"></i><span>Switch As User</span></div>
+		<div class="menu-item" onclick="tagpage()"><i class="fa fa-tags"></i><span>Tag Panel</span></div>
+		<div class="menu-item" onclick="changePass()"><i class="fa fa-lock"></i><span>Change Password</span></div>
 		<div class="menu-item" onclick="logout()"><i class="fa fa-sign-out"></i><span>Logout</span></div>
 	</div>
 
@@ -68,6 +85,7 @@
 			}, 210);
 		}
 	})
+
 	sideBtn1.addEventListener("click", function () {
 		if(menu.style.width == '300px') {
 			menu.style.width = '50px';
@@ -83,16 +101,16 @@
 			}, 210);
 		}
 	})
-function openHome()
-{
+
+function openHome() {
 	window.location='/home';
 }
-function openAddUser()
-{
+
+function openAddUser() {
 	window.location='/addUser';
 }
-function logout()
-{
+
+function logout() {
 	var xml=new XMLHttpRequest();
 	xml.open("GET","/logout");
 	xml.addEventListener('load', function()
@@ -100,9 +118,37 @@ function logout()
 		window.location='/'
 	})
 	xml.send();
+	window.location='/'
 }
-function openTable()
-{
+
+function openTable() {
 	window.location='/table';
 }
+function tagpage() {
+	window.location='/tagpage';
+}
+function changePass() {
+	var xml = new XMLHttpRequest();
+    xml.open('POST','/logout');
+    xml.onload = function() {
+    	window.location='/'
+    }
+    xml.send();
+}
+function switchState(e){
+  $.confirm({
+      title: e,
+      content: "Do you really want switch state...",
+      buttons: {
+          'Yes': {
+              btnClass: 'btn-success',
+              action: function () {
+                window.location.replace("/admin/switchAsUser");
+              }
+          },
+          'No': {btnClass: 'btn-danger',}
+      }
+  });
+}
 </script>
+-->
