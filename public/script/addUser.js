@@ -15,7 +15,7 @@ submit.addEventListener('click',function()
 	obj.role = document.getElementById("addUser-select").options[i].text;
 	console.log(obj)
 	var xml=new XMLHttpRequest();
-		xml.open("POST","/addUserToDataBase");
+		xml.open("POST","/userTable/addUserToDataBase");
 		xml.addEventListener('load', function()
 		{
 			window.location='/addUser';
@@ -30,7 +30,7 @@ function checkDuplicate()
 {
 		var email=document.getElementById('adduser-email');
 		var xml=new XMLHttpRequest();
-		xml.open("POST","/checkDuplicate");
+		xml.open("POST","/userTable/checkDuplicate");
 		xml.setRequestHeader("Content-Type", "application/json");
 		var ob=new Object();
 		ob.email=email.value;

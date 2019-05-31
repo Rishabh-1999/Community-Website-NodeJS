@@ -1,13 +1,14 @@
 var email=document.getElementById("email");
 var password=document.getElementById("password");
 var submit=document.getElementById("submit");
+var submitgithub=document.getElementById("submitgithub");
 var invalid=1;
 submit.addEventListener("click",function()
 {
 	if(!email.value=="" && !password.value=="")
 	{
 		var xml=new XMLHttpRequest();
-		xml.open("POST","/checkLogin");
+		xml.open("POST","/userTable/checkLogin");
 		xml.addEventListener('load', function()
 		{
 			var data=xml.responseText;
@@ -15,6 +16,8 @@ submit.addEventListener("click",function()
 			{
 				window.location='/home';
 			}
+			else if(data=="not")
+				window.location='/editprofile';
 			else
 				addInvalidDOM();
 		})
@@ -23,6 +26,12 @@ submit.addEventListener("click",function()
 	}
 	else
 		alert('Enter Value on field');
+})
+submitgithub.addEventListener("click",function()
+{
+		var xml=new XMLHttpRequest();
+		xml.open("GET","/auth/github");
+		xml.send();
 })
 function addInvalidDOM()
 {
