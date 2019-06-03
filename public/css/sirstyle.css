@@ -1,43 +1,3 @@
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css">
-
-<link rel="stylesheet" type="text/css" href="/css/navBar.css">
-<link rel="stylesheet" type="text/css" href="/css/sidebar.css">
-<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-
-
-<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-<script type="text/javascript" src="script/select2.js"></script>
-
-<style type="text/css">
-.upload-btn-wrapper {
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-}
-
-.btn {
-  border: 2px solid gray;
-  color: gray;
-  background-color: white;
-  font-weight: bold;
-}
-
-.upload-btn-wrapper input[type=file] {
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
-}
 a{
   cursor:pointer;
 }
@@ -57,15 +17,15 @@ nonLink{
 }
 
 .infinite-rotation {
-    -webkit-animation: rotation 2s infinite linear;
+		-webkit-animation: rotation 2s infinite linear;
 }
 @-webkit-keyframes rotation {
-    from {
-        -webkit-transform: rotate(0deg);
-    }
-    to {
-        -webkit-transform: rotate(359deg);
-    }
+		from {
+				-webkit-transform: rotate(0deg);
+		}
+		to {
+				-webkit-transform: rotate(359deg);
+		}
 }
 
 img,.navbar-brand{
@@ -681,165 +641,3 @@ object-fit: contain;
     border:4px solid #ffffff;
   }
 }
-
-</style>
-
-<% include paritials/topbar.ejs %>
-<% if(data.isActive == "true"){ %>
-  <% include paritials/sidebar.ejs %>
-<% } %>
-
-<div class="container-fluid page-content-div">
-  <div class="row">
-    <div class="col-lg-12 scoll-possible">
-      <div class="container">
-        <div style="margin-top:30px;">
-          <div class="col-12">
-          <div class="card allSidesSoft">
-              <div class="card-body">
-
-                <div class="d-flex">
-                    <div class="image-container"  id="profilepicform">
-                        <img src="<%= data.photoloc %>" id="user-profile-image" style="width: 150px; height: 150px" class="img-thumbnail allSidesSoft">
-                        <div class="middle">
-                            <div class="upload-btn-wrapper">
-                            <form method="post" action="/userTable/uploadphoto" id="profilepicform1" enctype="multipart/form-data">
-                            <button id="uploadfiletodatabase" class="btn">Upload a file</button>
-                            <input type="file" id="up" name="file" />
-                            </form>
-                          </div>
-
-                        </div>
-                    </div>
-<script type="text/javascript">
-</script>
-                </div>
-
-                <br>
-
-                <div class="panel-group">
-                    <div class="panel panel-default editUserPanel">
-                      <div class="panel-heading">Basic Info</div>
-                        <div class="panel-body">
-                          <div class="form-group marginbox">
-                              <label>Email :</label>
-                              <input type="text" value="<%= data.email %>" class="form-control" name="username" id="email" disabled="true">
-                          </div>
-                          <div class="form-group marginbox">
-                              <label>Name :</label>
-                              <input type="text" class="form-control" name="fullname" autocomplete="off" required="" placeholder="Name" id="name" value="<%= data.name %>">
-                          </div>
-                          <div class="form-group col-sm-5" style="display: inline-block;">
-                            <label>DOB :</label>
-                              <input class="form-control dobDate" name="dob" placeholder="MM/DD/YYYY" id="DOB" type="text" autocomplete="off" required="" value="<%= data.DOB %>">
-                          </div>
-                          <div class="form-group col-sm-5" style="display: inline-block;">
-                            <label>Gender :</label>
-                              <select name="gender" id="gender" class="form-control" >
-                                <optgroup label="Select Gender">
-                                  <option value="Male" id="male">Male</option>
-                                  <option value="Female" id="female">Female</option>
-                                  <option value="Transgender" id="Transgender">Transgender</option>
-                                </optgroup>
-                              </select>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="panel panel-default editUserPanel">
-                        <div class="panel-heading">Contact Info</div>
-                          <div class="panel-body">
-                            <div class="form-group marginbox">
-                              <label>Phone :</label>
-                              <input type="text" value="<%= data.phoneno %>"  class="form-control" name="phone" maxlength="10" required="" id="phoneno">
-                            </div>
-                            <div class="form-group marginbox">
-                              <label>City :</label>
-                             <input type="text" value="" class="form-control" name="city" required="" id="city" value="<%= data.city %>"> 
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="panel panel-default editUserPanel">
-                        <div class="panel-heading">Personal Info</div>
-                          <div class="panel-body">
-                            <div class="form-group">
-                              <label>Interests :</label>
-                              <div class="tag-conatiner-custom-div">
-
-                                <select id="interestsEditor" name="interests" class="form-control input-sm select2-multiple select2-hidden-accessible" style="width:100%" multiple="" tabindex="-1" aria-hidden="true">
-
-                                </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--multiple form-control input-sm" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1"><ul class="select2-selection__rendered"><li class="select2-search select2-search--inline"><input class="select2-search__field" type="search" tabindex="0" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="textbox" aria-autocomplete="list" placeholder="Enter interests..." style="width: 100%;" id="interests"></li></ul></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
-                              </div>
-                              </div>
-
-                              <div class="form-group">
-                                <label>Tell us a bit more about your journey:</label>
-                                <textarea type="text" class="form-control" name="aboutjourney" id="aboutyou" value="<%= data.aboutyou %>"></textarea>
-                              </div>
-                              <div class="form-group">
-                                <label>What are your expectations from the communities?</label>
-                                <textarea type="text" class="form-control" name="comExpectations" id="expectations" value="<%= data.expectations %>"></textarea>
-                              </div>
-                            </div>
-                          </div>
-                          <br>
-                          <div class="form-group">
-                            <a href="" class="btn btn-warning pull-left btnEditForm">Change Password</a>
-                            <a href="" class="btn btn-danger pull-right btnEditForm" >Cancel</a>
-                            <input type="submit" class="btn btn-primary pull-right btnEditForm" id="update" value="Update">
-                          </div>
-                        </div>
-                </form>
-              </div>
-         </div>
-      </div>
-  </div>
-</div>
-
-<br>
-
-</div>
-</div>
-</div>
-</div> 
-<script type="text/javascript">
-    document.getElementById('gender').value="<%= data.gender %>"
-
-   $("#up").on('change',function(){
-      console.log("imgae change")
-        document.getElementById("profilepicform1").submit();
-      })
-
-  document.getElementById('update').addEventListener("click",function(event)
-  {
-    var obj=new Object();
-    obj.name=document.getElementById('name').value;
-
-    obj.DOB=document.getElementById('DOB').value;
-    obj.gender=document.getElementById('gender').value;
-    obj.phoneno=document.getElementById('phoneno').value;
-    obj.city=document.getElementById('city').value;
-    obj.interests=document.getElementById('interests').value;
-    obj.aboutyou=document.getElementById('aboutyou').value;
-    obj.expectations=document.getElementById('expectations').value;
-    console.log(obj);
-
-    var xml=new XMLHttpRequest();
-    xml.open("POST","/userTable/updateprofile");
-    //document.getElementById("profilepicform1").submit();
-    document.getElementById("profilepicform1").submit();
-    xml.addEventListener("load",function()
-    {
-      // document.getElementById("profilepicform1").submit();
-        window.location='/home';
-    })
-    
-    xml.setRequestHeader("Content-Type","application/json");
-    xml.send(JSON.stringify(obj));
-  });
-
-
-
-
-</script>

@@ -29,9 +29,7 @@ submit.addEventListener("click",function()
 })
 submitgithub.addEventListener("click",function()
 {
-		var xml=new XMLHttpRequest();
-		xml.open("GET","/auth/github");
-		xml.send();
+		window.location = "userTable/auth/github";
 })
 function addInvalidDOM()
 {

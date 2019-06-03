@@ -3,7 +3,6 @@ var path = require('path')
 var app = express()
 var session= require('express-session')
 var nodemailer = require('nodemailer');
-const multer = require('multer');
 const passport = require('passport');
 
 app.use(session({
@@ -16,8 +15,9 @@ app.set('view engine', 'ejs');
 app.set('views',path.join(__dirname, 'views'));
 
 app.use('/tagTable' , require('./routes/tagtable'))
-
 app.use('/userTable' , require('./routes/usertable'))
+app.use('/superadmincommunityTable' , require('./routes/superadmincommunity'))
+// app.use('/mailsender' , require('./routes/mailsender'))
 
 //Bodyparser
 app.use(express.urlencoded({extended: true})); 
@@ -35,10 +35,26 @@ mongoose.connection.on('connected', (err) => {
 });
 
 mongoose.connect(mongoDB);
-
+// res.render('home',{data: req.session.data});
 app.get('/home' , (req,res)=>{
   if(req.session.isLogin){
     res.render('home',{data: req.session.data});
+  } else {
+    res.redirect('/');
+  }  
+})
+
+app.get('/loading' , (req,res)=>{
+  if(req.session.isLogin){
+    res.render('loading',{data: req.session.data});
+  } else {
+    res.redirect('/');
+  }  
+})
+
+app.get('/addCommunity' , (req,res)=>{
+  if(req.session.isLogin){
+    res.render('addCommunity',{data: req.session.data});
   } else {
     res.redirect('/');
   }  
@@ -60,6 +76,22 @@ app.get('/table' , (req,res)=>{
   } 
 })
 
+app.get('/communityPage' , (req,res)=>{
+  if(req.session.isLogin){
+    res.render('communitylists',{data: req.session.data});
+  } else {
+    res.redirect('/');
+  } 
+})
+
+app.get('/superadmincommunityPage' , (req,res)=>{
+  if(req.session.isLogin){
+    res.render('superadmincommunitylists',{data: req.session.data});
+  } else {
+    res.redirect('/');
+  } 
+})
+
 app.get('/tagpage' , (req,res)=>{
   if(req.session.isLogin){
     res.render('tagpage',{data: req.session.data});
@@ -68,17 +100,18 @@ app.get('/tagpage' , (req,res)=>{
   }  
 })
 
-app.get('/taglists' , (req,res)=>{
+
+app.get('/addUser' , (req,res)=>{
   if(req.session.isLogin){
-    res.render('taglists',{data: req.session.data});
+    res.render('addUser',{data: req.session.data});
   } else {
     res.redirect('/');
   }  
 })
 
-app.get('/addUser' , (req,res)=>{
+app.get('/homewithedit' , (req,res)=>{
   if(req.session.isLogin){
-    res.render('addUser',{data: req.session.data});
+    res.render('homewithedit',{data: req.session.data});
   } else {
     res.redirect('/');
   }  
@@ -100,29 +133,63 @@ app.get('/changePassPage' , (req,res)=>{
   } 
 })
 
-var GitHubStrategy = require('passport-github').Strategy;
+let transporter = nodemailer.createTransport({
+  service:'gmail',
+    auth: {
+        user: 'rishabhanand33@gmail.com',
+        pass: 'THMA15/11/99'
+    },
+    tls: {
+          rejectUnauthorized: false
+      }
+});
 
-passport.use(new GitHubStrategy({
-    clientID: '8ede64fb43d1cbae067d',
-    clientSecret: '03f3b259e25e48efe13fdb8ca7701daa219f8e3e',
-    callbackURL: "http://127.0.0.1:3000/auth/github"
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ githubId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
-  }
-));
+app.post('/sendMail',function(req,res){
+  console.log(req.body);
+  transporter.sendMail(req.body, (error, info) => {
+    if (error) {
+        res.send("false");
+    }
+    console.log('success');
+});
+  res.send("true");
+})
 
-app.get('/auth/github',
-  passport.authenticate('github'));
 
-app.get('/auth/github/callback', 
-  passport.authenticate('github', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
+// var GitHubStrategy = require('passport-github').Strategy;
+
+// passport.use(new GitHubStrategy({
+//     clientID: '8ede64fb43d1cbae067d',
+//     clientSecret: '03f3b259e25e48efe13fdb8ca7701daa219f8e3e',
+//     callbackURL: "http://127.0.0.1:3000/auth/github"
+//   },
+//   function(accessToken, refreshToken, profile, cb) {
+//     User.findOrCreate({ githubId: profile.id }, function (err, user) {
+//       return cb(err, user);
+//     });
+//   }
+// ));
+
+// app.get('/auth/github',
+//   passport.authenticate('github'));
+
+// app.get('/auth/github/callback', 
+//   passport.authenticate('github', { failureRedirect: '/login' }),
+//   function(req, res) {
+//     // Successful authentication, redirect home.
+//     res.redirect('/');
+//   });
+
+app.post('/logout',function (req, res) {
+    req.session.destroy();
     res.redirect('/');
-  });
+    console.log('logout');
+})
+
+console.log("Running on port 3000");
+app.listen(3000)
+
+
 
 // app.get('/table' , (req,res)=>{
 //   if(req.session.isLogin){
@@ -450,28 +517,6 @@ app.use('/login', function(req, res, next){
 //      })
 // })
 
-let transporter = nodemailer.createTransport({
-  service:'gmail',
-    auth: {
-        user: 'rishabhanand33@gmail.com',
-        pass: 'THMA15/11/99'
-    },
-    tls: {
-          rejectUnauthorized: false
-      }
-});
-
-app.post('/sendMail',function(req,res){
-  console.log(req.body);
-  transporter.sendMail(req.body, (error, info) => {
-    if (error) {
-        return "false"
-    }
-    console.log('success');
-});
-  return "true";
-})
-
 // app.post('/deletetag',function(req,res){
 //   console.log(req.body);
 //     tagmodel.findOneAndDelete({tagname: req.body.tagname,createdby:req.body.createdby,createddate:req.body.createddate})
@@ -531,13 +576,7 @@ app.post('/sendMail',function(req,res){
 //      })
 //   })
 
-app.post('/logout',function (req, res) {
-    req.session.destroy();
-    console.log('logout');
-})
 
-console.log("Running on port 3000");
-app.listen(3000)
 /*
   // Add in db
 app.post('/checkLogin',function (req, res) {
@@ -601,9 +640,6 @@ bn.DOB=""
         res.send(error)
       })
 })
-
-app.post('/deleteproduct',function(req,res){
-    console.log(req.body);
     product.findOneAndDelete({productName: req.body.name})
     .then(data => {
         console.log(data)
@@ -613,4 +649,5 @@ app.post('/deleteproduct',function(req,res){
         console.error(err)
         res.send(error)
       })
-})*/
+
+*/

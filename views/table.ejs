@@ -110,41 +110,41 @@
                     <div class="col-sm-10">
                       <input type="email" name="username" class="form-control" id="emailPop" readonly="">
                     </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2">Subject:</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" name="subject" id="subject" placeholder="Title" value="(This mail is from CQ)">
+                    </div>
                 </div>
                 <div class="form-group">
-                  <label class="control-label col-sm-2">Subject:</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" name="subject" id="subject" placeholder="Title" value="(This mail is from CQ)">
+                  <div class="col-sm-12"><!--Body-->
+                    <textarea type="text" class="form-control trumbowyg-textarea" cols="30" rows="20" name="body" id="body" style="padding: 0;text-align: left;"></textarea>
                   </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button class="btn btn-default" id="mailbutton" style="float:right" data-dismiss="modal">Send</button>
+                  </div>
+                </div>
               </div>
-              <div class="form-group">
-                <div class="col-sm-12"><!--Body-->
-                  <textarea type="text" class="form-control trumbowyg-textarea" cols="30" rows="20" name="body" id="body" style="padding: 0;text-align: left;"></textarea>
             </div>
           </div>
-          <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <button class="btn btn-default" id="mailbutton" style="float:right" data-dismiss="modal">Send</button>
-            </div>
-          </div>
-        </div>
         </div>
       </div>
-    </div>
-  </div>
-  </center>
+    </center>
 
 <!-- AFTER MODEL-->
           <div class="form-control" id="userlist-icon" style="float:left;">User list
             </div>
-              <select class="form-control" id="role-btn" style="float:right;margin-left:10px;width:110px;">
+              <select class="form-control" id="rolebtn" style="float:right;margin-left:10px;width:110px;">
                     <option value="All">All</option>
                     <option value="Admin">Admins</option>
                     <option value="User">Users</option>
                     <option value="Community Builder">Community Builder</option>
               </select>
 
-              <select class="form-control" id="status-btn" style="float:right;margin-left:10px;width:110px;">
+              <select class="form-control" id="statusbtn" style="float:right;margin-left:10px;width:110px;">
                 <option value="All">All</option>
                 <option value="Pending">Pending</option>
                 <option value="Confirmed">Confirmed</option>
@@ -155,28 +155,26 @@
             </button>
             <br><br><br>
             <div class="table-responsive">
-              <div class="row">
                 <div class="col-sm-12">
-                  <table id="table" class="table table-striped table-bordered"  style="display:table;width:100%;">
+                  <table id="usertable" class="table table-striped table-bordered">
                     <thead>
                       <th>Username/Email</th>
                       <th>Phone</th>
                       <th>City</th>
-                      <th >Status</th>
-                      <th >Role</th>
-                      <th >Actions</th>
+                      <th>Status</th>
+                      <th>Role</th>
+                      <th>Actions</th>
                     </thead>
-                    <tbody id="table-body">
+                    <tbody>
                     </tbody>
                   </table>
                 </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-
+ 
+<!-- <script type="text/javascript" src="script/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="script/dataTables.bootstrap.min.js"></script> -->
 <script type="text/javascript" src="script/table-js.js"></script> 

@@ -1,10 +1,10 @@
 $(document).ready(function() {
   initaliseTable();
 });
-
+var table;
 function initaliseTable()
 {
-    let table=$('#tagstable').DataTable({
+    table=$('#tagstable').DataTable({
       "processing": true,
       "serverSide": true,
       "ajax": {
@@ -52,11 +52,26 @@ function deletetag()
     obj.tagname=d[0].innerHTML;
     obj.createdby=d[1].innerHTML;
     obj.createddate=d[2].innerHTML;
-    var request = new XMLHttpRequest();
-    request.open('POST','/tagTable/deletetag');
-    request.setRequestHeader("Content-Type","application/json");
-    request.send(JSON.stringify(obj));
-})
+    $.confirm({
+            title: 'Delete Tag!',
+            content: "Are you sure you want to delete "+obj.tagname,
+            buttons: {
+                'Yes': {
+                    btnClass: 'btn-success',
+                    action: function () 
+                    {
+                        console.log(obj);
+                        var request = new XMLHttpRequest();
+                        request.open('POST','/tagTable/deletetag');
+                        request.setRequestHeader("Content-Type","application/json");
+                        request.send(JSON.stringify(obj));
+                        table.ajax.reload(null,false)
+                    }
+                    },
+                'No': {btnClass: 'btn-danger',}
+                },
+            })
+    })
 }
 /*
 loadFromServer();

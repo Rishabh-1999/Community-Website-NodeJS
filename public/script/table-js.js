@@ -13,7 +13,7 @@ mailbtn.addEventListener("click", function()
   var xml=new XMLHttpRequest();
   xml.open("POST","/sendMail");
   xml.setRequestHeader("Content-Type","application/json");
-  xml.addEventListener("onload",function()
+  xml.addEventListener("load",function()
   {
   	var res=xml.responseText;
   	if(res=="true")
@@ -25,27 +25,24 @@ mailbtn.addEventListener("click", function()
   })
   xml.send(JSON.stringify(obj));
 });
-
 $(document).ready(function() {
   initaliseTable();
-});
-
-
-function initaliseTable()
-{
-	console.log('Table initalised');
-    let table = $('#table').DataTable({
+})
+function initaliseTable(){
+     let table = $('#usertable').DataTable({
       "processing": true,
       "serverSide": true,
+      "dataSrc":"",
       "ajax": {
-        "url": "/userTable/usersTable",
-        "type": "POST", 
-          "dataSrc": "data",
-        "data": function( d )
-        {
-        	d.role = $('#role-btn').val();
-        	d.status= $('#status-btn').val();
-        },
+        "url": "userTable/usersTable",
+        "type": "POST",
+       
+        "data": function ( d )
+              {
+                d.role   = $('#rolebtn').val();
+                d.status = $('#statusbtn').val();
+                d.customsearch=$('div.dataTables_filter input').val();
+              }, 
       },
       "columns": [
       {
@@ -64,7 +61,8 @@ function initaliseTable()
         "data" : "role"
       },
       {
-        "data" : ""
+        "data" : null,
+        "orderable" : "false"
       },
       ],
       "columnDefs": [{
@@ -84,16 +82,19 @@ function initaliseTable()
             }],
 
     });
-    $('#role-btn').on('click',function(){
-	table.ajax.reload(null,false)
-});
 
-$('#status-btn').on('click',function(){
-	table.ajax.reload(null,false)
-});
-  $('#refresh').on('click',function(){
-  table.ajax.reload(null,false)
-});
+     $('#refresh').on('click', function () {
+        table.ajax.reload(null, false);
+       });
+
+
+        $('#statusbtn').on('click', function () {
+        table.ajax.reload(null, false);
+      });
+
+      $('#rolebtn').on('click', function () {
+        table.ajax.reload(null, false);
+    });
   }
   
 
@@ -155,10 +156,11 @@ function activateUser(v)
                   xhr.onload=function()
                   {
 
-                    if(xhr.responseText=='1')
+                    if(xhr.responseText=='true')
                     alert("Updated Successfully");
-                  }
                   initaliseTable();
+                  
+                  }
                   }
                   
                 },
@@ -187,10 +189,11 @@ function deactivateUser(v)
                   xhr.send(JSON.stringify(ob));
                   xhr.onload=function()
                   {
-                    if(xhr.responseText=='1')
+                    if(xhr.responseText=='true')
                     alert("Updated Successfully");
-                  }
                   initaliseTable();
+                  }
+                  
                   }
                 },
                 'No': {btnClass: 'btn-danger',}
@@ -210,6 +213,35 @@ function updateUser()
 }
 /*----------------------------------------------------------------------------------------------*/
 /*
+
+
+app.post("/uploadImg", function(request, response) {
+  console.log("image req rec");
+  upload(request, response, (error) => {
+    console.log(request.file);
+    if(error) {
+      console.log("error page ");
+      response.render('editProfile', {msg: error});
+    } else if(request.file == undefined) {
+      console.log("file undefined")
+      response.render('editProfile',  {msg: "No file selected"});
+    } else {
+      console.log("new page rendered");
+      console.log(request.session.data)
+      response.render("editProfile", {data: request.session.data});
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
 
    var myuserId = 1;
 var myuserArr = [];

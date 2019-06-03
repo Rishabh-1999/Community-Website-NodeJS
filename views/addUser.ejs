@@ -1,5 +1,5 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<title>CQ</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
@@ -19,7 +19,7 @@
 	<div class="adduser-container">
 		<div class="alert alert-dismissible" style="border: 1px solid rgb(226, 229, 225);" id="alert-div-avilability">
         	<center>
-            	<label id="avilability" style="color: rgb(139, 139, 139);">admin is Avilable</label>
+            	<label id="avilability" style="color: rgb(139, 139, 139);"></label>
           	</center>
       	</div>
 		<div class="adduser-head">
@@ -30,15 +30,15 @@
 			<input type="text" id="adduser-name" placeholder="Name" name="name" required="required">
 			<input type="text" id="adduser-email" placeholder="Email" name="email" required="required" onChange="checkDuplicate()">
 			<input type="text" id="adduser-password" placeholder="User Password" name="password" required="required">
-			<input type="text" id="adduser-phoneno" placeholder="Phone" name="phoneno" required="required" required="required">
+			<input type="text" id="adduser-phoneno" placeholder="Phone" name="phoneno" required="required">
 			<input type="text" id="adduser-city" placeholder="City" name="city" required="required">
 
 			<label>Role :</label><br>
 			<select id="addUser-select">
 				<optgroup label="Select User Role" >
-			        <option value="user">User</option>
-			        <option value="commuity manager">Community Builder</option>
-			        <option value="admin">Admin</option>
+			        <option value="User">User</option>
+			        <option value="Commuity Builder">Community Builder</option>
+			        <option value="Admin">Admin</option>
 			     </optgroup>
 			</select>
 		</div>

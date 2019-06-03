@@ -1,9 +1,8 @@
-var submit=document.getElementById('btnaddUser');
 var go;
-submit.addEventListener('click',function()
-{
+document.getElementById('btnaddUser').addEventListener('click',function() {
 	if(go=="true")
 	{
+
 	var obj=new Object();
 	obj.name=document.getElementById('adduser-name').value;
 	obj.email=document.getElementById('adduser-email').value;
@@ -13,35 +12,43 @@ submit.addEventListener('click',function()
 
 	var i = document.getElementById("addUser-select").selectedIndex;
 	obj.role = document.getElementById("addUser-select").options[i].text;
-	console.log(obj)
 	var xml=new XMLHttpRequest();
 		xml.open("POST","/userTable/addUserToDataBase");
-		xml.addEventListener('load', function()
-		{
-			window.location='/addUser';
-		})
 		xml.setRequestHeader("Content-Type", "application/json");
 		xml.send(JSON.stringify(obj));
+		
+		var ob=new Object();
+  		ob.to=document.getElementById('adduser-email').value;
+  		ob.text="Welcome to cq Community "+ document.getElementById('adduser-name').value+" Your password is "+document.getElementById('adduser-password').value+".Thank You";
+  		ob.subject="Welcome to cq";
+
+		var x=new XMLHttpRequest();
+		
+		x.open("POST","/sendMail");
+		x.setRequestHeader("Content-Type","application/json");
+	  	x.addEventListener('onload', function()
+	  	{
+			window.location='/addUser';
+	  	})
+	  	
+	  	x.send(JSON.stringify(ob));
+	  	console.log(ob);
+	  	
 	}
 	else
 		alert('Email Already Exsists');
 })
-function checkDuplicate()
-{
+function checkDuplicate() {
 		var email=document.getElementById('adduser-email');
 		var xml=new XMLHttpRequest();
 		xml.open("POST","/userTable/checkDuplicate");
 		xml.setRequestHeader("Content-Type", "application/json");
 		var ob=new Object();
-		ob.email=email.value;
-		console.log("Hello world")
-		console.log(ob.email)
+		ob.email=document.getElementById('adduser-email').value;
 		xml.send(JSON.stringify(ob));
 		xml.addEventListener('load', function()
 		{
-
 			var d=xml.responseText;
-			console.log(d);
 			document.getElementById('alert-div-avilability').style.display="block";
 			if(d=="true")
 			{
@@ -53,7 +60,5 @@ function checkDuplicate()
 				document.getElementById('avilability').innerHTML=email.value+" is available";
 				go="true";
 			}
-			
 		})
-		console.log(email.value);
 }

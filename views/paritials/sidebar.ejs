@@ -1,13 +1,23 @@
 <div class="tabBar" id="menu">
 	<a class="bar" id="sideBtn"><i class="fa fa-bars"></i><span>cq</span></a>
+
 	<a href="/home" id="home"><i class="fa fa-home"></i><span>Home</span></a>
+  <% if(data.role != "User"){ %>
 	<a href="/addUser" id="addUser"><i class="fa fa-plus-square"></i><span>Add User</span></a>
 	<a href="/table" id="showUser"><i class="fa fa-list-ul"></i><span>Users List</span></a>
-	<a href="#" id="communityList" onclick=""><i class="fa fa-list-alt"></i><span>Community List</span></a>
+  <% } %>
+  <% if(data.role != "User"){ %>
+	<a href="/superadmincommunityPage" id="communityList" onclick=""><i class="fa fa-list-alt"></i><span>Community List</span></a>
+<% } %>
+<% if(data.role != "User"){ %>
+<a href="/communityPage" id="communityList" onclick=""><i class="fa fa-users fa-stack-1x"></i><span>Community List</span></a>
+<% } %>
+  <% if(data.role != "User"){ %>
 	<a id="switchUser" onclick="switchState('Switch As User')"><i class="fa fa-toggle-on"></i><span>Switch As User</span></a>
 	<a href="/tagpage" id="tags"><i class="fa fa-tags"></i><span>Tag Panel</span></a>
-	<a href="/changePassPage" id="changePassword""><i class="fa fa-lock"></i><span>Change Password</span></a>
-	<a id="logout" onclick="logout()"><i class="fa fa-sign-out"></i><span>logout</span></a>
+  <% } %>
+	<a href="/changePassPage" id="changePassword"><i class="fa fa-lock"></i><span>Change Password</span></a>
+	<a id="logout" onclick="logout()"><i class="fa fa-sign-out" style="color: #999;"></i><span>logout</span></a>
 </div>
 
 <script type="text/javascript">
