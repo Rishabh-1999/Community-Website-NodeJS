@@ -73,7 +73,9 @@
                 <input class="radio radio-inline" type="radio" value="P" name="communityMembershipRule" id="permissionrule"> Permission
             </div>
             <div class="form-group" style="display:none;">
+              <form method="post" action="/superadmincommunityTable/uploadphotoCommunity" id="communityform" enctype="multipart/form-data">
                 <input class="form-control" id="file" name="communityImage" type="file">
+                </form>
             </div>
 
             <div class="form-group">
@@ -152,20 +154,26 @@ function createCommunity()
   obj.createdate=datestr;
   
   console.log(obj)
-  // var xml=new XMLHttpRequest();
-  // xml.open("POST","/superadmincommunityTable/addCommunity");
-  // xml.setRequestHeader("Content-Type","application/json");
-  // xml.addEventListener("load",function()
-  // {
-  //   var res=xml.responseText;
-  //   if(res=="true")
-  //     alert("Community Created");
-  //   else
-  //   {
-  //     alert("Community creation failed");
-  //   }
-  // })
-  // xml.send(JSON.stringify(obj));
+  var xml=new XMLHttpRequest();
+
+  xml.open("POST","/superadmincommunityTable/addCommunity");
+  xml.setRequestHeader("Content-Type","application/json");
+  document.getElementById("communityform").submit();
+  xml.addEventListener("load",function()
+  {
+    var res=xml.responseText;
+    if(res=="true")
+    {
+      var xml1=new XMLHttpRequest()
+      xml1.open("POST","/superadmincommunityTable/uploadphotoCommunity")
+      alert("Community Created");
+    }
+    else
+    {
+      alert("Community creation failed");
+    }
+  })
+  xml.send(JSON.stringify(obj));
 }
 
 

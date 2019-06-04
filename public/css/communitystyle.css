@@ -1,4 +1,4 @@
-@import url(//fonts.googleapis.com/css?family=Open+Sans);
+
 .discover-header-title{
   color:#fff;
   font-size:30px;
@@ -17,6 +17,7 @@
   border:4px solid rgb(209, 207, 207);
   box-shadow: 0 15px 10px -14px #333;
 }
+@import url(//fonts.googleapis.com/css?family=Open+Sans);
 .community-header-top{
     width:100%;
     background-image: linear-gradient(to bottom, #4ba2b7, #42a6be, #38aac6, #29adcd, #0fb1d5);

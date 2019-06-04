@@ -36,7 +36,7 @@ img,.navbar-brand{
   -ms-user-select: none;
   user-select: none;
 }
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -45,7 +45,7 @@ img,.navbar-brand{
   user-select: none;
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
+:-ms-input-placeholder { 
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -631,7 +631,6 @@ object-fit: contain;
     object-fit: contain;
   }
 }
-/*-----------------------------------------------------*/
 @media (min-width: 768px) {
   .pop-up-image-preview{
     min-height:40%;

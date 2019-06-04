@@ -19,14 +19,17 @@ var mongoDB = 'mongodb://localhost/myDB';
 var communitys = new mongoose.Schema({
 	"photoloc":String,
 	"name":String,
-	"members":Array,
+	"members":String,
 	"rule":String,
 	"communityloc":String,
 	"createdate":String,
 	"description":String,
 	"owner":String,
 	"status":String,
-  "ownerid":String    
+  "ownerid":String,
+  "request":Array,
+  "managers":String,
+  "invited":String  
 })
 
 var communitys =  mongoose.model('communitys', communitys);
@@ -53,8 +56,22 @@ app.post('/getCommunityLists' , function(req, res) {
       res.send(err)
      })
    });
-
   })
+
+app.post('/changetemprole',function(req,res) {
+  if(req.session.data.role=="SuperAdmin")
+  {
+    req.session.data.temprole="User"
+    console.log(req.session.data)
+    res.send("changed")
+  }
+  else
+  {
+    req.session.data.temprole="SuperAdmin"
+    console.log(req.session.data)
+    res.send("changed")
+  }
+})
 
 app.post('/communityupdate',function(req,res) {
   if(req.session.isLogin){
@@ -97,7 +114,7 @@ app.get('/getArrayOtherCommunity',function(req,res) {
 })
 
 
-app.post('/addUserToDataBase',function (req, res) {
+app.post('/addCommunity',function (req, res) {
   if(req.session.isLogin){
     let newProduct = new communitys({
   "photoloc":"images/defaultCommunity.jpg",
@@ -114,7 +131,7 @@ app.post('/addUserToDataBase',function (req, res) {
     newProduct.save()
      .then(data => {
        console.log(data)
-       res.send(data)
+       res.send("true")
      })
      .catch(err => {
        console.error(err)
@@ -125,6 +142,73 @@ app.post('/addUserToDataBase',function (req, res) {
 }
 })
 
+var storage = multer.diskStorage({
+      destination : './public/uploads/',
+      filename : function(req, file, callback)
+      {
+        photoname='community'+req.session._id +path.extname(file.originalname);
+        req.session.data.photoloc ='uploads/'+ photoname;
+        callback(null,photoname);
+      }
+    })
 
+     var upload = multer({
+      storage : storage,
+    }).single('file');
+
+app.post('/uploadphotoCommunity',(req,res)=>{
+  upload(req,res,(err)=>{
+        if(err)
+        {
+          throw err;
+        }
+        else{
+          console.log(req.file);
+          console.log(photoname);
+          communitys.updateOne({"_id":req.session._id},{$set:{"photoloc":'uploads/'+photoname}},function(error,result){
+        
+           })
+
+          console.log();
+          req.session.data.photoloc = 'uploads/community'+photoname;
+            
+        }
+      })
+
+})
+
+app.get('/getAllActive',function(req,res) {
+  if(req.session.isLogin){
+    console.log("okokok")
+    communitys.find({'status':"Active"}, function(err, result){
+     console.log(result);
+      res.send(result);
+});
+
+} else {
+    res.redirect('/');
+  }
+})
+
+app.get('/:pro' , (req,res)=>{
+  if(req.session.isLogin){
+    var id=req.params.pro.toString()
+
+    communitys.findOne({"_id":id},function(err,result)
+    {
+      if(err)
+        throw err;
+      else
+      {
+        console.log(result)
+
+        console.log(result.communityloc)
+        res.render('manageCommunity',{data:req.session.data,data2:result})
+      }
+    })
+  } else {
+    res.redirect('/');
+  }  
+})
 
 module.exports = app;

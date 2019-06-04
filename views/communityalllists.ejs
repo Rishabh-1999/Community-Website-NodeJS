@@ -1,0 +1,269 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css">
+
+<link rel="stylesheet" type="text/css" href="/css/navBar.css">
+<link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/communitystyle.css">
+
+
+<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+<script type="text/javascript" src="script/select2.js"></script>
+
+<% include paritials/topbar.ejs %>
+<% if(data.isActive == "true"){ %>
+  <% include paritials/sidebar.ejs %>
+<% } %>
+
+<div class="container-fluid page-content-div" style="padding:0">
+            <div class="row" style="background-color: #F3F4F4">
+               <div class="col-lg-12 scoll-possible" style="padding:0">
+
+
+  
+  <style>
+  .community-name {
+      border: 0;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: bold;
+      word-wrap: break-word;
+      font-size: 17px;
+      padding:12px 0 0 0;
+      outline: none !important;
+      background-color: rgba(0, 0, 0, 0);
+  }
+  .community-description {
+      border: 0;
+      font-family: 'Open Sans', sans-serif;
+      word-wrap: break-word;
+      font-size: 16px;
+      color: #000;
+      outline: none !important;
+      background-color: rgba(0, 0, 0, 0);
+  }
+  .totalUsers {
+      padding:0;
+      margin:0;
+      font-weight: 600;
+      color: #7D7D7D;
+      text-decoration: none;
+      word-wrap: break-word;
+      text-transform: capitalize;
+  }
+  .community-description-full{
+    display:none;
+  }
+  @media(max-width:768px){
+    .community-name{
+        border: 0;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: bold;
+        padding:15px 0 0 5px;
+        overflow:scroll;
+        word-wrap: break-word;
+        font-size: 15px;
+        color: #000;
+        outline: none !important;
+        background-color: rgba(0, 0, 0, 0);
+    }
+  }
+  </style>
+<!--=======================================================-->
+<!-- <div class="community-header-top" style="height:50px;padding-top:6px;">
+  <div class="col-sm-4 community-sub-head">
+      <a class="btn community-head-btn" href="/community/communitypanel">
+        <i class="fa fa-users"></i>
+      </a>
+      <a class="btn community-head-btn active" style="margin-left:10px;z-index: " href="/community/list">
+        <i class="fa fa-search"></i>
+      </a>
+  </div>
+  <div class="col-sm-4 col-sm-push-4 pc" style="padding:0 50px 0 0">
+    <input class="form-control searchCommunityDiscover" type="text" placeholder="Search Community..." id="searchinput">
+  </div>
+</div>
+
+  <div class="community-header-top mobile" style="width:100%;padding-top:6px;background-image: linear-gradient(to top, #4ba2b7, #42a6be, #38aac6, #29adcd, #0fb1d5);">
+  </div> -->
+<div class="community-header-top" style="height:50px;padding-top:6px;background-color: #35AAC7;display: flex;">
+<div class="col-sm-4 community-sub-head" style="flex:1">
+    <a class="btn community-head-btn active" href="/communityPage">
+      <i class="fa fa-users"></i>
+    </a>
+    <a class="btn community-head-btn" style="margin-left:10px" onclick="initalise()">
+      <i class="fa fa-search"></i>
+    </a>
+</div>
+<div class="col-sm-4 col-sm-push-4 pc" style="padding:0 50px 0 0;flex:1">
+    <input class="form-control searchCommunityDiscover" type="text" placeholder="Search Community..." id="searchinput">
+  </div>
+</div>
+<!--=======================================================-->
+    <div class="col-sm-12">
+        
+        <br>
+      <div class="container">
+        <div class="search" id="search">
+              <!--Community List-->
+        <div class="container mainDivDiscover-container" id="mainDivDiscover5cbf18d7f54a481812074358">
+        	<div class="panel community-show-item panel-default allSidesSoft" style=" padding:0;background:white;">
+        		<div class="panel-body" style="padding:0;padding-top:20px">
+        			<div class="col-sm-2 col-xs-3 col-lg-1 col-md-2">
+        				<a href="communityprofile/5cbf18d7f54a481812074358">
+        					<img src="" class="allSides" style="height:70px;width:70px;border:3px solid rgb(235, 235, 235)">
+        				</a>  
+        			</div>
+        					<div class="col-sm-8 col-xs-6 col-lg-8 col-md-8 community-name">
+        						<a href="communityprofile/5cbf18d7f54a481812074358" class="community-name">First Community
+        						</a>
+        					</div>
+        					<div class="col-sm-2 col-xs-3 col-lg-3 col-md-2" style="padding:15px 10px 0 10px">
+        						<div id="joinBtns5cbf18d7f54a481812074358">
+        							<button class="btn btn-primary btn-sm pull-right" id="btn5cbf18d7f54a481812074358" onclick="getBtnValue(1,'5cbf18d7f54a481812074358');" data-id="1">Join</button>
+        						</div> 
+        					</div>
+        				</div>
+        				<div class="panel-body" style="padding:10px 0 10px 0;">  
+        					<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12">    
+        						<p class="totalUsers">1 Members    </p>  
+        					</div> 
+        					 <div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 community-description" style="font-size:16px">
+        					 	<div id="less5cbf18d7f54a481812074358" class="community-description">hkhlaskdfhkla
+        					 	</div>
+        					 	<div id="more5cbf18d7f54a481812074358" class="community-description community-description-full">
+        					 		hkhlaskdfhkla
+        					 	</div> 
+        					 	 </div>
+        					 	</div>
+        					 </div>
+        					</div>
+
+
+        
+
+        
+      </div>
+
+    </div>
+</div>
+</div></div>
+
+<script type="text/javascript">
+
+
+var totaldata;
+	$(document).ready(function() {
+  initalise();
+})
+
+function initalise()
+{
+	document.getElementById('search').innerHTML="";
+	var xml=new XMLHttpRequest()
+	xml.open("GET","/superadmincommunityTable/getAllActive")
+	xml.onload=function()
+    {
+    	console.log(xml.responseText);
+        var d=totaldata=JSON.parse(xml.responseText)
+        for(i in d)
+        {
+        	addToDOM(d[i])
+        }
+    }
+    xml.setRequestHeader("Content-Type","application/json");
+    xml.send();
+}
+
+	function addToDOM(obj)
+	{
+		var div1=document.createElement('div');
+		div1.setAttribute("class","container mainDivDiscover-container")
+		var div2=document.createElement('div')
+		div2.setAttribute("class","panel community-show-item panel-default allSidesSoft")
+		div2.setAttribute("style"," padding:0;background:white;")
+		var div3=document.createElement('div')
+		div3.setAttribute("class","panel-body")
+		div3.setAttribute("style","padding:0;padding-top:20px")
+		var div4=document.createElement('div')
+		div4.setAttribute("class","col-sm-2 col-xs-3 col-lg-1 col-md-2")
+		var a1=document.createElement('a')
+		a1.setAttribute("href","")
+		var img1=document.createElement('img')
+		img1.setAttribute("src",obj.photoloc)
+		img1.setAttribute("class","allSides")
+		img1.setAttribute("style","height:70px;width:70px;border:3px solid rgb(235, 235, 235)")
+		a1.appendChild(img1)
+		div4.appendChild(a1)
+		div3.appendChild(div4)
+		var div5=document.createElement('div')
+		div5.setAttribute("class","col-sm-8 col-xs-6 col-lg-8 col-md-8 community-name")
+		var a2=document.createElement('a')
+		a2.setAttribute("href","")
+		a2.setAttribute("class","community-name")
+		a2.innerHTML=obj.name
+		div5.appendChild(a2)
+		div3.appendChild(div5)
+		var div6=document.createElement('div')
+		div6.setAttribute("class","col-sm-2 col-xs-3 col-lg-3 col-md-2")
+		div6.setAttribute("style","padding:15px 10px 0 10px")
+		var div7=document.createElement('div')
+		var btn1=document.createElement('button')
+		btn1.setAttribute("class","tn btn-primary btn-sm pull-right")
+		btn1.setAttribute("onclick","")
+		if(obj.rule=="Direct")
+		btn1.innerHTML="Join"
+		else
+		btn1.innerHTML="Ask To Permission"
+		div7.appendChild(btn1)
+		div6.appendChild(div7)
+		div3.appendChild(div6)
+		div2.appendChild(div3)
+
+		var div8=document.createElement('div')
+		div8.setAttribute("class","panel-body")
+		div8.setAttribute("style","padding:10px 0 10px 0;")
+		var div9=document.createElement('div')
+		div9.setAttribute("class","col-sm-12 col-xs-12 col-lg-12 col-md-12")
+		var p1=document.createElement('p')
+		p1.setAttribute("class","totalUsers")
+		p1.innerHTML="(static)1 Members"
+		div9.appendChild(p1)
+		div8.appendChild(div9)
+		var div10=document.createElement('div')
+		div10.setAttribute("class","col-sm-12 col-xs-12 col-lg-12 col-md-12 community-description")
+		div10.setAttribute("style","font-size:16px")
+
+		var div11=document.createElement('div')
+		div11.setAttribute("class","community-description")
+		div11.innerHTML=obj.description;
+		div10.appendChild(div11)
+		var div12=document.createElement('div')
+		div12.setAttribute("class","community-description community-description-full")
+		div12.innerHTML=obj.description;
+		div10.appendChild(div12)
+		div8.appendChild(div10)
+		div2.appendChild(div8)
+		div1.appendChild(div2)
+		document.getElementById('search').appendChild(div1)
+	}
+	document.getElementById('searchinput').onkeyup=function()
+	{
+		document.getElementById('search').innerHTML=""
+		var val=document.getElementById('searchinput').value;
+		for(i in totaldata)
+		{
+			console.log(totaldata[i])
+			if((totaldata[i].name).includes(val))
+				addToDOM(totaldata[i])
+		}
+	}
+</script>

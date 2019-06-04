@@ -1,0 +1,221 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+
+<link rel="stylesheet" type="text/css" href="/css/navBar.css">
+<link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+<link rel="stylesheet" type="text/css" href="/css/trumbowyg.css">
+<link rel="stylesheet" type="text/css" href="/css/communitystyle.css">
+<link rel="stylesheet" type="text/css" href="/css/sirstyle.css">
+
+<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
+<script src="/script/trumbowyg.min.js"></script>
+
+<% include paritials/topbar.ejs %>
+<% if(data.isActive == "true"){ %>
+  <% include paritials/sidebar.ejs %>
+<% } %>
+
+<style type="text/css">
+  .dropdown-menu>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+
+</style>
+
+<div class="container-fluid page-content-div" style="padding:0">
+  <div class="row">
+     <div class="col-lg-12 scoll-possible" style="padding:0">
+        <div class="community-header-top communityheader-profile-mobile" style="padding-top:6px;position:relative;">
+          <div class="container pc">
+          </div>
+          <center>
+          <div class="communityprofile-name-mobile" style="max-height:40px;overflow:scroll">
+            <a href="" style="color:white" id="communityname">
+             <%= data2.name %>
+            </a>
+          </div>
+          </center>
+          <center>
+          <a href="">
+            <img src="" class="mobile img-communityprofile-pic allSides" style="background:#fff" id="mobileimg">
+          </a>
+          </center>
+        </div>
+
+        <div class="container community-profile-conatiner" style="flex-direction:row;height:auto;display: flex;">
+          <div style="flex:1;">
+            <div class="col-sm-2 col-xs-12 center-mobile pc">
+              <a href="/community/communityprofile/5cf0c7e80a79ed1439525947">
+                <img src="" class="img-communityprofile-pic allSides" style="background:#fff" id="pcimg">
+              </a>
+            </div>
+
+            <div class="col-sm-8 communityprofile-name-pc communityprofile-system">
+              <a href="" class="communityprofile-name-pc" style="margin-left:180px;">
+                <%= data2.name %>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-sm-2 col-xs-12 center-mobile" style="padding-top:10px;float:right">
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle commuity-profile-menu-btn" type="button" data-toggle="dropdown">
+                <i class="fa fa-bars"></i>
+              </button>
+              <ul class="dropdown-menu custom-commuity-dropdown dropdown-menu-right" style="">
+                <li>
+                  <a href="/community/discussion/5cf0c7e80a79ed1439525947" class="community-profile-option-btn">
+                    Discussions
+                  </a>
+                </li>
+                <li>
+                  <a href="/community/managecommunity/5cf0c7e80a79ed1439525947" class="community-profile-option-btn">
+                    Manage Community
+                  </a>
+                </li>
+                <li>
+                  <a href="/community/communityprofile/5cf0c7e80a79ed1439525947" class="community-profile-option-btn">
+                  Community Profile
+                  </a>
+                </li>
+                <li>
+                  <a href="/community/communitymembers/5cf0c7e80a79ed1439525947" class="community-profile-option-btn">
+                  Community Members
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <center>
+            <hr style="border-top:2px solid #E6E6E6;width:85%;margin-top:0">
+        </center>
+
+<!--=========================Message For Rejection==================================-->
+<div class="modal fade" id="popUpManageCommunityMessage" role="dialog" style="z-index:9999">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <h4 class="modal-title" id="mailheader">Reject Message</h4>
+        </div>
+        <div class="modal-body">
+        <!------------------------------------------------------------------------------------>
+        <div class="form-horizontal"> <!-- form -->
+          <div class="form-group">
+            <div class="col-sm-12">
+              <center>
+                <p id="fullNameMessagePop"></p>
+              </center>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12"><!--Body-->
+              <textarea type="text" class="form-control" id="messageBoxPop" style="resize: none;height:200px" required=""></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button class="btn btn-default" id="sendButtonPop" style="float:right">Send And Reject</button>
+            </div>
+          </div>
+        </div>
+        <!---------------------------------------------------------------------------------->
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="container" style="height:auto">
+<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12" style="padding-bottom:5px;border-bottom:1px solid #c4c4c4;">
+  <nonlink class="manageCommunity-head-btn" style="cursor: context-menu;">
+    Manage Community
+  </nonlink>
+  <a href="/community/invite/5cf0c7e80a79ed1439525947" style="float:right;font-weight:600">
+    Invite Users
+  </a>
+  
+  <a class="pc" href="/community/editcommunity/5cf0c7e80a79ed1439525947" style="float:right;font-weight:600;margin-right:15px">
+    Edit Community
+  </a>
+  
+</div>
+<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12" style="padding:10px 0 0 0;display:flex;">
+
+  <div class="col-sm-3 manageCommunity-commuity-div" style="padding:0;">
+    
+      <div class="panel-heading allSidesSoft center-all mobile" style="background:#fff;margin-bottom:5px">
+          <a class="btn btn-primary editcommunity-btn">
+            Edit Commuity
+          </a>
+      </div>
+    
+    <div class="panel-body allSidesSoft" style="background:#fff">
+        <a class="manageCommunity-child-btn manageCommunity-btn-active" onclick="UserList()" id="UsersShowBtn">Users (0)</a>
+        <br>
+        <a class="manageCommunity-child-btn" onclick="AllAdmins()" id="AdminsShowBtn">
+            Managers (0)
+        </a>
+        
+        
+        
+          <br>
+          <a class="manageCommunity-child-btn" onclick="Requests(0)" id="requestedUserShowBtn">
+            Requests (0)
+          </a>
+        
+        <br>
+        <a class="manageCommunity-child-btn" onclick="Requests(1)" id="invitedUserShowBtn">
+          Invited Members (0)
+        </a>
+    </div>
+    <br>
+  </div>
+  <div class="col-sm-9">
+    <div id="comlist">
+
+
+                     <div class="col-sm-12 allcoms well well-sm" style="margin-top:5px;font-weight:bold" id="">                 <center>No any user</center>                 </div>                 </div>
+  </div>
+</div>
+
+
+</div></div></div>
+
+<script type="text/javascript">
+
+
+
+$(document).ready(function() {
+  initaliseProfile();
+})
+function initaliseProfile()
+{
+  var photoloc="<%= data2.photoloc %>"
+  var request="<%= data2.request %>"
+  document.getElementById('mobileimg').src=photoloc
+  document.getElementById('pcimg').src=photoloc
+  document.getElementById('communityname').value="<%= data2.name %>"
+  console.log(request)
+  console.log(JSON.parse(request))
+  
+}
+
+</script>
+

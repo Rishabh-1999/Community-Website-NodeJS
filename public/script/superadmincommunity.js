@@ -7,7 +7,7 @@ function initaliseTable(){
       "serverSide": true,
       "dataSrc":"",
       "ajax": {
-        "url": "superadmincommunityTable/getCommunityLists",
+        "url": "/superadmincommunityTable/getCommunityLists",
         "type": "POST",
        
         "data": function ( d )
@@ -45,7 +45,7 @@ function initaliseTable(){
                 "targets": -2,
 
                 "render": function (data, type, row, meta) {
-                   data = '<a class="btn btn-sm editbtn actionbtns" onclick=initvar("'+row._id+'") data-toggle="modal" data-target="#updateCommunity" style="margin-top:35px;margin-right:5px;background-color: #2D312C;color: #fff"><span class="fa fa-edit"></span></a><a class="btn btn-sm infobtn actionbtns" data-toggle="modal" data-target="#CommunityInfo" onclick=addadatetoinfo("'+row.photoloc+'","'+row.name+'","'+row.description+'") style="margin-top:35px;background-color: #2D312C;color: #fff"><span class="fa fa-info"></span></a>';
+                   data = '<a class="btn btn-sm editbtn actionbtns" onclick=addToEdit("'+row.status+'","'+row.name+'","'+row._id+'") data-toggle="modal" data-target="#updateCommunity" style="margin-top:35px;margin-right:5px;background-color: #2D312C;color: #fff"><span class="fa fa-edit"></span></a><a class="btn btn-sm infobtn actionbtns" data-toggle="modal" data-target="#CommunityInfo" onclick=addadatetoinfo("'+row.photoloc+'","'+row.name+'","'+row.description+'") style="margin-top:35px;background-color: #2D312C;color: #fff"><span class="fa fa-info"></span></a>';
                 return data;
                 }},
               
@@ -54,7 +54,7 @@ function initaliseTable(){
 
                 "render": function (data, type, row, meta) {
              
-                   if(row.status=="true")
+                   if(row.status=="Active")
                       data ='<img src='+ row.photoloc +' style="width: 80px;height: 80px;border: 4px solid green;">';
                   else
                      data ='<img src='+row.photoloc+' style="width: 80px;height: 80px;border: 4px solid red;">';
@@ -74,10 +74,6 @@ function initaliseTable(){
       });
   }
 var gd;
-  function initvar(d)
-  {
-    gd=d;
-  }
 
   function addadatetoinfo(photoloc,name,desc)
   {
@@ -86,6 +82,14 @@ var gd;
     document.getElementById("CommunityInfoPop").innerHTML="Community " + name;
     document.getElementById("communityDesc").innerHTML=desc;
   }
+
+    function addToEdit(status,name,d)
+  {
+    gd=d;
+    document.getElementById("CommuityName").value=name;
+    document.getElementById("communityStatus").value=status;
+  }
+
 
 
   document.getElementById("editsubmit").addEventListener("click",function()

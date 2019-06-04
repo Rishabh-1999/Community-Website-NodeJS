@@ -10,121 +10,11 @@ var nodemailer = require('nodemailer');
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser(function(user,done)
-                      {
-    done(null,user);
-});
-
-passport.deserializeUser(function(user,done)
-                      {
-    done(null,user);
-});
-
-passport.use(new GitHubStrategy({
-    clientID: '8ede64fb43d1cbae067d',
-    clientSecret: '03f3b259e25e48efe13fdb8ca7701daa219f8e3e',
-    callbackURL: "http://127.0.0.1:3000/userTable/auth/github/callback"
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    //UsersNames.findOrCreate({ githubId: profile.id }, function (err, user) {
-      return cb(null, profile);
-    })
-
-);
-
-app.get('/auth/github',
-  passport.authenticate('github'));
-
- app.get('/auth/github/callback',passport.authenticate('github', { failureRedirect: 'index.html' }), function (req, res)
-      {
-
-          console.log("githubsignin succesful");
-          console.log(req.session.passport.user._json.id);
-          UsersNames.find({"githubid" :req.session.passport.user._json.id},function(err, result) {
-          
-            console.log("found"+result)
-            if(result!=null)
-            {
-
-              req.session.isLogin=1;
-              req.session._id=result._id;
-              req.session.name=result.name;
-              req.session.data=result[0];
-              req.session.data.issuperadmin="false";
-              console.log(' going home'+req.session.data);
-              res.redirect('/home');
-            }
-            else
-            {
-              var obj = {
-              name : req.session.passport.user._json.name,
-              email : req.session.passport.user._json.email,
-              city : req.session.passport.user._json.location,
-              status : "Pending",
-              role : "User",
-              githubid : req.session.passport.user._json.id,
-              photoname : "images/logo.png",
-              isActive:"true"
-              }
-              UsersNames.create(obj,function(error,result)
-              {
-                if(error)
-                throw error;
-                else {
-                  req.session.data = obj;
-                  UsersNames.find({
-                      githubid : req.session.passport.user._json.id
-                  })
-                  .then(data =>
-                  {
-                    req.session.data._id = data[0]._id;
-                  })
-                  .catch(err =>
-                  {
-                    throw err;
-                  })
-                  res.render('home',{data: req.session.data});
-                }
-              })
-            }
-          })
-          .catch(err =>
-          {
-            res.send(err)
-          })
-      })
-
-
-// var mailOptions = {
-//   from: 'nishantsaini86066@gmail.com',
-//   to: ob.emailid,
-//   subject: 'Hi How are you',
-//   text: 'You are successfully added in cq community Emailid->'+ob.emailid+' Password->'+ob.password
-// };
-
-// transporter.sendMail(mailOptions, function(error, info){
-//   if (error) {
-//     console.log(error);
-//   } else {
-//     console.log('Email sent: ' + info.response);
-//   }
-// });
-//                   res.redirect('/firstuser');
-//                  })
-             
-              
-//              }
-//       })
-//     // Successful authentication, redirect home.
-    
-//   })
-
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
-
 
 var mongoose = require('mongoose');
 var mongoDB = 'mongodb://localhost/myDB';
@@ -150,11 +40,88 @@ var user = new mongoose.Schema({
 
 var UsersNames =  mongoose.model('usernames', user);
 
+passport.serializeUser(function(user,done) {
+    done(null,user);
+});
+
+passport.deserializeUser(function(user,done) {
+    done(null,user);
+});
+
+passport.use(new GitHubStrategy({
+    clientID: '8ede64fb43d1cbae067d',
+    clientSecret: '03f3b259e25e48efe13fdb8ca7701daa219f8e3e',
+    callbackURL: "http://127.0.0.1:3000/userTable/auth/github/callback"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+      return cb(null, profile);
+    })
+);
+
+app.get('/auth/github',passport.authenticate('github'));
+
+app.get('/auth/github/callback',passport.authenticate('github', { failureRedirect: 'index.html' }), function (req, res) {
+console.log(req.session.passport.user._json.id);
+UsersNames.find({"githubid" :req.session.passport.user._json.id},function(err, result) {
+console.log("githubsignin succesful");
+if(result!=null)
+{
+  req.session.isLogin=1;
+  req.session._id=result._id;
+  req.session.name=result.name;
+  req.session.data=result[0];
+  req.session.data.temprole=req.session.data.role
+  req.session.data.issuperadmin="false";
+  res.redirect('/home');
+}
+else
+{
+  var obj = {
+  name : req.session.passport.user._json.name,
+  email : req.session.passport.user._json.email,
+  city : req.session.passport.user._json.location,
+  status : "Pending",
+  role : "User",
+  githubid : req.session.passport.user._json.id,
+  photoloc : "images/logo.png",
+  isActive:"true"
+  email: req.body.email,
+  gender: "",
+  DOB: "",
+  phoneno: req.body.phoneno,
+  restrict: "false",
+  interests:"",
+  boutyou:"",
+  expectations:""
+}
+UsersNames.create(obj,function(error,result) {
+if(error)
+  throw error;
+else {
+  req.session.data = obj;
+  UsersNames.find({githubid : req.session.passport.user._json.id})
+  .then(data => {
+    req.session.data._id = data[0]._id;
+  })
+  .catch(err => {
+    throw err;
+  })
+  res.render('home',{data: req.session.data});
+  }
+  })
+  }
+  })
+  .catch(err =>
+  {
+  res.send(err)
+  })
+})
+
 app.post('/activatesuperadmin',function(req,res){
   req.session.data.issuperadmin="true";
 })
 
-app.post('/checkLogin',function(req,res){
+app.post('/checkLogin',function(req,res) {
     console.log('login data recieved');
     UsersNames.findOne({"email": req.body.email,password:req.body.password}, function(err, result) {
     console.log(result);
@@ -180,8 +147,7 @@ app.post('/checkLogin',function(req,res){
       })
 })
 
-app.post('/activateEditProfile',function()
-{
+app.post('/activateEditProfile',function() {
   req.session.data.activateEditProfile="true";
   res.redirect('/home')
 })

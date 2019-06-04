@@ -6,11 +6,7 @@ body{
 	margin: 0;
 	font-family: sans-serif;
 }
-.Container{
-	display: flex;
-	height: 100vh;
-	flex-direction: column;
-}
+
 .container2{
 	flex: 1;
 	display: flex;
