@@ -259,7 +259,7 @@ app.post('/activateUser',function(req,res) {
   res.redirect('/');
 }
 })
-
+// deactivate User
 app.post('/deactivateUser',function(req,res) {
   if(req.session.isLogin){
   UsersNames.updateOne({"_id":req.body._id},{$set:{"restrict":"false"}},function(error,result){
@@ -278,6 +278,7 @@ app.post('/deactivateUser',function(req,res) {
 }
 })
 
+// Change Temp role
 app.post('/changetemprole',function(req,res) {
   if(req.session.data.temprole=="SuperAdmin")
   {
@@ -293,6 +294,7 @@ app.post('/changetemprole',function(req,res) {
   }
 })
 
+//Update Profile of Users
 app.post('/updateprofile',function(req,res){
   UsersNames.updateOne({"_id":req.session._id},{$set:{"name":req.body.name,"DOB":req.body.DOB,"city":req.body.city,"gender":req.body.gender,"phoneno":req.body.phoneno,"interests":req.body.interests,
   "aboutyou":req.body.aboutyou,"expectations":req.body.expectations}},function(error,result){
@@ -319,6 +321,7 @@ app.post('/changePassword' , (req,res)=>{
   })
 })
 
+//check duplicate for creating user emailid
 app.post('/checkDuplicate' , (req,res)=>{
   var data=UsersNames.find({}).exec(function(error,result)    {
   if(error)
@@ -364,7 +367,6 @@ if(req.body.role === 'All' && req.body.status === 'All')
   })
   });
 }
-
 else if(req.body.role === 'All' && req.body.status !== 'All')
 {
   var length;
@@ -469,7 +471,6 @@ app.post('/uploadphoto',(req,res)=>{
               console.log("photo updated to database"+result)
               req.session.data.photoloc = 'uploads/'+photoname;
            })
-              
         }
       })
 })
@@ -494,94 +495,99 @@ var communitys = new mongoose.Schema({
 
 var communitys =  mongoose.model('communitys', communitys);
 
+// get users in communityes
 app.post('/getUsers',function(req,res) {
   if(req.session.isLogin){
-console.log("----------------------"+req.body._id);
-communitys.findOne({ "_id" : req.body._id }).populate('users'). // only return the Persons name
-  exec(function (err, result) {
+communitys.findOne({ "_id" : req.body._id }).populate('users').exec(function (err, result) {
     if (err) 
       return err;
     else
     {
-      console.log("result"+result)
+      console.log("Got Users for community table /getUsers");
       res.send(JSON.stringify(result.users))
     }
   })
 }
 })
 
-  app.post('/getManagers',function(req,res) {
-  if(req.session.isLogin){
-communitys.findOne({ "_id" : req.body._id }).populate('managers'). // only return the Persons name
+// get managers in communityes
+app.post('/getManagers',function(req,res) {
+if(req.session.isLogin){
+communitys.findOne({ "_id" : req.body._id }).populate('managers').
   exec(function (err, result) {
     if (err) 
       return err;
     else
     {
-      console.log("result"+result)
+      console.log("Got Users for community table /getManagers")
       res.send(JSON.stringify(result.managers))
     }
   })
 }
 })
-  app.post('/getinveted',function(req,res) {
-  if(req.session.isLogin){
-communitys.findOne({ "_id" : req.body._id }).populate('invited'). // only return the Persons name
+
+// get invited users in communityes
+app.post('/getinveted',function(req,res) {
+if(req.session.isLogin){
+communitys.findOne({ "_id" : req.body._id }).populate('invited'). 
   exec(function (err, result) {
     if (err) 
       return err;
     else
     {
-      console.log("result"+result)
+      console.log("Got Users for community table /getinveted")
       res.send(JSON.stringify(result.invited))
     }
   })
 }
 })
 
-  app.post('/getrequest',function(req,res) {
-  if(req.session.isLogin){
-communitys.findOne({ "_id" : req.body._id }).populate('request'). // only return the Persons name
+// get request users in communityes
+app.post('/getrequest',function(req,res) {
+if(req.session.isLogin){
+communitys.findOne({ "_id" : req.body._id }).populate('request').
   exec(function (err, result) {
     if (err) 
       return err;
     else
     {
-      console.log("result"+result)
+      console.log("Got Users for community table /getrequest")
       res.send(JSON.stringify(result.request))
     }
   })
 }
 })
-  
-  app.post('/promoteuser',function(req,res) {
-  if(req.session.isLogin){
-    var res;
-    UsersNames.find({"_id":req.body._id}).exec(function(error,result)    {
-  if(error)
-    throw error;
-  else
-  {
-    var ch=result.role;
-    if(result.role=="User")
-    {
-      ch="Admin";
-    }
-    else if(result.role=="Admin")
-    {
-      ch="SuperAdmin"
-    }
-    UsersNames.updateOne({"_id":req.body._id},{$set:{"role":ch}},function(error,result){
-  if(error)
-    res.send("false")
-  else
-    res.send("true")
-  })
-  }
-})
-  }
-})
 
+// get request users in communityes(Not Used)
+// app.post('/promoteuser',function(req,res) {
+// if(req.session.isLogin){
+//     var res;
+//     UsersNames.find({"_id":req.body._id}).exec(function(error,result)    {
+//   if(error)
+//     throw error;
+//   else
+//   {
+//     var ch=result.role;
+//     if(result.role=="User")
+//     {
+//       ch="Admin";
+//     }
+//     else if(result.role=="Admin")
+//     {
+//       ch="SuperAdmin"
+//     }
+//     UsersNames.updateOne({"_id":req.body._id},{$set:{"role":ch}},function(error,result){
+//   if(error)
+//     res.send("false")
+//   else
+//     res.send("true")
+//   })
+//   }
+// })
+//   }
+// })
+
+// Remove users from community (Not User)
 //   app.post('/remove',function(req,res) {
 //   if(req.session.isLogin){
 //     var res;
@@ -610,6 +616,7 @@ communitys.findOne({ "_id" : req.body._id }).populate('request'). // only return
 //   }
 // })
 
+// Get Community Lists for table 
 app.post('/getCommunityLists' , function(req, res) {
   console.log(req.body);
   var count;
@@ -621,14 +628,13 @@ app.post('/getCommunityLists' , function(req, res) {
 
       communitys.find({}).skip(start).limit(len)
     .then(data=> {
-      
        if (req.body.customsearch!="")
                     {
                         data = data.filter((value) => {
                             return value.name.includes(req.body.customsearch)
                         })
                     }
-    
+    console.log("SuperAdmin Community table sended /getCommunityLists")
       res.send({"recordsTotal": count, "recordsFiltered" : count, data})
      })
      .catch(err => {
@@ -636,19 +642,17 @@ app.post('/getCommunityLists' , function(req, res) {
     })
   });
 
+//Join Community
 app.post('/joincommunity',function(req,res) {
-  console.log("--------------------------------------")
-console.log(req.body)
-
   if(req.body.r==0)
   {
     communitys.updateOne({"_id":req.body._id},{$push:{"users":req.session._id}},function(error,result){       
     if(error)
       throw error;
     else {
-      console.log("result"+result)
-    }
+      console.log(req.session._id+" joined community "+req.body._id )
     res.send("true");
+  }
   })
 }
 else
@@ -657,46 +661,47 @@ else
     if(error)
       throw error;
     else {
-      console.log("result"+result)
+      console.log(req.session._id+" requested community "+req.body._id )
     }
     res.send("true");
   })
 }
 })
 
-
+// Update Community Details
 app.post('/communityupdate',function(req,res) {
   if(req.session.isLogin){
   communitys.updateOne({"_id":req.body.id},{$set:{"name":req.body.name,"status":req.body.status}},function(error,result){       
     if(error)
       throw error;
     else {
-    }
+      console.log("Community "+req.body.id+" updated")
     res.send("true");
+  }
   })
   } else {
     res.redirect('/');
   }
 })
 
+// Get Array which User is Owner
 app.get('/getArrayOwnCommunity',function(req,res) {
   if(req.session.isLogin){
     console.log("okokok")
     communitys.find({'ownerid':req.session._id}, function(err, result){
-     console.log(result);
+     console.log("Got Array in which User is Owner");
       res.send(result);
 });
-
 } else {
     res.redirect('/');
   }
 })
 
-
+// Get Array in which User is Member or managers and Not Owner
 app.get('/getArrayOtherCommunity',function(req,res) {
   if(req.session.isLogin){
     communitys.find({ $and:[{"users": { "$in" : [req.session._id]}},{ "ownerid" : { "$not":{ "$eq":req.session._id}}}]}, function(err, result){
-     console.log(result);
+     console.log("Got Array in which User in Member in Community");
       res.send(result);
 });
 } else {
@@ -704,10 +709,11 @@ app.get('/getArrayOtherCommunity',function(req,res) {
   }
 })
 
+// Get Array in which User has Requested
 app.get('/getArrayOtherCommunityInvited',function(req,res) {
   if(req.session.isLogin){
     communitys.find({ $and:[{"invited": { "$in" : [req.session._id]}},{"users": { "$nin" : [req.session._id]}},{"managers": {  "$nin" : [req.session._id]}},{ "ownerid" : { "$not":{ "$eq":req.session._id}}}]}, function(err, result){
-     console.log(result);
+     console.log("Got array in which User has Requested to join Community");
       res.send(result);
 });
 } else {
@@ -715,17 +721,19 @@ app.get('/getArrayOtherCommunityInvited',function(req,res) {
   }
 })
 
+//Function to get Time in PM or AM
 function formatAMPM(date) {
   var hours = date.getHours();
   var minutes = date.getMinutes();
   var ampm = hours >= 12 ? 'PM' : 'AM';
   hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
+  hours = hours ? hours : 12;
   minutes = minutes < 10 ? '0'+minutes : minutes;
   var strTime = hours + ':' + minutes + ' ' + ampm;
   return strTime;
 }
 
+//Add Community
 app.post('/addCommunity',function (req, res) {
 var rule;
   if(req.body.direct=="true")
@@ -757,7 +765,7 @@ var rule;
     newProduct.save()
      .then(data => {
        console.log(data)
-tempcomm=data;
+      tempcomm=data;
        upload(req,res,(err)=>{
         if(err)
           throw err;
@@ -766,6 +774,7 @@ tempcomm=data;
            })
           communitys.updateOne({"_id":data._id},{$push:{"users":req.session._id}},function(error,result){
            })
+          console.log("Community Created "+data)
           res.render('communitylists',{data: req.session.data});
         }
       })

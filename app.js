@@ -18,7 +18,6 @@ app.set('views',path.join(__dirname, 'views'));
 app.use('/tagTable' , require('./routes/tagtable'))
 app.use('/userTable' , require('./routes/usertable'))
 // app.use('/superadmincommunityTable' , require('./routes/superadmincommunity'))
-// app.use('/mailsender' , require('./routes/mailsender'))
 
 //Bodyparser
 app.use(express.urlencoded({extended: true})); 
