@@ -1,180 +1,96 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CQ</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
 
 <link rel="stylesheet" type="text/css" href="/css/navBar.css">
 <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
-<link rel="stylesheet" type="text/css" href="css/trumbowyg.css">
-<link rel="stylesheet" type="text/css" href="css/communitystyle.css">
-<link rel="stylesheet" type="text/css" href="css/sirstyle.css">
+<link rel="stylesheet" type="text/css" href="/css/trumbowyg.css">
+<link rel="stylesheet" type="text/css" href="/css/communitystyle.css">
+<link rel="stylesheet" type="text/css" href="/css/sirstyle.css">
 
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
-<script src="script/trumbowyg.min.js"></script>
+<script src="/script/trumbowyg.min.js"></script>
 
 <% include paritials/topbar.ejs %>
 <% if(data.isActive == "true"){ %>
   <% include paritials/sidebar.ejs %>
 <% } %>
 
-<style type="text/css">
-  
-
-
-
-</style>
-
 <div id="page-content-wrapper"> <!--Margin Top is new-->
-         <div class="container-fluid page-content-div" style="padding:0">
-            <div class="row">
-               <div class="col-lg-12 scoll-possible" style="padding:0">
+  <div class="container-fluid page-content-div" style="padding:0">
+    <div class="row">
+      <div class="col-lg-12 scoll-possible" style="padding:0">
+        <div class="community-header-top" style="height:50px;padding-top:6px;">
+          <div class="col-sm-12 community-sub-head">
+            <a class="btn community-head-btn active" href="/communityPage">
+              <i class="fa fa-users"></i>
+            </a>
+            <a class="btn community-head-btn" style="margin-left:10px" href="/communityalllists">
+              <i class="fa fa-search"></i>
+            </a>
+        </div>
+      </div>
+      <center>
+      <div class="container">
+        <div class="col-sm-12">
+          <div class="align-center-all">
+            <div class="container">
+              <div class="form-horizontal col-sm-3 col-md-3 col-lg-3"></div>
+                <div class="form-horizontal col-sm-6 col-md-6 col-lg-6">
+                    <h3 class="page-header" style="color:#707070">Create Community</h3>
+                    <form action="/userTable/addCommunity" method="POST" enctype="multipart/form-data" id="add">
+                    <div class="form-group">
+                      <input class="form-control" type="text" required="" name="name" placeholder="Name" maxlength="70" id="communityname">
+                    </div>
+                    <div class="form-group">
+                      <div class="col-sm-12"><!--Body-->
+                        <textarea type="text" class="form-control trumbowyg-textarea" cols="30" rows="20" name="description" id="body" style="padding: 0;text-align: left;"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group ">
+                      <label style="color:#707070">Rule :</label>
+                      <input class="radio radio-inline" type="radio" checked="" value="D" name="direct" id="direct"> Direct
+                      <input class="radio radio-inline" type="radio" value="P" name="communityMembershipRule" id="permission"> Permission
+                    </div>
+                    <div class="form-group" style="display:none;">
+                      <input class="form-control" id="file" name="file" type="file">
+                    </div>
+                    <div class="form-group">
+                    <div class="col-xs-4 col-sm-3">
+                      <span class="btn btn-warning" onclick="$('#file').click()">Upload Image</span>
+                    </div>
+                    <div class="col-xs-8 col-sm-9" style="overflow: scroll;white-space: nowrap;">
+                      <p id="filename" style="font-size:18px;font-weight:bold;color:#707070"></p>
+                    </div>
+                    </div>
 
+                    <div class="form-group" style="display:none">
+                      <div class="col-xs-1 col-sm-1">
+                        <input type="checkbox" class="checkbox-custom" style="outline: none;" id="check">
+                      </div>
+                      <div class="col-xs-8 col-sm-9" style="font-weight:bold;margin-top:5px;color:#707070">
+                        Local Community
+                      </div>
+                    </div>
 
-
-<!--====================================================================-->
-<div class="community-header-top" style="height:50px;padding-top:6px;">
-<div class="col-sm-12 community-sub-head">
-    <a class="btn community-head-btn active" href="/community/communitypanel">
-      <i class="fa fa-users"></i>
-    </a>
-    <a class="btn community-head-btn" style="margin-left:10px" href="/community/list">
-      <i class="fa fa-search"></i>
-    </a>
-</div>
-</div>
-<!--====================================================================-->
-<center>
-<div class="container">
-<div class="col-sm-12">
-  <div class="align-center-all">
-  <div class="container">
-    <div class="form-horizontal col-sm-3 col-md-3 col-lg-3"></div>
-    <div class="form-horizontal col-sm-6 col-md-6 col-lg-6">
-        <h3 class="page-header" style="color:#707070">Create Community</h3>
-        
-        <form action="/community/AddCommunity" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <input class="form-control" type="text" required="" name="communityName" placeholder="Name" maxlength="70" id="communityname">
-            </div>
-           <div class="form-group">
-                  <div class="col-sm-12"><!--Body-->
-                    <textarea type="text" class="form-control trumbowyg-textarea" cols="30" rows="20" name="body" id="body" style="padding: 0;text-align: left;"></textarea>
+                    <div class="form-group" id="dynamic"></div>
+                    <div class="form-group">
+                      <input class="form-control btn btn-primary" onclick="createCommunity()" type="submit" value="Create Community" id="create">
+                    </div>
+                    </form>
                   </div>
                 </div>
-            <div class="form-group ">
-                <label style="color:#707070">Rule :</label>
-                <input class="radio radio-inline" type="radio" checked="" value="D" name="communityMembershipRule" id="directrule"> Direct
-                <input class="radio radio-inline" type="radio" value="P" name="communityMembershipRule" id="permissionrule"> Permission
-            </div>
-            <div class="form-group" style="display:none;">
-              <form method="post" action="/superadmincommunityTable/uploadphotoCommunity" id="communityform" enctype="multipart/form-data">
-                <input class="form-control" id="file" name="communityImage" type="file">
-                </form>
-            </div>
-
-            <div class="form-group">
-              <div class="col-xs-4 col-sm-3">
-                <span class="btn btn-warning" onclick="$('#file').click()">Upload Image</span>
-              </div>
-              <div class="col-xs-8 col-sm-9" style="overflow: scroll;white-space: nowrap;">
-                <p id="filename" style="font-size:18px;font-weight:bold;color:#707070"></p>
               </div>
             </div>
-
-            <div class="form-group" style="display:none">
-              <div class="col-xs-1 col-sm-1">
-                  <input type="checkbox" class="checkbox-custom" style="outline: none;" id="check" onchange="appendData()">
-              </div>
-              <div class="col-xs-8 col-sm-9" style="font-weight:bold;margin-top:5px;color:#707070">
-                  Local Community
-              </div>
-            </div>
-
-            <div class="form-group" id="dynamic">
-
-            </div>
-            <div class="form-group">
-                    <input class="form-control btn btn-primary" onclick="createCommunity()" type="submit" value="Create Community">
-            </div>
-        </form>
-      </div>
+          </div>
+        </center>
     </div>
+  </div>
 </div>
 </div>
-</div>
-</center>
-<br>
-<!--====================================================================-->
-
-</div>
-</div>
-</div>
-</div>
-<script type="text/javascript">
-  
-  $(document).ready(function() {
-  
-})
-  $.trumbowyg.svgPath = '/css/trumbowyg.svg';
-$('#body').trumbowyg();
-
-function formatAMPM(date) {
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-  var ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? '0'+minutes : minutes;
-  var strTime = hours + ':' + minutes + ' ' + ampm;
-  return strTime;
-}
-
-
-function createCommunity()
-{
-  var obj=new Object()
-  obj.name=$('#communityname').val();
-  obj.description=$('#body').val();
-  if(document.getElementById('directrule').checked=="true")
-    obj.rule="Direct";
-  else
-    obj.rule="Permission";
-  var dat= new Date();
-  var datestr="";
-  datestr=dat.getDate();
-  datestr=datestr+"-"+dat.getMonth();
-  datestr=datestr+"-"+dat.getFullYear();
-  datestr=datestr+" ("+formatAMPM(dat)+")";
-  obj.createdate=datestr;
-  
-  console.log(obj)
-  var xml=new XMLHttpRequest();
-
-  xml.open("POST","/superadmincommunityTable/addCommunity");
-  xml.setRequestHeader("Content-Type","application/json");
-  document.getElementById("communityform").submit();
-  xml.addEventListener("load",function()
-  {
-    var res=xml.responseText;
-    if(res=="true")
-    {
-      var xml1=new XMLHttpRequest()
-      xml1.open("POST","/superadmincommunityTable/uploadphotoCommunity")
-      alert("Community Created");
-    }
-    else
-    {
-      alert("Community creation failed");
-    }
-  })
-  xml.send(JSON.stringify(obj));
-}
-
-
-</script>
+<script type="text/javascript" src="/script/addcommunity-js.js"></script>

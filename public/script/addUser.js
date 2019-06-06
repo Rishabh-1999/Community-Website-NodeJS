@@ -2,7 +2,6 @@ var go;
 document.getElementById('btnaddUser').addEventListener('click',function() {
 	if(go=="true")
 	{
-
 	var obj=new Object();
 	obj.name=document.getElementById('adduser-name').value;
 	obj.email=document.getElementById('adduser-email').value;

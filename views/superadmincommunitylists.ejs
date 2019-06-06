@@ -1,4 +1,5 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CQ</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -6,9 +7,9 @@
 
 <link rel="stylesheet" type="text/css" href="/css/navBar.css">
 <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
-<link rel="stylesheet" type="text/css" href="css/trumbowyg.css">
-<link rel="stylesheet" type="text/css" href="css/communitystyle.css">
-<link rel="stylesheet" type="text/css" href="css/sirstyle.css">
+<link rel="stylesheet" type="text/css" href="/css/trumbowyg.css">
+<link rel="stylesheet" type="text/css" href="/css/communitystyle.css">
+<link rel="stylesheet" type="text/css" href="/css/sirstyle.css">
 
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
@@ -16,13 +17,12 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
-<script src="script/trumbowyg.min.js"></script>
+<script src="/script/trumbowyg.min.js"></script>
 
 <% include paritials/topbar.ejs %>
 <% if(data.isActive == "true"){ %>
   <% include paritials/sidebar.ejs %>
 <% } %>
-
 
 <style type="text/css">
   #communitytable
@@ -39,41 +39,32 @@
   }
 
 </style>
-
 <div class="container-fluid page-content-div" style="padding:0">
-            <div class="row">
-               <div class="col-lg-12 scoll-possible" style="padding:0">
-
-
-
-<div style="margin-left:20px;margin-right:20px">
-        
+  <div class="row">
+    <div class="col-lg-12 scoll-possible" style="padding:0">
+        <div style="margin-left:20px;margin-right:20px">
           <!-- Modal -->
-        <div class="modal fade" id="updateCommunity" role="dialog" style="z-index: 9999; display: none;">
-    <div class="modal-dialog">
-
-      <div class="modal-content">
-        <div class="modal-header" style="word-wrap:break-word;">
-          <h4 class="modal-title" id="CommunityNamePop" style="font-weight:bold">Update 1111<p id="CommunityAdminPop" style="font-size:10px;">Created by superadmin ,2-Jun-2019</p></h4>
-          <br>
-          <!-- <p id="CommunityAdminPop" style="font-size:10px;">Created by superadmin ,2-Jun-2019</p> -->
-          <button type="button" class="close" data-dismiss="modal">×</button>
-        </div>
-        <div class="modal-body">
-        <!------------------------------------------------------------------------------------>
-  <div class="form-horizontal">
-          <div class="form-group">
-            <div class="col-lg-5 col-lg-offset-3" style="width:50%">
-              <input style="display:none" type="text" name="_id" class="form-control" id="_id" readonly="">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="control-label col-sm-2">Commuity Name:</label>
-            <div class="col-sm-10">
-              <input type="text" name="communityName" class="form-control" id="CommuityName" placeholder="Community Name">
-            </div>
-          </div>
+          <div class="modal fade" id="updateCommunity" role="dialog" style="z-index: 9999; display: none;">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header" style="word-wrap:break-word;">
+                    <h4 class="modal-title" id="CommunityNamePop" style="font-weight:bold"><p id="CommunityAdminPop" style="font-size:10px;"></p></h4>
+                    <br>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-horizontal">
+                    <div class="form-group">
+                      <div class="col-lg-5 col-lg-offset-3" style="width:50%">
+                        <input style="display:none" type="text" name="_id" class="form-control" id="_id" readonly="">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-sm-2">Commuity Name:</label>
+                      <div class="col-sm-10">
+                        <input type="text" name="communityName" class="form-control" id="CommuityName" placeholder="Community Name">
+                      </div>
+                    </div>
 
           <div class="form-group">
             <label class="control-label col-sm-2">Community Status:</label>
@@ -109,7 +100,7 @@
             
             <div id="CommunityProfile"><img id="CommunityProfilePic" class="CommunityProfilePic allSides" src="/images/defaultCommunity.jpg" style="width:100px;height:100px;">
             </div>
-            <p id="CommunityInfoPop"></p>
+            <p id="CommunityInfoPop" style="margin: 30px;"></p>
             <a href="" id="mapLink" target="_blank">
               <p id="locInfo" style="font-size:15px;float:right;bottom:0;font-weight:bold"></p>
             </a>
@@ -118,7 +109,7 @@
           <div class="modal-body">
           <!------------------------------------------------------------------------------------>
           <p style="font-size:15px;font-weight:bold;">Community Description</p><p id="locInfo" style="font-size:15px;float:right"></p>
-          <div id="communityDesc" class="well well-lg" style="word-wrap: break-word;">jknkjkbkjbkj</div>
+          <div id="communityDesc" class="well well-lg" style="word-wrap: break-word;"></div>
           </div>
           <!---------------------------------------------------------------------------------->
           <div class="modal-footer">

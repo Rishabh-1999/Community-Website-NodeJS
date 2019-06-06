@@ -1,13 +1,14 @@
 $(document).ready(function() {
   initaliseTable();
 })
+var table;
 function initaliseTable(){
-     let table = $('#communitytable').DataTable({
+      table = $('#communitytable').DataTable({
       "processing": true,
       "serverSide": true,
       "dataSrc":"",
       "ajax": {
-        "url": "/superadmincommunityTable/getCommunityLists",
+        "url": "/userTable/getCommunityLists",
         "type": "POST",
        
         "data": function ( d )
@@ -83,14 +84,12 @@ var gd;
     document.getElementById("communityDesc").innerHTML=desc;
   }
 
-    function addToEdit(status,name,d)
+  function addToEdit(status,name,d)
   {
     gd=d;
     document.getElementById("CommuityName").value=name;
     document.getElementById("communityStatus").value=status;
   }
-
-
 
   document.getElementById("editsubmit").addEventListener("click",function()
   {
@@ -100,12 +99,14 @@ var gd;
     obj.status=$("#communityStatus").val();
     console.log(obj);
     var xml=new XMLHttpRequest();
-    xml.open("POST","/superadmincommunityTable/communityupdate");
+    xml.open("POST","/userTable/communityupdate");
     xml.onload=function()
                   {
                     if(xml.responseText=='true')
                       alert("Data updated");
+                    table.ajax.reload(null, false);
                   }
     xml.setRequestHeader("Content-Type","application/json");
+    table.ajax.reload(null, false);
     xml.send(JSON.stringify(obj));
   })

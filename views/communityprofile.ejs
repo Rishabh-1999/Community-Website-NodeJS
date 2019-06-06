@@ -1,0 +1,218 @@
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CQ</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+
+<link rel="stylesheet" type="text/css" href="/css/navBar.css">
+<link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+<link rel="stylesheet" type="text/css" href="/css/communitystyle.css">
+<link rel="stylesheet" type="text/css" href="/css/sirstyle.css">
+<link rel="stylesheet" type="text/css" href="/css/discussion.css">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+
+<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+
+<% include paritials/topbar.ejs %>
+<% if(data.isActive == "true"){ %>
+  <% include paritials/sidebar.ejs %>
+<% } %>
+
+<style>
+  .child-reply-input{
+    display: none !important;
+  }
+</style>
+
+<div class="container-fluid page-content-div" style="padding:0">
+    <div class="row">
+        <div class="col-lg-12 scoll-possible" style="padding:0">
+  			<div class="community-header-top communityheader-profile-mobile" style="padding-top:6px;position:relative;">
+    			<div class="container pc">
+    			</div>
+				<div>
+    				<center>
+        			<div class="communityprofile-name-mobile" style="max-height:40px;overflow:scroll">
+          				<a href="" style="color:white"><%= data2.name %></a>
+        			</div>
+    				</center>
+
+    				<center>
+			      	<a href="#">
+			        <img src="<%= data2.photoloc %>" class="mobile img-communityprofile-pic allSides" style="background:#fff">
+			      </a>
+    				</center>
+				</div>
+			</div>
+			<div class="container community-profile-conatiner" style="display:flex;">
+				<div class="col-sm-2 col-xs-12 center-mobile pc">
+					<a href="#">
+			  			<img src="<%= data2.photoloc %>" class="img-communityprofile-pic allSides" style="background:#fff">
+					</a>
+				</div>
+				<div class="col-sm-8 communityprofile-name-pc communityprofile-system">
+				  <a href="#" class="communityprofile-name-pc"><%= data2.name %></a>
+				</div>
+				<div class="col-sm-2 col-xs-12 center-mobile" style="padding-top:10px;float:right">
+					<div class="dropdown">
+				  		<button class="btn btn-default dropdown-toggle commuity-profile-menu-btn" type="button" data-toggle="dropdown">
+				    		<i class="fa fa-bars"></i>
+				  		</button>
+				  		<ul class="dropdown-menu custom-commuity-dropdown dropdown-menu-right">
+							<li><a href="#" class="community-profile-option-btn">Discussions</a></li>
+             <% if(data._id == data2.ownerid){ %>
+      	 					<li><a href="/userTable/<%= data2._id %>" class="community-profile-option-btn">Manage Community</a></li>
+      						<li><a href="#">Community Profile</a></li>
+              <% } %>
+
+							<li><a href="/userTable/communitymembers/<%= data2._id %>" class="community-profile-option-btn">Community Members</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<center>
+			    <hr style="border-top:2px solid #E6E6E6;width:85%;margin-top:0">
+			</center>
+			<div class="container" style="width:94% !important;display:flex;">
+     			<div class="col-sm-3 col-xs-12">
+      				<div class="panel panel-default allSidesSoft" style="border-radius:0">
+        				<div class="panel-heading" style="border:0;border-radius:0">
+							Members
+              				<a href="/userTable/communitymembers/<%= data2._id %>" style="float:right">View all</a>
+          				</div>
+        				<div class="panel-body" style="border:0;border-radius:0" id="special">
+	          				<div class="col-sm-12 col-xs-12" style="padding:0;display: flex;" id="membersDiv-4joinedUser">
+	              				<div class="col-sm-6 col-xs-3 col-md-3 col-lg-3 center-all" style="padding:0;">
+	                				<a href="#" class="communityProfileUserImage">
+	                  				<img class="communityProfileUserImage allSidesSoft" src="<%= data2.photoloc %>">
+                					</a>
+              					</div>
+          						<div class="col-sm-6 col-xs-3 col-md-3 col-lg-3 center-all" style="padding:0;">
+          							<a href="#" class="communityProfileUserImage">    
+          								<img class="communityProfileUserImage allSidesSoft" src="">  </a>
+          						</div>
+          					</div>
+          				</div>
+        				<div class="panel-footer community-panel-sideBtn-link">
+          				<a href="#" style="" id="mem">
+                		2 Members
+              			</a>
+		        	</div>
+		      	</div>
+
+        <div class="panel panel-default allSidesSoft" style="border-radius:0">
+          <div class="panel-heading" style="border:0;border-radius:0">
+            Community Managers
+          </div>
+          <div class="panel-body" style="border:0;border-radius:0;display: flex;">
+            <div id="commuity-owner-detail">
+              Owner Info
+            <div class="col-sm-12 col-md-12 col-lg-12 adminInfo" style="margin-right: 250px;">
+            	<div class="col-sm-6 col-md-6 col-lg-4 col-xs-4 center-all">
+            	<a href="/userTable/userprofile/<%= data2.ownerid %>">
+            		<img src="<%= data2.photoloc %>" class="adminPic allSides"></a>
+            	</div>
+            	<div class="col-sm-6 col-md-6 col-lg-8 col-xs-8 adminContent" style="padding:0">
+            		<div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" style="padding:0">
+            			<span class="label label-success" style="margin-top:10px;">Owner</span>
+            		</div>
+            		<div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" style="overflow:scroll;padding:0;">
+            			<a href="/userTable/userprofile/<%= data2.ownerid %>"><%= data2.owner %></a>
+            		</div>
+            	</div>
+            </div>
+        </div>
+        <div id="commuity-admins-detail">
+              Admin Info
+      </div>
+    </div>
+</div>
+    </div>
+    <style>
+      .full-description{
+        display:none;
+      }
+      .less-description-btn{
+        display: none;
+      }
+    </style>
+    <div class="col-sm-8 col-xs-12 separator-community-admin" style="padding:0 10px 10px 10px;">
+      <div class="panel panel-default allSidesSoft" style="border-radius:0">
+        <div class="panel-heading center-all" style="border:0;border-radius:0">
+          About Community
+        </div>
+        <div class="panel-body" style="border:0;border-radius:0;overflow:scroll">
+              <p class="short-description center-all">
+                 <%= data2.description %>
+              </p>
+              <div class="full-description">
+                <%= data2.description %>
+              </div>
+        </div>
+      </div>
+        <div class="col-sm-12" id="needGlobalInProfile" style="padding:0">
+        </div>
+    </div>
+</div>
+
+
+</div>
+</div>
+</div>
+<script type="text/javascript">
+	
+$(document).ready(function() {
+  initalise();
+})
+  var commid="<%= data2._id %>"
+function initalise()
+{
+  var xml=new XMLHttpRequest();
+  xml.open("POST","/userTable/getUsers");
+  xml.setRequestHeader("Content-Type","application/json");
+  document.getElementById("special").innerHTML="";
+
+  xml.addEventListener("load",function()
+  {
+      var data=JSON.parse(xml.responseText);
+      if(data.length==0)
+        noUser();
+      else
+      {
+      	
+      	var n;
+      	if(4<data.length)
+      		n=4;
+      	else
+      		n=data.length;
+        for(var i=0;i<n;i++)
+        {
+          addtoSpecialDOM(data[i])
+        }
+        document.getElementById('mem').innerHTML=data.length+" Members";
+      }
+  })
+  xml.send(JSON.stringify({"_id":commid}));
+}
+function addtoSpecialDOM(obj)
+{
+	var div1=document.createElement('div')
+	div1.setAttribute("class","col-sm-6 col-xs-3 col-md-3 col-lg-3 center-all")
+	div1.setAttribute("style","padding:0")
+	var a=document.createElement('a');
+	a.setAttribute("href","/userTable/userprofile/"+obj._id)
+	var img=document.createElement('img')
+	img.setAttribute("class","communityProfileUserImage allSidesSoft");
+	img.setAttribute("src",obj.photoloc)
+	a.appendChild(img)
+	div1.appendChild(a);
+	document.getElementById("special").appendChild(div1);
+}
+</script>   

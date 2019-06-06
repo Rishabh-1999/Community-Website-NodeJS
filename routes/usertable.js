@@ -6,6 +6,7 @@ const multer = require('multer');
 var passport=require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
 var nodemailer = require('nodemailer');
+var mongojs = require('mongojs')
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -66,13 +67,31 @@ UsersNames.find({"githubid" :req.session.passport.user._json.id},function(err, r
 console.log("githubsignin succesful");
 if(result!=null)
 {
-  req.session.isLogin=1;
-  req.session._id=result._id;
-  req.session.name=result.name;
-  req.session.data=result[0];
-  req.session.data.temprole=req.session.data.role
-  req.session.data.issuperadmin="false";
-  res.redirect('/home');
+        req.session.isLogin=1;
+        req.session._id=result._id;
+        req.session.name=result.name;
+        req.session.password=req.body.password;
+        var ob=new Object()
+        ob.name=result.name;
+        ob._id=result._id;
+        ob.email=result.email;
+        ob.photoloc=result.photoloc;
+        ob.gender=result.gender;
+        ob.city=result.city;
+        ob.DOB=result.DOB;
+        ob.phoneno=result.phoneno
+        ob.role=result.role
+        ob.status=result.status
+        ob.restrict=result.restrict
+        ob.isActive=result.isActive
+        ob.interests=result.interests
+        ob.aboutyou=result.aboutyou
+        ob.expectations=result.expectations
+        ob.githubid=result.githubid
+        ob.temprole=result.role;
+        req.session.name=result.name;
+        req.session.data=ob;
+        res.redirect('/home');
 }
 else
 {
@@ -83,8 +102,8 @@ else
   status : "Pending",
   role : "User",
   githubid : req.session.passport.user._json.id,
-  photoloc : "images/logo.png",
-  isActive:"true"
+  photoloc : "/images/logo.png",
+  isActive:"true",
   email: req.body.email,
   gender: "",
   DOB: "",
@@ -92,7 +111,8 @@ else
   restrict: "false",
   interests:"",
   boutyou:"",
-  expectations:""
+  expectations:"",
+  email: req.body.email,
 }
 UsersNames.create(obj,function(error,result) {
 if(error)
@@ -123,14 +143,35 @@ app.post('/activatesuperadmin',function(req,res){
 
 app.post('/checkLogin',function(req,res) {
     console.log('login data recieved');
-    UsersNames.findOne({"email": req.body.email,password:req.body.password}, function(err, result) {
+    UsersNames.findOne({"email": req.body.email,"password":req.body.password}, function(err, result) {
     console.log(result);
       if(result!=null) {
         req.session.isLogin=1;
         req.session._id=result._id;
         req.session.name=result.name;
-        req.session.data=result;
+        
         req.session.password=req.body.password;
+        var ob=new Object()
+        ob.name=result.name;
+        ob._id=result._id;
+        ob.email=result.email;
+        ob.photoloc=result.photoloc;
+        ob.gender=result.gender;
+        ob.city=result.city;
+        ob.DOB=result.DOB;
+        ob.phoneno=result.phoneno
+        ob.role=result.role
+        ob.status=result.status
+        ob.restrict=result.restrict
+        ob.isActive=result.isActive
+        ob.interests=result.interests
+        ob.aboutyou=result.aboutyou
+        ob.expectations=result.expectations
+        ob.githubid=result.githubid
+        ob.temprole=result.role;
+        req.session.name=result.name;
+        req.session.data=ob;
+        console.log(req.session)
         if(result.isActive=="false")
         {
           redirect('/home')
@@ -169,7 +210,7 @@ app.post('/addUserToDataBase',function (req, res) {
       interests:"",
       aboutyou:"",
       expectations:"",
-      photoloc:"images/logo.png"
+      photoloc:"/images/logo.png"
     })
     newProduct.save()
      .then(data => {
@@ -187,7 +228,7 @@ app.post('/addUserToDataBase',function (req, res) {
 
 app.post('/updatetodatabase',function(req,res) {
   if(req.session.isLogin){
-  UsersNames.updateOne({"email":req.body.email},{$set:{"email":req.body.email,"phoneno":req.body.phoneno,"city":req.body.city,"status":req.body.status,"role":req.body.role}},function(error,result){       
+  UsersNames.updateOne({"email":req.body.email},{$set:{"isActive":"true","email":req.body.email,"phoneno":req.body.phoneno,"city":req.body.city,"status":req.body.status,"role":req.body.role}},function(error,result){       
     if(error)
       throw error;
     else {
@@ -237,16 +278,30 @@ app.post('/deactivateUser',function(req,res) {
 }
 })
 
+app.post('/changetemprole',function(req,res) {
+  if(req.session.data.temprole=="SuperAdmin")
+  {
+    req.session.data.temprole="User"
+    console.log(req.session.data)
+    res.send("changed")
+  }
+  else
+  {
+    req.session.data.temprole="SuperAdmin"
+    console.log(req.session.data)
+    res.send("changed")
+  }
+})
+
 app.post('/updateprofile',function(req,res){
-  UsersNames.updateOne({"_id":req.session._id},{$set:{"isActive":"true","name":req.body.name,"DOB":req.body.DOB,"city":req.body.city,"gender":req.body.gender,"phoneno":req.body.phoneno,"city":req.body.city,"interests":req.body.interests,
+  UsersNames.updateOne({"_id":req.session._id},{$set:{"name":req.body.name,"DOB":req.body.DOB,"city":req.body.city,"gender":req.body.gender,"phoneno":req.body.phoneno,"interests":req.body.interests,
   "aboutyou":req.body.aboutyou,"expectations":req.body.expectations}},function(error,result){
   if(error)
     throw error;
   else
   console.log("Updated from /updateprofile");
-  res.send("1");
+  res.send("true");
   })
-  //res.send("1");
 })
 
 app.post('/changePassword' , (req,res)=>{
@@ -266,126 +321,137 @@ app.post('/changePassword' , (req,res)=>{
 
 app.post('/checkDuplicate' , (req,res)=>{
   var data=UsersNames.find({}).exec(function(error,result)    {
-    if(error)
-        // throw error;
-      console.log('helo');
-    else
+  if(error)
+    throw error;
+  else
+  {
+    var da=[];
+    var rew="false";
+    da=result;
+    for(i in result)
     {
-      var da=[];
-      var rew="false";
-      da=result;
-      for(i in result)
+      if(req.body.email==da[i].email)
       {
-        console.log(req.body.email+ " "+da[i].email);
-        if(req.body.email==da[i].email)
-        {
-          rew="true";
-        }
+        rew="true";
       }
-      res.send(rew);
     }
+      res.send(rew);
+  }
 })
 })
 
 app.post('/usersTable' , function(req, res) {
-  console.log(req.body);
 if(req.body.role === 'All' && req.body.status === 'All')
 {
-      UsersNames.countDocuments(function(e,count){
-      var start=parseInt(req.body.start);
-      var len=parseInt(req.body.length);
+  UsersNames.countDocuments(function(e,count){
+  var start=parseInt(req.body.start);
+  var len=parseInt(req.body.length);
 
-      UsersNames.find({
-
-      }).skip(start).limit(len)
-    .then(data=> {
-      
-      if (req.body.customsearch!="")
-                    {
-                        data = data.filter((value) => {
-                            return value.email.includes(req.body.customsearch)
-                        })
-                    }
-    
-      res.send({"recordsTotal": count, "recordsFiltered" : count, data})
-     })
-     .catch(err => {
-      res.send(err)
-     })
-   });
-
+  UsersNames.find({}).skip(start).limit(len)
+  .then(data=> {
+  if (req.body.customsearch!="") {
+    data = data.filter((value) => {
+            flag = value.email.includes(req.body.customsearch) || value.phoneno.includes(req.body.customsearch)
+             || value.city.includes(req.body.customsearch) || value.status.includes(req.body.customsearch) 
+             || value.role.includes(req.body.customsearch);
+            return flag;
+          })
+  }
+  res.send({"recordsTotal": count, "recordsFiltered" : count, data})
+  })
+  .catch(err => {
+  res.send(err)
+  })
+  });
 }
 
 else if(req.body.role === 'All' && req.body.status !== 'All')
 {
-  console.log(req.body);
   var length;
-      UsersNames.countDocuments(function(e,count){
-      var start=parseInt(req.body.start);
-      var len=parseInt(req.body.length);
+  UsersNames.countDocuments(function(e,count){
+  var start=parseInt(req.body.start);
+  var len=parseInt(req.body.length);
 
-      UsersNames.find({status: req.body.status}).then(data => length = data.length);
-
-      UsersNames.find({ status: req.body.status }).skip(start).limit(len)
-    .then(data=> {
-      res.send({"recordsTotal": count, "recordsFiltered" : length, data})
-     })
-     .catch(err => {
-      res.send(err)
-     })
-   });  
+  UsersNames.find({status: req.body.status}).then(data => length = data.length);
+  UsersNames.find({ status: req.body.status }).skip(start).limit(len)
+  .then(data=> {
+    if (req.body.customsearch!="") {
+    data = data.filter((value) => {
+            flag = value.email.includes(req.body.customsearch) || value.phoneno.includes(req.body.customsearch)
+             || value.city.includes(req.body.customsearch) || value.status.includes(req.body.customsearch) 
+             || value.role.includes(req.body.customsearch);
+            return flag;
+          })
+  }
+  res.send({"recordsTotal": count, "recordsFiltered" : length, data})
+  })
+  .catch(err => {
+  res.send(err)
+  })
+  });  
 }
 
 else if(req.body.role !== 'All' && req.body.status === 'All')
 {
-       console.log(req.body);
   var length;
-      UsersNames.countDocuments(function(e,count){
-      var start=parseInt(req.body.start);
-      var len=parseInt(req.body.length);
+  UsersNames.countDocuments(function(e,count){
+  var start=parseInt(req.body.start);
+  var len=parseInt(req.body.length);
 
-      UsersNames.find({role: req.body.role}).then(data => length = data.length);
+  UsersNames.find({role: req.body.role}).then(data => length = data.length);
 
-      UsersNames.find({ role: req.body.role }).skip(start).limit(len)
-    .then(data=> {
-      res.send({"recordsTotal": count, "recordsFiltered" : length, data})
-     })
-     .catch(err => {
-      res.send(err)
-     })
-   }); 
-}
+  UsersNames.find({ role: req.body.role }).skip(start).limit(len)
+  .then(data=> {
+    if (req.body.customsearch!="") {
+    data = data.filter((value) => {
+            flag = value.email.includes(req.body.customsearch) || value.phoneno.includes(req.body.customsearch)
+             || value.city.includes(req.body.customsearch) || value.status.includes(req.body.customsearch) 
+             || value.role.includes(req.body.customsearch);
+            return flag;
+          })
+  }
+  res.send({"recordsTotal": count, "recordsFiltered" : length, data})
+  })
+  .catch(err => {
+  res.send(err)
+  })
+  }); 
+} else {
+  var length;
+  UsersNames.countDocuments(function(e,count){
+  var start=parseInt(req.body.start);
+  var len=parseInt(req.body.length);
 
-else
-{
-       var length;
-      UsersNames.countDocuments(function(e,count){
-      var start=parseInt(req.body.start);
-      var len=parseInt(req.body.length);
+  UsersNames.find({role: req.body.role, status: req.body.status}).then(data => length = data.length);
 
-      UsersNames.find({role: req.body.role, status: req.body.status}).then(data => length = data.length);
-
-      UsersNames.find({role: req.body.role, status: req.body.status}).skip(start).limit(len)
-    .then(data=> {
-      res.send({"recordsTotal": count, "recordsFiltered" : length, data})
-     })
-     .catch(err => {
-      res.send(err)
-     })
-   }); 
-}
+  UsersNames.find({role: req.body.role, status: req.body.status}).skip(start).limit(len)
+  .then(data=> {
+    if (req.body.customsearch!="") {
+    data = data.filter((value) => {
+            flag = value.email.includes(req.body.customsearch) || value.phoneno.includes(req.body.customsearch)
+             || value.city.includes(req.body.customsearch) || value.status.includes(req.body.customsearch) 
+             || value.role.includes(req.body.customsearch);
+            return flag;
+          })
+  }
+  res.send({"recordsTotal": count, "recordsFiltered" : length, data})
+  })
+  .catch(err => {
+  res.send(err)
+  })
+  }); 
+  }
   })
 
-var storage = multer.diskStorage({
-      destination : './public/uploads/',
+  var storage = multer.diskStorage({
+  destination : './public/uploads/',
       filename : function(req, file, callback)
       {
         photoname=req.session._id +path.extname(file.originalname);
-        req.session.data.photoloc ='uploads/'+ photoname;
+        req.session.data.photoloc ='/uploads/'+ photoname;
         callback(null,photoname);
       }
     })
-
      var upload = multer({
       storage : storage,
     }).single('file');
@@ -399,18 +465,464 @@ app.post('/uploadphoto',(req,res)=>{
         else{
           console.log(req.file);
           console.log(photoname);
-          UsersNames.updateOne({"_id":req.session._id},{$set:{"photoloc":'uploads/'+photoname}},function(error,result){
-        
+          UsersNames.updateOne({"_id":req.session._id},{$set:{"photoloc":'/uploads/'+photoname}},function(error,result){
+              console.log("photo updated to database"+result)
+              req.session.data.photoloc = 'uploads/'+photoname;
            })
-
-          console.log();
-          req.session.data.photoloc = 'uploads/'+photoname;
-            
+              
         }
       })
+})
+/*--------------------------------------------------------------------------------------------------------------*/
 
+var communitys = new mongoose.Schema({
+  "photoloc":String,
+  "name":String,
+  "members":String,
+  "rule":String,
+  "communityloc":String,
+  "createdate":String,
+  "description":String,
+  "owner":String,
+  "status":String,
+  "ownerid":String,
+  "request":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
+  "managers":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
+  "invited":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
+  "users": [{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}]
 })
 
-mongoose.connect(mongoDB);
+var communitys =  mongoose.model('communitys', communitys);
 
-module.exports = app;
+app.post('/getUsers',function(req,res) {
+  if(req.session.isLogin){
+console.log("----------------------"+req.body._id);
+communitys.findOne({ "_id" : req.body._id }).populate('users'). // only return the Persons name
+  exec(function (err, result) {
+    if (err) 
+      return err;
+    else
+    {
+      console.log("result"+result)
+      res.send(JSON.stringify(result.users))
+    }
+  })
+}
+})
+
+  app.post('/getManagers',function(req,res) {
+  if(req.session.isLogin){
+communitys.findOne({ "_id" : req.body._id }).populate('managers'). // only return the Persons name
+  exec(function (err, result) {
+    if (err) 
+      return err;
+    else
+    {
+      console.log("result"+result)
+      res.send(JSON.stringify(result.managers))
+    }
+  })
+}
+})
+  app.post('/getinveted',function(req,res) {
+  if(req.session.isLogin){
+communitys.findOne({ "_id" : req.body._id }).populate('invited'). // only return the Persons name
+  exec(function (err, result) {
+    if (err) 
+      return err;
+    else
+    {
+      console.log("result"+result)
+      res.send(JSON.stringify(result.invited))
+    }
+  })
+}
+})
+
+  app.post('/getrequest',function(req,res) {
+  if(req.session.isLogin){
+communitys.findOne({ "_id" : req.body._id }).populate('request'). // only return the Persons name
+  exec(function (err, result) {
+    if (err) 
+      return err;
+    else
+    {
+      console.log("result"+result)
+      res.send(JSON.stringify(result.request))
+    }
+  })
+}
+})
+  
+  app.post('/promoteuser',function(req,res) {
+  if(req.session.isLogin){
+    var res;
+    UsersNames.find({"_id":req.body._id}).exec(function(error,result)    {
+  if(error)
+    throw error;
+  else
+  {
+    var ch=result.role;
+    if(result.role=="User")
+    {
+      ch="Admin";
+    }
+    else if(result.role=="Admin")
+    {
+      ch="SuperAdmin"
+    }
+    UsersNames.updateOne({"_id":req.body._id},{$set:{"role":ch}},function(error,result){
+  if(error)
+    res.send("false")
+  else
+    res.send("true")
+  })
+  }
+})
+  }
+})
+
+//   app.post('/remove',function(req,res) {
+//   if(req.session.isLogin){
+//     var res;
+//     =UsersNames.find({"_id":req.body._id}).exec(function(error,result)    {
+//   if(error)
+//     throw error;
+//   else
+//   {
+//     var ch=result.role;
+//     if(result.role=="User")
+//     {
+//       ch="Admin";
+//     }
+//     else if(result.role=="Admin")
+//     {
+//       ch="SuperAdmin"
+//     }
+//     UsersNames.updateOne({"_id":req.body._id},{$set:{"role":ch}},function(error,result){
+//   if(error)
+//     res.send("false")
+//   else
+//     res.send("true")
+//   })
+//   }
+// })
+//   }
+// })
+
+app.post('/getCommunityLists' , function(req, res) {
+  console.log(req.body);
+  var count;
+      communitys.countDocuments(function(e,c){
+        count=c;
+      })
+      var start=parseInt(req.body.start);
+      var len=parseInt(req.body.length);
+
+      communitys.find({}).skip(start).limit(len)
+    .then(data=> {
+      
+       if (req.body.customsearch!="")
+                    {
+                        data = data.filter((value) => {
+                            return value.name.includes(req.body.customsearch)
+                        })
+                    }
+    
+      res.send({"recordsTotal": count, "recordsFiltered" : count, data})
+     })
+     .catch(err => {
+      res.send(err)
+    })
+  });
+
+app.post('/joincommunity',function(req,res) {
+  console.log("--------------------------------------")
+console.log(req.body)
+
+  if(req.body.r==0)
+  {
+    communitys.updateOne({"_id":req.body._id},{$push:{"users":req.session._id}},function(error,result){       
+    if(error)
+      throw error;
+    else {
+      console.log("result"+result)
+    }
+    res.send("true");
+  })
+}
+else
+{
+  communitys.updateOne({"_id":req.body._id},{$push:{"invited":req.session._id}},function(error,result){       
+    if(error)
+      throw error;
+    else {
+      console.log("result"+result)
+    }
+    res.send("true");
+  })
+}
+})
+
+
+app.post('/communityupdate',function(req,res) {
+  if(req.session.isLogin){
+  communitys.updateOne({"_id":req.body.id},{$set:{"name":req.body.name,"status":req.body.status}},function(error,result){       
+    if(error)
+      throw error;
+    else {
+    }
+    res.send("true");
+  })
+  } else {
+    res.redirect('/');
+  }
+})
+
+app.get('/getArrayOwnCommunity',function(req,res) {
+  if(req.session.isLogin){
+    console.log("okokok")
+    communitys.find({'ownerid':req.session._id}, function(err, result){
+     console.log(result);
+      res.send(result);
+});
+
+} else {
+    res.redirect('/');
+  }
+})
+
+
+app.get('/getArrayOtherCommunity',function(req,res) {
+  if(req.session.isLogin){
+    communitys.find({ $and:[{"users": { "$in" : [req.session._id]}},{ "ownerid" : { "$not":{ "$eq":req.session._id}}}]}, function(err, result){
+     console.log(result);
+      res.send(result);
+});
+} else {
+    res.redirect('/');
+  }
+})
+
+app.get('/getArrayOtherCommunityInvited',function(req,res) {
+  if(req.session.isLogin){
+    communitys.find({ $and:[{"invited": { "$in" : [req.session._id]}},{"users": { "$nin" : [req.session._id]}},{"managers": {  "$nin" : [req.session._id]}},{ "ownerid" : { "$not":{ "$eq":req.session._id}}}]}, function(err, result){
+     console.log(result);
+      res.send(result);
+});
+} else {
+    res.redirect('/');
+  }
+})
+
+function formatAMPM(date) {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return strTime;
+}
+
+app.post('/addCommunity',function (req, res) {
+var rule;
+  if(req.body.direct=="true")
+    rule="Direct"
+  else
+    rule="Permission"
+  var dat= new Date();
+  var datestr="";
+  datestr=dat.getDate();
+  datestr=datestr+"-"+dat.getMonth();
+  datestr=datestr+"-"+dat.getFullYear();
+  datestr=datestr+" ("+formatAMPM(dat)+")";
+  if(req.session.isLogin){
+    let newProduct = new communitys({
+  "photoloc":"/images/defaultCommunity.jpg",
+  "name":req.body.name,
+  "members":null,
+  "rule":rule,
+  "communityloc":"Not Known",
+  "createdate":datestr,
+  "description":req.body.description,
+  "owner":req.body.name,
+  "status":"false",
+  "ownerid":req.session._id,
+  "managers":null,
+  "invited":null,
+  "users":null  
+    })
+    newProduct.save()
+     .then(data => {
+       console.log(data)
+tempcomm=data;
+       upload(req,res,(err)=>{
+        if(err)
+          throw err;
+        else{
+           communitys.updateOne({"_id":data._id},{"photoloc":'/uploads/'+photoname},function(error,result){
+           })
+          communitys.updateOne({"_id":data._id},{$push:{"users":req.session._id}},function(error,result){
+           })
+          res.render('communitylists',{data: req.session.data});
+        }
+      })
+     })
+     .catch(err => {
+       console.error(err)
+       res.send(err)
+     })
+   }else {
+    res.redirect('/');
+}
+})
+var tempcomm;
+
+// var storage = multer.diskStorage({
+//       destination : './public/uploads/',
+//       filename : function(req, file, callback)
+//       {
+//         photoname='community'+tempcomm._id +path.extname(file.originalname);
+//         callback(null,photoname);
+//       }
+//     })
+
+//      var upload = multer({
+//       storage : storage,
+//     }).single('file');
+
+// app.post('/uploadphotoCommunity',(req,res)=>{
+  // upload(req,res,(err)=>{
+  //       if(err)
+  //       {
+  //         throw err;
+  //       }
+  //       else{
+  //         console.log(req.file);
+  //         console.log(photoname);
+  //         communitys.updateOne({"_id":req.session._id},{$set:{"photoloc":'/uploads/'+photoname}},function(error,result){
+  //          })           
+  //       }
+  //     })
+//     communitys.updateOne({"_id":req.session._id},{$push:{"users":req.session}},function(error,result){
+//            })
+
+//     res.render('communitylists',{data: req.session.data});
+// })
+
+app.get('/getAllActive',function(req,res) {
+  if(req.session.isLogin){
+    communitys.find({'ownerid':{"$ne":req.session._id}, "users": { "$nin" : [req.session._id]}}, function(err, result){
+     console.log(result);
+      res.send(result);
+})
+} else {
+    res.redirect('/');
+  }
+})
+
+app.post('/updatecomm',function(req,res) {
+  if(req.session.isLogin){
+    communitys.findOneAndUpdate({"_id":req.body._id},{"name":req.body.name,"description":req.body.description,"rule":req.body.rule},function(err,result)
+  {
+    if(err)
+      throw err
+    else
+    {
+      communitys.findOne({"_id":req.body._id},function(err,result)
+    {
+      if(err)
+        throw err;
+      else
+      {
+        res.send("true")
+      }
+    })
+    }
+  });
+} else {
+    res.redirect('/');
+  }
+})
+
+
+app.get('/:pro' , (req,res)=>{
+  if(req.session.isLogin){
+    var id=req.params.pro.toString()
+    communitys.findOne({"_id":id},function(err,result) {
+      if(err)
+        throw err;
+      else
+        res.render('manageCommunity',{data:req.session.data,data2:result})
+    })
+  } else {
+    res.redirect('/');
+  }  
+})
+
+app.get('/edit/:pro' , (req,res)=>{
+  if(req.session.isLogin){
+    var id=req.params.pro.toString()
+    communitys.findOne({"_id":id},function(err,result)
+    {
+      if(err)
+        throw err;
+      else
+        res.render('editcommunity',{data:req.session.data,data2:result})
+    })
+  } else {
+    res.redirect('/');
+  }  
+})
+
+app.get('/userprofile/:pro' , (req,res)=>{
+  if(req.session.isLogin){
+    var id=req.params.pro.toString()
+    UsersNames.findOne({"_id":id},function(err,result)
+    {
+      if(err)
+        throw err;
+      else
+        res.render('userprofile',{data:req.session.data,data2:result})
+    })
+  } else {
+    res.redirect('/');
+  }  
+})
+
+app.get('/communitymembers/:pro' , (req,res)=>{
+  if(req.session.isLogin){
+    var id=req.params.pro.toString()
+    communitys.findOne({"_id":id},function(err,result)
+    {
+      if(err)
+        throw err;
+      else
+        res.render('communitymembers',{data:req.session.data,data2:result})
+    })
+  } else {
+    res.redirect('/');
+  }  
+})
+
+app.get('/profile/:pro' , (req,res)=>{
+  if(req.session.isLogin){
+    var id=req.params.pro.toString()
+    communitys.findOne({"_id":id},function(err,result)
+    {
+      if(err)
+        throw err;
+      else
+        console.log("==="+result)
+        res.render('communityprofile',{data:req.session.data,data2:result})
+    })
+  } else {
+    res.redirect('/');
+  }  
+})
+
+
+mongoose.connect(mongoDB);
+module.exports=app

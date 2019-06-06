@@ -1,6 +1,5 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
 
@@ -14,8 +13,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
 <script src="/script/trumbowyg.min.js"></script>
@@ -35,7 +32,16 @@
     color: #333;
     white-space: nowrap;
 }
-
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
 </style>
 
 <div class="container-fluid page-content-div" style="padding:0">
@@ -46,14 +52,14 @@
           </div>
           <center>
           <div class="communityprofile-name-mobile" style="max-height:40px;overflow:scroll">
-            <a href="" style="color:white" id="communityname">
+            <a href="/userTable/profile/<%= data2._id %>" style="color:white" id="communityname">
              <%= data2.name %>
             </a>
           </div>
           </center>
           <center>
-          <a href="">
-            <img src="" class="mobile img-communityprofile-pic allSides" style="background:#fff" id="mobileimg">
+          <a href="/userTable/profile/<%= data2._id %>">
+            <img src="<%= data2.photoloc %>" class="mobile img-communityprofile-pic allSides" style="background:#fff" id="mobileimg">
           </a>
           </center>
         </div>
@@ -61,8 +67,8 @@
         <div class="container community-profile-conatiner" style="flex-direction:row;height:auto;display: flex;">
           <div style="flex:1;">
             <div class="col-sm-2 col-xs-12 center-mobile pc">
-              <a href="/community/communityprofile/5cf0c7e80a79ed1439525947">
-                <img src="" class="img-communityprofile-pic allSides" style="background:#fff" id="pcimg">
+              <a href="/userTable/profile/<%= data2._id %>">
+                <img src="<%= data2.photoloc %>" class="img-communityprofile-pic allSides" style="background:#fff" id="pcimg">
               </a>
             </div>
 
@@ -80,22 +86,22 @@
               </button>
               <ul class="dropdown-menu custom-commuity-dropdown dropdown-menu-right" style="">
                 <li>
-                  <a href="/community/discussion/5cf0c7e80a79ed1439525947" class="community-profile-option-btn">
+                  <a href="#" class="community-profile-option-btn">
                     Discussions
                   </a>
                 </li>
                 <li>
-                  <a href="/community/managecommunity/5cf0c7e80a79ed1439525947" class="community-profile-option-btn">
+                  <a href="#" class="community-profile-option-btn">
                     Manage Community
                   </a>
                 </li>
                 <li>
-                  <a href="/community/communityprofile/5cf0c7e80a79ed1439525947" class="community-profile-option-btn">
+                  <a href="/userTable/profile/<%= data2._id %>" class="community-profile-option-btn">
                   Community Profile
                   </a>
                 </li>
                 <li>
-                  <a href="/community/communitymembers/5cf0c7e80a79ed1439525947" class="community-profile-option-btn">
+                  <a href="/userTable/communitymembers/<%= data2._id %>" class="community-profile-option-btn">
                   Community Members
                   </a>
                 </li>
@@ -136,7 +142,6 @@
             </div>
           </div>
         </div>
-        <!---------------------------------------------------------------------------------->
         </div>
       </div>
     </div>
@@ -147,11 +152,11 @@
   <nonlink class="manageCommunity-head-btn" style="cursor: context-menu;">
     Manage Community
   </nonlink>
-  <a href="/community/invite/5cf0c7e80a79ed1439525947" style="float:right;font-weight:600">
+  <a href="#" style="float:right;font-weight:600">
     Invite Users
   </a>
   
-  <a class="pc" href="/community/editcommunity/5cf0c7e80a79ed1439525947" style="float:right;font-weight:600;margin-right:15px">
+  <a class="pc" href="/userTable/edit/<%= data2._id %>" style="float:right;font-weight:600;margin-right:15px">
     Edit Community
   </a>
   
@@ -167,21 +172,17 @@
       </div>
     
     <div class="panel-body allSidesSoft" style="background:#fff">
-        <a class="manageCommunity-child-btn manageCommunity-btn-active" onclick="UserList()" id="UsersShowBtn">Users (0)</a>
+        <a class="manageCommunity-child-btn manageCommunity-btn-active" onclick="initaliseusers()" id="UsersShowBtn">Users (0)</a>
         <br>
-        <a class="manageCommunity-child-btn" onclick="AllAdmins()" id="AdminsShowBtn">
+        <a class="manageCommunity-child-btn" onclick="initalisemangers()" id="AdminsShowBtn">
             Managers (0)
         </a>
-        
-        
-        
           <br>
-          <a class="manageCommunity-child-btn" onclick="Requests(0)" id="requestedUserShowBtn">
+          <a class="manageCommunity-child-btn" onclick="initaliserequest()" id="requestedUserShowBtn">
             Requests (0)
           </a>
-        
         <br>
-        <a class="manageCommunity-child-btn" onclick="Requests(1)" id="invitedUserShowBtn">
+        <a class="manageCommunity-child-btn" onclick="initaliseinvited()" id="invitedUserShowBtn">
           Invited Members (0)
         </a>
     </div>
@@ -189,9 +190,7 @@
   </div>
   <div class="col-sm-9">
     <div id="comlist">
-
-
-                     <div class="col-sm-12 allcoms well well-sm" style="margin-top:5px;font-weight:bold" id="">                 <center>No any user</center>                 </div>                 </div>
+      </div>
   </div>
 </div>
 
@@ -199,23 +198,276 @@
 </div></div></div>
 
 <script type="text/javascript">
-
-
+var commid="<%= data2._id %>"
 
 $(document).ready(function() {
   initaliseProfile();
+  initaliseusers();
+  
 })
 function initaliseProfile()
 {
   var photoloc="<%= data2.photoloc %>"
-  var request="<%= data2.request %>"
   document.getElementById('mobileimg').src=photoloc
   document.getElementById('pcimg').src=photoloc
   document.getElementById('communityname').value="<%= data2.name %>"
-  console.log(request)
-  console.log(JSON.parse(request))
-  
 }
 
+function initaliserequest()
+{
+  var xml=new XMLHttpRequest();
+  xml.open("POST","/userTable/getrequest");
+  xml.setRequestHeader("Content-Type","application/json");
+  document.getElementById('comlist').innerHTML="";
+  xml.addEventListener("load",function()
+  {
+      var data=JSON.parse(xml.responseText);
+      if(data.length==0)
+        noRequest();
+      else
+      {
+        for(i in data)
+        {
+          //addToRequestDOM(data[i])
+        }
+        document.getElementById('requestedUserShowBtn').innerHTML="Requests ("+data.length+")";
+    }
+    $('#requestedUserShowBtn').addClass('manageCommunity-btn-active');
+  })
+  xml.send(JSON.stringify({"_id":commid}));
+  document.getElementById('comlist').innerHTML=""
+}
+
+function initaliseinvited()
+{
+  var xml=new XMLHttpRequest();
+  xml.open("POST","/userTable/getinveted");
+  xml.setRequestHeader("Content-Type","application/json");
+  document.getElementById('comlist').innerHTML=""
+  xml.addEventListener("load",function()
+  {
+      var data=JSON.parse(xml.responseText);
+      $('#invitedUserShowBtn').addClass('manageCommunity-btn-active');
+      if(data.length==0)
+        noinvitedMembers();
+      else
+      {
+        for(i in data)
+        {
+          //addToRequestDOM(data[i])
+        }
+        document.getElementById('invitedUserShowBtn').innerHTML="Invited ("+data.length+")";
+    }
+  })
+  xml.send(JSON.stringify({"_id":commid}));
+  document.getElementById('comlist').innerHTML=""
+}
+
+function initalisemangers()
+{
+  var xml=new XMLHttpRequest();
+  xml.open("POST","/userTable/getManagers");
+  xml.setRequestHeader("Content-Type","application/json");
+  document.getElementById('comlist').innerHTML=""
+  xml.addEventListener("load",function()
+  {
+      var data=JSON.parse(xml.responseText);
+      if(data.length==0)
+        noMangers();
+      else
+      {
+        for(i in data)
+        {
+          addtoMangersDOM(data[i])
+        }
+        document.getElementById('AdminsShowBtn').innerHTML="Managers ("+data.length+")";
+    }
+  })
+  xml.send(JSON.stringify({"_id":commid}));
+  document.getElementById('comlist').innerHTML=""
+}
+
+function initaliseusers()
+{
+  var xml=new XMLHttpRequest();
+  xml.open("POST","/userTable/getUsers");
+  xml.setRequestHeader("Content-Type","application/json");
+  document.getElementById('comlist').innerHTML=""
+
+  xml.addEventListener("load",function()
+  {
+      var data=JSON.parse(xml.responseText);
+      if(data.length==0)
+        noUser();
+      else
+      {
+        for(i in data)
+        {
+          addtoUserDOM(data[i])
+        }
+        document.getElementById('UsersShowBtn').innerHTML="Users ("+data.length+")";
+      }
+  })
+  xml.send(JSON.stringify({"_id":commid}));
+}
+
+function addtoUserDOM(obj)
+{
+  var div1=document.createElement('div')
+  div1.setAttribute("class","col-sm-12 col-xs-12 allcoms community-user-div")
+  div1.setAttribute("style","margin-top:5px;display:flex;")
+  var div2=document.createElement('div')
+  div2.setAttribute("class","col-sm-2 col-xs-3")
+  div2.setAttribute("style","padding:5px;")
+  var a1=document.createElement('a')
+  a1.setAttribute("href","/userTable/userprofile/"+obj._id)
+  var img1=document.createElement('img')
+  img1.setAttribute("src",obj.photoloc)
+  img1.setAttribute("class","community-member-pic")
+  a1.appendChild(img1)
+  div2.appendChild(a1)
+  div1.appendChild(div2)
+  var div3=document.createElement('div')
+  div3.setAttribute("class","col-sm-8 col-xs-6 scrollable")
+  var a2=document.createElement('a')
+  a2.setAttribute("class","comusername")
+  a2.innerHTML=obj.name
+  a2.setAttribute("href","/userTable/userprofile/"+obj._id)
+  div3.appendChild(a2)
+  div1.appendChild(div3)
+  var div4=document.createElement('div')
+  div4.setAttribute("class","col-sm-2 col-xs-3")
+  var a3=document.createElement('a')
+  a3.setAttribute("class","community-user-short-btn")
+  a3.setAttribute("style","float:left")
+  var i1=document.createElement('i')
+  i1.setAttribute("class","fa fa-chevron-up")
+  a3.appendChild(i1)
+  a3.setAttribute("id","promotebtn")
+  a3.setAttribute("onclick","promote()");
+  div4.appendChild(a3)
+  var a4=document.createElement('a')
+  a4.setAttribute("class","community-user-short-btn")
+  a4.setAttribute("style","float:right")
+  a4.setAttribute("id","deletebtn")
+  a4.setAttribute("onclick","deleteb()")
+  var i2=document.createElement('i')
+  i2.setAttribute("class","fa fa-times")
+  a4.appendChild(i2)
+  div4.appendChild(a4)
+  div1.appendChild(div4)
+  document.getElementById('comlist').appendChild(div1)
+}
+
+function promote()
+{
+  $(document).on("click", "#promotebtn", function() {
+  $.confirm({
+          title: 'Activate User!',
+          content: 'Are you Sure you want to Deactivate ',
+          theme: 'supervan',
+          buttons: {
+             'Yes': {
+                 btnClass: 'btn-success',
+                 action: function(){
+                  alert("function not defined to promote")
+                }},
+               'No': {btnClass: 'btn-danger',}
+            
+          }
+         })
+        });
+}
+
+function deleteb()
+{
+  $(document).on("click", "#deletebtn", function() {
+  $.confirm({
+          title: 'Activate User!',
+          content: 'Are you Sure you want to Delete ',
+          theme: 'supervan',
+          buttons: {
+             'Yes': {
+                 btnClass: 'btn-success',
+                 action: function(){
+                  alert("function not defined to delete")
+                }},
+               'No': {btnClass: 'btn-danger',}
+            }
+          
+         })
+        });
+}
+
+function noUser()
+{
+  var div1=document.createElement('div')
+  div1.setAttribute("class","col-sm-12 allcoms well well-sm")
+  div1.setAttribute("style","argin-top:5px;font-weight:bold")
+  var center1=document.createElement('center')
+  center1.innerHTML="No any user"
+  div1.appendChild(center1)
+  document.getElementById('comlist').appendChild(div1)
+}
+
+function addtoMangersDOM(obj)
+{
+  var div1=document.createElement('div')
+  div1.setAttribute("class","col-sm-12 col-xs-12 allcoms community-user-div")
+  div1.setAttribute("style","margin-top:5px;display:flex;")
+  var div2=document.createElement('div')
+  div2.setAttribute("class","col-sm-2 col-xs-3")
+  div2.setAttribute("style","padding:5px;")
+  var a1=document.createElement('a')
+  a1.setAttribute("href","/userTable/userprofile/"+obj._id)
+  var img1=document.createElement('img')
+  img1.setAttribute("src",obj.photoloc)
+  img1.setAttribute("class","community-member-pic")
+  a1.appendChild(img1)
+  div2.appendChild(a1)
+  div1.appendChild(div2)
+  var div3=document.createElement('div')
+  div3.setAttribute("class","col-sm-8 col-xs-6 scrollable")
+  var a2=document.createElement('a')
+  a2.setAttribute("class","comusername")
+  a2.innerHTML=obj.name
+  a2.setAttribute("href","/userTable/userprofile/"+obj._id)
+  div3.appendChild(a2)
+  div1.appendChild(div3)
+  if(obj._id=="<%= data2._id %>")
+  {
+  var div4=document.createElement('div')
+  div4.setAttribute("class","col-sm-2 col-xs-3")
+  var span1=document.createElement('span')
+  span1.setAttribute("class","btn btn-success")
+  span1.setAttribute("style","margin-top:25px;float:right")
+  span1.innerHTML="Owner"
+  div4.appendChild(span1)
+  div1.appendChild(div4)
+}
+  document.getElementById('comlist').appendChild(div1)
+}
+
+function noRequest()
+{
+  var div1=document.createElement('div')
+  div1.setAttribute("class","col-sm-12 allcoms well well-sm")
+  div1.setAttribute("style","argin-top:5px;font-weight:bold")
+  var center1=document.createElement('center')
+  center1.innerHTML="There are no any request"
+  div1.appendChild(center1)
+  document.getElementById('comlist').appendChild(div1)
+}
+
+function noinvitedMembers()
+{
+  var div1=document.createElement('div')
+  div1.setAttribute("class","col-sm-12 allcoms well well-sm")
+  div1.setAttribute("style","argin-top:5px;font-weight:bold")
+  var center1=document.createElement('center')
+  center1.innerHTML="There are no any invitation pending"
+  div1.appendChild(center1)
+  document.getElementById('comlist').appendChild(div1)
+}
 </script>
 

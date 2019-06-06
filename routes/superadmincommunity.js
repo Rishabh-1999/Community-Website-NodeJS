@@ -7,6 +7,8 @@ var passport=require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
 var nodemailer = require('nodemailer');
 
+var SongSchema = require('mongoose').model('UsersNames').schema
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -28,11 +30,56 @@ var communitys = new mongoose.Schema({
 	"status":String,
   "ownerid":String,
   "request":Array,
-  "managers":String,
-  "invited":String  
+  "managers":Array,
+  "invited":Array,
+   "users": [{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}]
 })
 
-var communitys =  mongoose.model('communitys', communitys);
+// var communitys =  mongoose.model('communitys', communitys);
+
+// var communityjoined = new mongoose.Schema({
+//   "commintyname":String,
+//   "communityid":String,
+//   "members":Array  
+// })
+
+// var commjoined =  mongoose.model('joinedmembers', communityjoined);
+
+// var communityrequested = new mongoose.Schema({
+//   "commintyname":String,
+//   "communityid":String,
+//   "members":Array  
+// })
+
+// var commrequested =  mongoose.model('requestedmembers', communityrequested);
+
+// app.post('/getUsers',function(req,res) {
+//   if(req.session.isLogin){
+// console.log("----------------------"+req.body._id);
+
+// // var members = {"_id": req.body._id, "name": "Rishabh","photoloc":"/images/logo.png"};
+// // communitys.findOneAndUpdate({"_id":req.body._id}, {$push: {users: members}},function(err,result)
+// //   {
+// //     console.log("update"+result);
+// //   });
+// communitys
+// .findOne({ "_id" : req.body._id })
+// .populate('users') // only works if we pushed refs to person.eventsAttended
+// .exec(function(err, person) {
+//     if (err) return handleError(err);
+//     console.log(person);
+// });
+
+
+//   communitys.find({"_id":req.body._id}, function(err, result){
+     
+//   res.send(JSON.stringify(result.users));
+// });
+
+// } else {
+//     res.redirect('/');
+//   }
+// })
 
 app.post('/getCommunityLists' , function(req, res) {
   console.log(req.body);
@@ -54,24 +101,10 @@ app.post('/getCommunityLists' , function(req, res) {
      })
      .catch(err => {
       res.send(err)
-     })
-   });
-  })
-
-app.post('/changetemprole',function(req,res) {
-  if(req.session.data.role=="SuperAdmin")
-  {
-    req.session.data.temprole="User"
-    console.log(req.session.data)
-    res.send("changed")
-  }
-  else
-  {
-    req.session.data.temprole="SuperAdmin"
-    console.log(req.session.data)
-    res.send("changed")
-  }
+    })
+  });
 })
+
 
 app.post('/communityupdate',function(req,res) {
   if(req.session.isLogin){
@@ -179,7 +212,7 @@ app.post('/uploadphotoCommunity',(req,res)=>{
 
 app.get('/getAllActive',function(req,res) {
   if(req.session.isLogin){
-    console.log("okokok")
+
     communitys.find({'status':"Active"}, function(err, result){
      console.log(result);
       res.send(result);
@@ -189,6 +222,33 @@ app.get('/getAllActive',function(req,res) {
     res.redirect('/');
   }
 })
+
+app.post('/updatecomm',function(req,res) {
+  if(req.session.isLogin){
+    communitys.findOneAndUpdate({"_id":req.body._id},{"name":req.body.name,"description":req.body.description,"rule":req.body.rule},function(err,result)
+  {
+    if(err)
+      throw err
+    else
+    {
+      communitys.findOne({"_id":req.body._id},function(err,result)
+    {
+      if(err)
+        throw err;
+      else
+      {
+        res.send("true")
+      }
+    })
+    }
+  });
+
+
+} else {
+    res.redirect('/');
+  }
+})
+
 
 app.get('/:pro' , (req,res)=>{
   if(req.session.isLogin){
@@ -201,9 +261,28 @@ app.get('/:pro' , (req,res)=>{
       else
       {
         console.log(result)
-
         console.log(result.communityloc)
         res.render('manageCommunity',{data:req.session.data,data2:result})
+      }
+    })
+  } else {
+    res.redirect('/');
+  }  
+})
+
+app.get('/edit/:pro' , (req,res)=>{
+  if(req.session.isLogin){
+    var id=req.params.pro.toString()
+
+    communitys.findOne({"_id":id},function(err,result)
+    {
+      if(err)
+        throw err;
+      else
+      {
+        console.log(result)
+        console.log(result.communityloc)
+        res.render('editcommunity',{data:req.session.data,data2:result})
       }
     })
   } else {

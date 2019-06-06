@@ -21,22 +21,23 @@ var tagmodel =  mongoose.model('taglists', tag);
 
 app.post('/getTagTable',function(req,res) {
   tagmodel.countDocuments(function(e,count){
-    var start=parseInt(req.body.start);
-    var len=parseInt(req.body.length);
-    tagmodel.find({
-    }).skip(start).limit(len)
-      .then(data=> {
-        if (req.body.search.value!="")
-                    {
-                        data = data.filter((value) => {
-                            return value.tagname.includes(req.body.search.value)
-                        })
-                    }
-    res.send({"recordsTotal": count, "recordsFiltered" : count, data})
-    })
-       .catch(err => {
-        res.send(err)
-      })
+  var start=parseInt(req.body.start);
+  var len=parseInt(req.body.length);
+
+  tagmodel.find({}).skip(start).limit(len)
+  .then(data=> {
+  if (req.body.customsearch!="") {
+    data = data.filter((value) => {
+            flag = value.tagname.includes(req.body.customsearch) || value.createddate.includes(req.body.customsearch)
+             || value.createdby.includes(req.body.customsearch) ;
+            return flag;
+          })
+  }
+  res.send({"recordsTotal": count, "recordsFiltered" : count, data})
+  })
+  .catch(err => {
+  res.send(err)
+  })
   });
   console.log('Tag Table Successfully fetched /getTagTable');
 })

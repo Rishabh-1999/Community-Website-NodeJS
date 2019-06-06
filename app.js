@@ -5,6 +5,7 @@ var session= require('express-session')
 var nodemailer = require('nodemailer');
 const passport = require('passport');
 
+
 app.use(session({
   secret: "abcUCAChitkara"
 }));
@@ -16,7 +17,7 @@ app.set('views',path.join(__dirname, 'views'));
 
 app.use('/tagTable' , require('./routes/tagtable'))
 app.use('/userTable' , require('./routes/usertable'))
-app.use('/superadmincommunityTable' , require('./routes/superadmincommunity'))
+// app.use('/superadmincommunityTable' , require('./routes/superadmincommunity'))
 // app.use('/mailsender' , require('./routes/mailsender'))
 
 //Bodyparser
@@ -92,6 +93,14 @@ app.get('/communityPage' , (req,res)=>{
   } 
 })
 
+// app.get('/communityprofile' , (req,res)=>{
+//   if(req.session.isLogin){
+//     res.render('communityprofile',{data: req.session.data});
+//   } else {
+//     res.redirect('/');
+//   } 
+// })
+
 app.get('/superadmincommunityPage' , (req,res)=>{
   if(req.session.isLogin){
     res.render('superadmincommunitylists',{data: req.session.data});
@@ -128,6 +137,14 @@ app.get('/homewithedit' , (req,res)=>{
 app.get('/editprofile' , (req,res)=>{
   if(req.session.isLogin){
     res.render('editprofile',{data: req.session.data});
+  } else {
+    res.redirect('/');
+  }  
+})
+
+app.get('/editcommunity' , (req,res)=>{
+  if(req.session.isLogin){
+    res.render('editcommunity',{data: req.session.data});
   } else {
     res.redirect('/');
   }  
