@@ -160,8 +160,8 @@ app.get('/changePassPage' , (req,res)=>{
 let transporter = nodemailer.createTransport({
   service:'gmail',
     auth: {
-        user: 'rishabhanand33@gmail.com',
-        pass: 'THMA15/11/99'
+        user: 'email',
+        pass: 'password'
     },
     tls: {
           rejectUnauthorized: false
