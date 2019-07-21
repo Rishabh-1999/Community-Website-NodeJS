@@ -63,10 +63,15 @@ app.get('/auth/github',passport.authenticate('github'));
 
 app.get('/auth/github/callback',passport.authenticate('github', { failureRedirect: 'index.html' }), function (req, res) {
 console.log(req.session.passport.user._json.id);
-UsersNames.find({"githubid" :req.session.passport.user._json.id},function(err, result) {
+UsersNames.findOne({"githubid" :req.session.passport.user._json.id},function(err, result) {
 console.log("githubsignin succesful");
 if(result!=null)
 {
+  console.log("result not null");
+  console.log(result);
+  console.log(result.email);
+  console.log(result.name);
+
         req.session.isLogin=1;
         req.session._id=result._id;
         req.session.name=result.name;
@@ -91,6 +96,7 @@ if(result!=null)
         ob.temprole=result.role;
         req.session.name=result.name;
         req.session.data=ob;
+        console.log(req.session.data)
         res.redirect('/home');
 }
 else
