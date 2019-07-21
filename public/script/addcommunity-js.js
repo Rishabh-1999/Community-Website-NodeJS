@@ -23,47 +23,52 @@ function formatAMPM(date) {
   return strTime;
 }
 
-document.getElementById('create').addEventListener("click",function()
-{
-  document.getElementById("add").submit();
-})
+// document.getElementById('create').addEventListener("click",function()
+// {
+//   document.getElementById("add").submit();
+// })
 
 function createCommunity()
 {
-  // var obj=new Object()
-  // obj.name=$('#communityname').val();
-  // obj.description=strip_html_tags($('#body').val());
-  // if(document.getElementById('directrule').checked=="true")
-  //   obj.rule="Direct";
-  // else
-  //   obj.rule="Permission";
-  // var dat= new Date();
-  // var datestr="";
-  // datestr=dat.getDate();
-  // datestr=datestr+"-"+dat.getMonth();
-  // datestr=datestr+"-"+dat.getFullYear();
-  // datestr=datestr+" ("+formatAMPM(dat)+")";
-  // obj.createdate=datestr;
+  if(document.getElementById('communityname').value=="") {
+    alert("Enter Community Name First");
+    return ;
+  }
+  var obj=new Object()
+  obj.name=$('#communityname').val();
+  obj.description=strip_html_tags($('#body').val());
+  if(document.getElementById('direct').checked=="true")
+    obj.rule="Direct";
+  else
+    obj.rule="Permission";
+  var dat= new Date();
+  var datestr="";
+  datestr=dat.getDate();
+  datestr=datestr+"-"+dat.getMonth();
+  datestr=datestr+"-"+dat.getFullYear();
+  datestr=datestr+" ("+formatAMPM(dat)+")";
+  obj.createdate=datestr;
   
-  // console.log(obj)
-  // var xml=new XMLHttpRequest();
+  console.log(obj)
+  var xml=new XMLHttpRequest();
 
-  // xml.open("POST","/userTable/addCommunity");
-  // xml.setRequestHeader("Content-Type","application/json");
-  // // document.getElementById("communityform").submit();
-  // xml.addEventListener("load",function()
-  // {
-  //   var res=xml.responseText;
-  //   if(res=="true")
-  //   {
+  xml.open("POST","/userTable/addCommunity");
+  xml.setRequestHeader("Content-Type","application/json");
+  // document.getElementById("communityform").submit();
+  xml.addEventListener("load",function()
+  {
+    var res=xml.responseText;
+    console.log(res);
+    if(res=="true")
+    {
       
-  //     alert("Community Created");
-  //     window.location="/communityPage"
-  //   }
-  //   else
-  //   {
-  //     alert("Community creation failed");
-  //   }
-  // })
-  // xml.send(JSON.stringify(obj));
+      alert("Community Created");
+      window.location="/communityPage"
+    }
+    else
+    {
+      alert("true");
+    }
+  })
+  xml.send(JSON.stringify(obj));
 }

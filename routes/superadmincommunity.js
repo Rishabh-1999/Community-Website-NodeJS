@@ -6,8 +6,9 @@ const multer = require('multer');
 var passport=require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
 var nodemailer = require('nodemailer');
+var mongojs = require('mongojs')
 
-var SongSchema = require('mongoose').model('UsersNames').schema
+var a = require('./usertable')
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -32,16 +33,16 @@ var communitys = new mongoose.Schema({
   "request":Array,
   "managers":Array,
   "invited":Array,
-   "users": [{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}]
+   "users": [{'type': mongoose.Schema.Types.ObjectId , 'ref':a.UsersNames}]
 })
 
-// var communitys =  mongoose.model('communitys', communitys);
+var communitys =  mongoose.model('communitys', communitys);
 
-// var communityjoined = new mongoose.Schema({
-//   "commintyname":String,
-//   "communityid":String,
-//   "members":Array  
-// })
+var communityjoined = new mongoose.Schema({
+  "commintyname":String,
+  "communityid":String,
+  "members":Array  
+})
 
 // var commjoined =  mongoose.model('joinedmembers', communityjoined);
 
@@ -198,7 +199,10 @@ app.post('/uploadphotoCommunity',(req,res)=>{
         else{
           console.log(req.file);
           console.log(photoname);
-          communitys.updateOne({"_id":req.session._id},{$set:{"photoloc":'uploads/'+photoname}},function(error,result){
+          if(photoname==null || photoname="")
+          {}
+        else
+          communitys.updateOne({"_id":req.session._id},{$set:{"photoloc":'uploads/'+req.photoname}},function(error,result){
         
            })
 

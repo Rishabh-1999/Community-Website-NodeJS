@@ -179,8 +179,10 @@ function deactivateUser(v)
                   xhr.send(JSON.stringify(ob));
                   xhr.onload=function()
                   {
-                    if(xhr.responseText=='true')
+                    if(xhr.responseText=='true') {
                     alert("Updated Successfully");
+                     table.ajax.reload(null, false);
+                   }
                   }
                   table.ajax.reload(null,false)
                   }

@@ -1,6 +1,19 @@
 var go;
 document.getElementById('btnaddUser').addEventListener('click',function() {
-	if(go=="true")
+
+	if(document.getElementById('adduser-name').value=="" ||
+		document.getElementById('adduser-email').value=="" ||
+		document.getElementById('adduser-password').value=="" ||
+		document.getElementById('adduser-phoneno').value=="" ||
+		document.getElementById('adduser-city').value=="")
+			alert('Fill the Required Field');
+	else if(go!="true")
+		alert('Email Already Exsists');
+	else if( document.getElementById('adduser-name').value!="" &&
+		document.getElementById('adduser-email').value!="" &&
+		document.getElementById('adduser-password').value!="" &&
+		document.getElementById('adduser-phoneno').value!="" &&
+		document.getElementById('adduser-city').value!="")
 	{
 	var obj=new Object();
 	obj.name=document.getElementById('adduser-name').value;
@@ -34,8 +47,6 @@ document.getElementById('btnaddUser').addEventListener('click',function() {
 	  	console.log(ob);
 	  	
 	}
-	else
-		alert('Email Already Exsists');
 })
 function checkDuplicate() {
 		var email=document.getElementById('adduser-email');

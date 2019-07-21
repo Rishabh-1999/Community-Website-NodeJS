@@ -70,6 +70,6 @@ app.post('/deletetag',function(req,res){
   console.log('Tag deleted /deletetag');
 })
 
-mongoose.connect(mongoDB);
+// mongoose.connect(mongoDB);
 
 module.exports = app;

@@ -45,7 +45,7 @@
                     <h3 class="page-header" style="color:#707070">Create Community</h3>
                     <form action="/userTable/addCommunity" method="POST" enctype="multipart/form-data" id="add">
                     <div class="form-group">
-                      <input class="form-control" type="text" required="" name="name" placeholder="Name" maxlength="70" id="communityname">
+                      <input class="form-control" type="text" required="" name="commname" placeholder="Name" maxlength="70" id="communityname">
                     </div>
                     <div class="form-group">
                       <div class="col-sm-12"><!--Body-->
@@ -54,9 +54,10 @@
                     </div>
                     <div class="form-group ">
                       <label style="color:#707070">Rule :</label>
-                      <input class="radio radio-inline" type="radio" checked="" value="D" name="direct" id="direct"> Direct
+                      <input class="radio radio-inline" type="radio" checked value="D" name="direct" id="direct"> Direct
                       <input class="radio radio-inline" type="radio" value="P" name="communityMembershipRule" id="permission"> Permission
                     </div>
+                    </form>
                     <div class="form-group" style="display:none;">
                       <input class="form-control" id="file" name="file" type="file">
                     </div>
@@ -80,9 +81,8 @@
 
                     <div class="form-group" id="dynamic"></div>
                     <div class="form-group">
-                      <input class="form-control btn btn-primary" onclick="createCommunity()" type="submit" value="Create Community" id="create">
+                      <input class="form-control btn btn-primary" onclick="createCommunity()"   type="submit" value="Create Community" id="create">
                     </div>
-                    </form>
                   </div>
                 </div>
               </div>

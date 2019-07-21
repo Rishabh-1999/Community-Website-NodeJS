@@ -140,6 +140,16 @@ document.getElementById('gender').value="<%= data.gender %>"
 
   document.getElementById('update').addEventListener("click",function(event)
   {
+    if(document.getElementById('gender').value=="")
+    {
+      alert("Enter Gender");
+      return;
+    }
+    if(document.getElementById('DOB').value=="")
+    {
+      alert("Enter DOB");
+      return;
+    }
     var obj=new Object();
     obj.name=document.getElementById('name').value;
     obj.DOB=document.getElementById('DOB').value;

@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-var bodyParser = require('body-parser')
+var bodyParser = require ('body-parser')
 const app = express.Router();
 const multer = require('multer');
 var passport=require('passport');
@@ -174,7 +174,7 @@ app.post('/checkLogin',function(req,res) {
         console.log(req.session)
         if(result.isActive=="false")
         {
-          redirect('/home')
+          res.send("not");
         }
         else
         res.send("Logined");
@@ -296,7 +296,7 @@ app.post('/changetemprole',function(req,res) {
 
 //Update Profile of Users
 app.post('/updateprofile',function(req,res){
-  UsersNames.updateOne({"_id":req.session._id},{$set:{"name":req.body.name,"DOB":req.body.DOB,"city":req.body.city,"gender":req.body.gender,"phoneno":req.body.phoneno,"interests":req.body.interests,
+  UsersNames.updateOne({"_id":req.session._id},{$set:{"isActive":"true","name":req.body.name,"DOB":req.body.DOB,"city":req.body.city,"gender":req.body.gender,"phoneno":req.body.phoneno,"interests":req.body.interests,
   "aboutyou":req.body.aboutyou,"expectations":req.body.expectations}},function(error,result){
   if(error)
     throw error;
@@ -736,6 +736,7 @@ function formatAMPM(date) {
 //Add Community
 app.post('/addCommunity',function (req, res) {
 var rule;
+console.log(req.body);
   if(req.body.direct=="true")
     rule="Direct"
   else
@@ -755,7 +756,7 @@ var rule;
   "communityloc":"Not Known",
   "createdate":datestr,
   "description":req.body.description,
-  "owner":req.body.name,
+  "owner":req.session.name,
   "status":"false",
   "ownerid":req.session._id,
   "managers":null,
@@ -770,12 +771,14 @@ var rule;
         if(err)
           throw err;
         else{
-           communitys.updateOne({"_id":data._id},{"photoloc":'/uploads/'+photoname},function(error,result){
-           })
-          communitys.updateOne({"_id":data._id},{$push:{"users":req.session._id}},function(error,result){
-           })
-          console.log("Community Created "+data)
-          res.render('communitylists',{data: req.session.data});
+          // if(photoname!=null && photoname!=undefined && photoname!="")
+          //  communitys.updateOne({"_id":data._id},{"photoloc":'/uploads/'+photoname},function(error,result){
+          //  })
+          // communitys.updateOne({"_id":data._id},{$push:{"users":req.session._id}},function(error,result){
+          //  })
+          // console.log("Community Created "+data)
+          //res.render('communitylists',{data: req.session.data});
+          res.send(true)
         }
       })
      })
@@ -785,6 +788,7 @@ var rule;
      })
    }else {
     res.redirect('/');
+    res.send(true)
 }
 })
 var tempcomm;
@@ -933,5 +937,5 @@ app.get('/profile/:pro' , (req,res)=>{
 })
 
 
-mongoose.connect(mongoDB);
+// mongoose.connect(mongoDB);
 module.exports=app
