@@ -35,8 +35,8 @@ function initaliseTable()
                 "targets": -1,
 
                 "render": function (data, type, row, meta) {
-                    var r = row.role;
-                   data = '<button class=btn btn-sm" style="margin-top:0; background-color:#2D312C; color:#fff;" id="delete" onclick="deletetag()"><span class="fa fa-trash"></span></button>';
+                    console.log(row);
+                   data = '<button class=btn btn-sm" style="margin-top:0; margin-right:5px; background-color:#2D312C; color:#fff;" id="delete" onclick="deletetag()"><span class="fa fa-trash"></span></button><button class=btn btn-sm" style="margin-top:0; background-color:#2D312C; color:#fff;" id="tagbtn" data-toggle="modal" data-target="#editModal" onclick=editTagModel("'+row.tagname+'")><span class="fa fa-edit"></span></button>';
                    return data;
                 }
             }],
@@ -79,4 +79,11 @@ function deletetag()
                 },
             })
     })
+}
+document.getElementById('btntagupdate').addEventListener("click",function(){
+
+})
+
+function editTagModel(tagname){
+  document.getElementById('tag').value=tagname;
 }

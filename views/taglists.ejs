@@ -48,6 +48,42 @@
     }    
 }
 </style>
+
+        <center>
+        <div id="editModal" class="modal fade" role="dialog" style="z-index:9999;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3 id="eheading" class="modal-title"></h3>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+
+              <div class="modal-body">
+                <div class="form-horizontal">
+                  <div class="form-group">
+                    <div class="col-lg-5 col-lg-offset-3" style="width:50%;">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2">Tag:</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="tag" placeholder="tag" readonly>
+                    </div>
+                  <div class="form-group">
+                    <div class="col-sm-10 col-sm-offset-2 pull-left">
+                        <button class = "btn btn-default" id="btntagupdate" data-dimiss="modal">Update</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </center>
+
 <center>
 <div class="container-fluid div-min-width" id="containerid" style="padding:0;">
     <div class="row">

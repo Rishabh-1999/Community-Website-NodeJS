@@ -8,6 +8,7 @@ function formatAMPM(date) {
   var strTime = hours + ':' + minutes + ' ' + ampm;
   return strTime;
 }
+var go;
 function addTag()
 {
             var v=document.getElementById('tagname').value;
@@ -17,6 +18,8 @@ function addTag()
             }
             else
             {
+              if(go==false)
+                return;
                 var dat= new Date();
                 var datestr="";
                 datestr=dat.getDate();
@@ -33,4 +36,26 @@ function addTag()
 function taglists()
 {
   window.location="/taglists";
+}
+function checkDuplicate() {
+    var xml=new XMLHttpRequest();
+    xml.open("POST","/tagTable/checkDuplicate");
+    xml.setRequestHeader("Content-Type", "application/json");
+    var ob=new Object();
+    ob.tagname=document.getElementById('tagname').value;
+    xml.send(JSON.stringify(ob));
+    xml.addEventListener('load', function()
+    {
+      var d=xml.responseText;
+      if(d=="true")
+      {
+        alert('Tag Already Exists');
+        go="false";
+      }
+      else
+      {
+        go="true";
+        addTag();
+      }
+    })
 }

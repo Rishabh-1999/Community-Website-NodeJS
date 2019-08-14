@@ -160,13 +160,25 @@ app.get('/changePassPage' , (req,res)=>{
 let transporter = nodemailer.createTransport({
   service:'gmail',
     auth: {
-        user: 'email',
-        pass: 'password'
+        user: 'rishabhanand33@gmail.com',
+        pass: 'THMA15/Nov/99'
     },
     tls: {
           rejectUnauthorized: false
       }
 });
+
+app.post('/sendMail',function(req,res){
+  console.log(req.body);
+  transporter.sendMail(req.body, (error, info) => {
+    if (error)
+        res.send("false");
+    else {
+        console.log('success');
+        res.send("true");
+    }
+});
+})
 
 app.post('/sendMail',function(req,res){
   console.log(req.body);

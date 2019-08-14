@@ -46,7 +46,9 @@
                     <form action="/userTable/addCommunity" method="POST" enctype="multipart/form-data" id="add">
                     <div class="form-group">
                       <input class="form-control" type="text" required="" name="commname" placeholder="Name" maxlength="70" id="communityname">
+
                     </div>
+                    </form>
                     <div class="form-group">
                       <div class="col-sm-12"><!--Body-->
                         <textarea type="text" class="form-control trumbowyg-textarea" cols="30" rows="20" name="description" id="body" style="padding: 0;text-align: left;"></textarea>
@@ -57,13 +59,14 @@
                       <input class="radio radio-inline" type="radio" checked value="D" name="direct" id="direct"> Direct
                       <input class="radio radio-inline" type="radio" value="P" name="communityMembershipRule" id="permission"> Permission
                     </div>
-                    </form>
-                    <div class="form-group" style="display:none;">
-                      <input class="form-control" id="file" name="file" type="file">
-                    </div>
+                    
+                  
                     <div class="form-group">
                     <div class="col-xs-4 col-sm-3">
-                      <span class="btn btn-warning" onclick="$('#file').click()">Upload Image</span>
+                      <form action="/userTable/uploadphotoCommunity" method="POST" enctype="multipart/form-data" id="add">
+                      <input type="file" name="myfile" accept="image/*">
+                      <input type="submit" name="photo">
+                      </form>
                     </div>
                     <div class="col-xs-8 col-sm-9" style="overflow: scroll;white-space: nowrap;">
                       <p id="filename" style="font-size:18px;font-weight:bold;color:#707070"></p>

@@ -15,7 +15,8 @@ var mongoDB = 'mongodb://localhost/myDB';
 var tag = new mongoose.Schema({
     tagname:String,
     createdby:String,
-    createddate:String
+    createddate:String,
+    deleted:String
   })
 var tagmodel =  mongoose.model('taglists', tag);
 
@@ -24,7 +25,7 @@ app.post('/getTagTable',function(req,res) {
   var start=parseInt(req.body.start);
   var len=parseInt(req.body.length);
 
-  tagmodel.find({}).skip(start).limit(len)
+  tagmodel.find({deleted:'0'}).skip(start).limit(len)
   .then(data=> {
   if (req.body.customsearch!="") {
     data = data.filter((value) => {
@@ -46,7 +47,8 @@ app.post('/addTag',function(req,res){
   let newTag = new tagmodel({
     tagname: req.body.value,
     createdby: req.session.name,
-    createddate: req.body.datestr
+    createddate: req.body.datestr,
+    deleted: '0'
   })
   newTag.save()
   .then(data => {
@@ -60,7 +62,8 @@ app.post('/addTag',function(req,res){
 })
 
 app.post('/deletetag',function(req,res){
-  tagmodel.findOneAndDelete({tagname: req.body.tagname,createdby:req.body.createdby,createddate:req.body.createddate})
+  tagmodel.updateOne({tagname: req.body.tagname,createdby:req.body.createdby,createddate:req.body.createddate},
+    {$set:{"deleted":"1"}})
   .then(data => {
     res.send(data)
   })
@@ -68,6 +71,27 @@ app.post('/deletetag',function(req,res){
         res.send(error)
   })
   console.log('Tag deleted /deletetag');
+})
+
+app.post('/checkDuplicate' , (req,res)=>{
+  var data=tagmodel.find({deleted:'0'}).exec(function(error,result)    {
+  if(error)
+    throw error;
+  else
+  {
+    var da=[];
+    var rew="false";
+    da=result;
+    for(i in result)
+    {
+      if(req.body.tagname==da[i].tagname)
+      {
+        rew="true";
+      }
+    }
+      res.send(rew);
+  }
+})
 })
 
 // mongoose.connect(mongoDB);

@@ -37,9 +37,14 @@ function createCommunity()
   var obj=new Object()
   obj.name=$('#communityname').val();
   obj.description=strip_html_tags($('#body').val());
-  if(document.getElementById('direct').checked=="true")
+  if(document.getElementById('direct').checked==true && document.getElementById('permission').checked==true)
+  {
+    alert("Select One Type of Rule");
+    return;
+  }
+  if(document.getElementById('direct').checked==true)
     obj.rule="Direct";
-  else
+  else if(document.getElementById('permission').checked==true)
     obj.rule="Permission";
   var dat= new Date();
   var datestr="";

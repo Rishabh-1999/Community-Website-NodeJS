@@ -1,7 +1,7 @@
 var go;
 document.getElementById('btnaddUser').addEventListener('click',function() {
 
-	if(document.getElementById('adduser-name').value=="" ||
+	if(document.getElementById('adduser-name').value=="" || 
 		document.getElementById('adduser-email').value=="" ||
 		document.getElementById('adduser-password').value=="" ||
 		document.getElementById('adduser-phoneno').value=="" ||
@@ -9,17 +9,21 @@ document.getElementById('btnaddUser').addEventListener('click',function() {
 			alert('Fill the Required Field');
 	else if(go!="true")
 		alert('Email Already Exsists');
-	else if( document.getElementById('adduser-name').value!="" &&
-		document.getElementById('adduser-email').value!="" &&
-		document.getElementById('adduser-password').value!="" &&
-		document.getElementById('adduser-phoneno').value!="" &&
-		document.getElementById('adduser-city').value!="")
+	else if(checkEmail())
+		alert('Enter Valid Email');
+	else
 	{
 	var obj=new Object();
 	obj.name=document.getElementById('adduser-name').value;
 	obj.email=document.getElementById('adduser-email').value;
 	obj.password=document.getElementById('adduser-password').value;
 	obj.phoneno=document.getElementById('adduser-phoneno').value;
+
+	if(obj.phoneno.length<10) {
+		alert('Phoneno less than 10');
+		return;
+	}
+
 	obj.city=document.getElementById('adduser-city').value;
 
 	var i = document.getElementById("addUser-select").selectedIndex;
@@ -50,6 +54,10 @@ document.getElementById('btnaddUser').addEventListener('click',function() {
 })
 function checkDuplicate() {
 		var email=document.getElementById('adduser-email');
+		if(email.value==""){
+			document.getElementById('avilability').innerHTML="Nothing";
+			return;
+		}
 		var xml=new XMLHttpRequest();
 		xml.open("POST","/userTable/checkDuplicate");
 		xml.setRequestHeader("Content-Type", "application/json");
@@ -71,4 +79,15 @@ function checkDuplicate() {
 				go="true";
 			}
 		})
+}
+function checkEmail(){
+	var email=document.getElementById('adduser-email').value;
+	if(validateEmail(email))
+		return false;
+	else
+		return true;
+}
+function validateEmail(email) {
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
 }

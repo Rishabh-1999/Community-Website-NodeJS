@@ -36,7 +36,8 @@ var user = new mongoose.Schema({
     aboutyou:String,
     expectations:String,
     photoloc:String,
-    githubid:String
+    githubid:String,
+    deleted: String
   })
 
 var UsersNames =  mongoose.model('usernames', user);
@@ -149,7 +150,7 @@ app.post('/activatesuperadmin',function(req,res){
 
 app.post('/checkLogin',function(req,res) {
     console.log('login data recieved');
-    UsersNames.findOne({"email": req.body.email,"password":req.body.password}, function(err, result) {
+    UsersNames.findOne({"email": req.body.email,"password":req.body.password,deleted:"0",restrict:"false"}, function(err, result) {
     console.log(result);
       if(result!=null) {
         req.session.isLogin=1;
@@ -216,7 +217,8 @@ app.post('/addUserToDataBase',function (req, res) {
       interests:"",
       aboutyou:"",
       expectations:"",
-      photoloc:"/images/logo.png"
+      photoloc:"/images/logo.png",
+      deleted:"0"
     })
     newProduct.save()
      .then(data => {
@@ -307,6 +309,7 @@ app.post('/updateprofile',function(req,res){
   if(error)
     throw error;
   else
+  req.session.data.isActive="true";
   console.log("Updated from /updateprofile");
   res.send("true");
   })
@@ -476,6 +479,7 @@ app.post('/uploadphoto',(req,res)=>{
           UsersNames.updateOne({"_id":req.session._id},{$set:{"photoloc":'/uploads/'+photoname}},function(error,result){
               console.log("photo updated to database"+result)
               req.session.data.photoloc = 'uploads/'+photoname;
+              res.redirect('/homewithedit');
            })
         }
       })
@@ -743,22 +747,24 @@ function formatAMPM(date) {
 app.post('/addCommunity',function (req, res) {
 var rule;
 console.log(req.body);
-  if(req.body.direct=="true")
-    rule="Direct"
+  var photoname;
+  if(tempcomm==null)
+    photoname="/images/defaultCommunity.jpg";
   else
-    rule="Permission"
+    photoname="/uploads/"+tempcomm;
   var dat= new Date();
   var datestr="";
   datestr=dat.getDate();
   datestr=datestr+"-"+dat.getMonth();
   datestr=datestr+"-"+dat.getFullYear();
   datestr=datestr+" ("+formatAMPM(dat)+")";
+  //"photoloc":"/images/defaultCommunity.jpg",
   if(req.session.isLogin){
     let newProduct = new communitys({
-  "photoloc":"/images/defaultCommunity.jpg",
+  "photoloc":photoname,
   "name":req.body.name,
   "members":null,
-  "rule":rule,
+  "rule":req.body.rule,
   "communityloc":"Not Known",
   "createdate":datestr,
   "description":req.body.description,
@@ -767,12 +773,10 @@ console.log(req.body);
   "ownerid":req.session._id,
   "managers":null,
   "invited":null,
-  "users":null  
     })
     newProduct.save()
      .then(data => {
        console.log(data)
-      tempcomm=data;
        upload(req,res,(err)=>{
         if(err)
           throw err;
@@ -799,37 +803,28 @@ console.log(req.body);
 })
 var tempcomm;
 
-// var storage = multer.diskStorage({
-//       destination : './public/uploads/',
-//       filename : function(req, file, callback)
-//       {
-//         photoname='community'+tempcomm._id +path.extname(file.originalname);
-//         callback(null,photoname);
-//       }
-//     })
+var storagecomm = multer.diskStorage({
+      destination : './public/uploads/',
+      filename : function(req, file, callback)
+      {
+        tempcomm='community'+Date.now()+path.extname(file.originalname);
+        callback(null,tempcomm);
+      }
+    })
 
-//      var upload = multer({
-//       storage : storage,
-//     }).single('file');
+     var uploadcomm = multer({
+      storage : storagecomm,
+    }).single('myfile');
 
-// app.post('/uploadphotoCommunity',(req,res)=>{
-  // upload(req,res,(err)=>{
-  //       if(err)
-  //       {
-  //         throw err;
-  //       }
-  //       else{
-  //         console.log(req.file);
-  //         console.log(photoname);
-  //         communitys.updateOne({"_id":req.session._id},{$set:{"photoloc":'/uploads/'+photoname}},function(error,result){
-  //          })           
-  //       }
-  //     })
-//     communitys.updateOne({"_id":req.session._id},{$push:{"users":req.session}},function(error,result){
-//            })
+app.post('/uploadphotoCommunity',(req,res)=>{
+  uploadcomm(req,res,(err)=>{
+        if(err)
+        {
+          throw err;
+        }
 
-//     res.render('communitylists',{data: req.session.data});
-// })
+})
+})
 
 app.get('/getAllActive',function(req,res) {
   if(req.session.isLogin){
@@ -941,7 +936,6 @@ app.get('/profile/:pro' , (req,res)=>{
     res.redirect('/');
   }  
 })
-
 
 // mongoose.connect(mongoDB);
 module.exports=app

@@ -61,7 +61,7 @@
                           </div>
                           <div class="form-group col-sm-5" style="display: inline-block;">
                             <label>DOB :</label>
-                              <input class="form-control dobDate" name="dob" placeholder="MM/DD/YYYY" id="DOB" type="text" autocomplete="off" required="" value="<%= data.DOB %>">
+                              <input class="form-control dobDate" name="dob" placeholder="MM/DD/YYYY" id="DOB" type="date" autocomplete="off" required="" value="<%= data.DOB %>">
                           </div>
                           <div class="form-group col-sm-5" style="display: inline-block;">
                             <label>Gender :</label>
@@ -112,9 +112,15 @@
                             </div>
                           </div>
                           <br>
+
+                  
                           <div class="form-group">
-                            <a href="" class="btn btn-warning pull-left btnEditForm">Change Password</a>
-                            <a href="" class="btn btn-danger pull-right btnEditForm" >Cancel</a>
+                              <% if(data.isActive == "true"){ %>
+                            
+                            
+                          <a href="" class="btn btn-warning pull-left btnEditForm">Change Password</a>
+                          <% } %>  
+                          <a href="/editprofile" class="btn btn-danger pull-right btnEditForm" >Cancel</a>
                             <input type="submit" class="btn btn-primary pull-right btnEditForm" id="update" value="Update">
                           </div>
                         </div>
@@ -140,6 +146,13 @@ document.getElementById('gender').value="<%= data.gender %>"
 
   document.getElementById('update').addEventListener("click",function(event)
   {
+    if(document.getElementById('name').value=="" ||
+      document.getElementById('phoneno').value=="" ||
+      document.getElementById('city').value==""
+      ) {
+      alert("Enter required field");
+    return;
+  }
     if(document.getElementById('gender').value=="")
     {
       alert("Enter Gender");
