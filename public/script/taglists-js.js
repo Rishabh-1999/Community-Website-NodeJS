@@ -1,6 +1,7 @@
 $(document).ready(function() {
   initaliseTable();
 });
+var oldtag;
 var table;
 function initaliseTable()
 {
@@ -36,7 +37,7 @@ function initaliseTable()
 
                 "render": function (data, type, row, meta) {
                     console.log(row);
-                   data = '<button class=btn btn-sm" style="margin-top:0; margin-right:5px; background-color:#2D312C; color:#fff;" id="delete" onclick="deletetag()"><span class="fa fa-trash"></span></button><button class=btn btn-sm" style="margin-top:0; background-color:#2D312C; color:#fff;" id="tagbtn" data-toggle="modal" data-target="#editModal" onclick=editTagModel("'+row.tagname+'")><span class="fa fa-edit"></span></button>';
+                   data = '<button class=btn btn-sm" style="margin-top:0; margin-right:5px; background-color:#2D312C; color:#fff;" id="delete" onclick="deletetag()"><span class="fa fa-trash"></span></button><button class=btn btn-sm" style="margin-top:0; background-color:#2D312C; color:#fff;" id="editbtn" data-toggle="modal" data-target="#editModal" onclick=editTagModel()><span class="fa fa-edit"></span></button>';
                    return data;
                 }
             }],
@@ -81,9 +82,26 @@ function deletetag()
     })
 }
 document.getElementById('btntagupdate').addEventListener("click",function(){
-
+  var request = new XMLHttpRequest();
+  var obj=new Object();
+  obj.oldtagname=oldtag;
+  obj.newtagname=document.getElementById('tag').value;
+                        request.open('POST','/tagTable/edittag');
+                        request.setRequestHeader("Content-Type","application/json");
+                        request.onload=function()
+                  {
+                    table.ajax.reload(null, false);
+                  }
+                        request.send(JSON.stringify(obj));
+                        table.ajax.reload(null,false)
 })
 
-function editTagModel(tagname){
-  document.getElementById('tag').value=tagname;
+function editTagModel(){
+  $(document).on("click", "#editbtn", function() {
+    d = $(this).parent().parent()[0].children;
+    console.log(d[0]);
+    var u=d[0];
+      oldtag=d[0].innerHTML;
+    document.getElementById('tag').value=d[0].innerHTML;
+    })
 }

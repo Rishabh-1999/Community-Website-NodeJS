@@ -5,7 +5,6 @@ var session= require('express-session')
 var nodemailer = require('nodemailer');
 const passport = require('passport');
 
-
 app.use(session({
   secret: "abcUCAChitkara"
 }));
@@ -17,7 +16,6 @@ app.set('views',path.join(__dirname, 'views'));
 
 app.use('/tagTable' , require('./routes/tagtable'))
 app.use('/userTable' , require('./routes/usertable'))
-//app.use('/superadmincommunityTable' , require('./routes/superadmincommunity'))
 
 //Bodyparser
 app.use(express.urlencoded({extended: true})); 
@@ -30,131 +28,79 @@ var mongoDB = 'mongodb://localhost/myDB';
 mongoose.connection.on('error', (err) => {
     console.log('DB connection Error');
 });
+
 mongoose.connection.on('connected', (err) => {
     console.log('DB connected');
 });
 
 mongoose.connect(mongoDB);
 
-app.get('/home' , (req,res)=>{
-  if(req.session.isLogin){
+var checkSession = function (req, res, next) {
+    if(req.session.isLogin)
+      next();
+    else
+      res.redirect('/');
+}
+
+app.get('/home' ,checkSession, (req,res)=>{
     res.render('home',{data: req.session.data});
-  } else {
-    res.redirect('/');
-  }  
 })
 
-app.get('/loading' , (req,res)=>{
-  if(req.session.isLogin){
+app.get('/loading' ,checkSession, (req,res)=>{
     res.render('loading',{data: req.session.data});
-  } else {
-    res.redirect('/');
-  }  
 })
 
-app.get('/addCommunity' , (req,res)=>{
-  if(req.session.isLogin){
-    res.render('addCommunity',{data: req.session.data});
-  } else {
-    res.redirect('/');
-  }  
+app.get('/addCommunity' ,checkSession, (req,res)=>{
+    res.render('addCommunity',{data: req.session.data}); 
 })
 
-app.get('/communityalllists' , (req,res)=>{
-  if(req.session.isLogin){
-    res.render('communityalllists',{data: req.session.data});
-  } else {
-    res.redirect('/');
-  }  
+app.get('/communityalllists' ,checkSession, (req,res)=>{
+    res.render('communityalllists',{data: req.session.data}); 
 })
 
-app.get('/taglists' , (req,res)=>{
-  if(req.session.isLogin){
-    res.render('taglists',{data: req.session.data});
-  } else {
-    res.redirect('/');
-  }  
+app.get('/taglists' ,checkSession, (req,res)=>{
+    res.render('taglists',{data: req.session.data}); 
 })
 
-app.get('/table' , (req,res)=>{
-  if(req.session.isLogin){
+app.get('/table' ,checkSession, (req,res)=>{
     res.render('table',{data: req.session.data});
-  } else {
-    res.redirect('/');
-  } 
 })
 
-app.get('/communityPage' , (req,res)=>{
-  if(req.session.isLogin){
+app.get('/communityPage' ,checkSession, (req,res)=>{
     res.render('communitylists',{data: req.session.data});
-  } else {
-    res.redirect('/');
-  } 
 })
 
-// app.get('/communityprofile' , (req,res)=>{
-//   if(req.session.isLogin){
-//     res.render('communityprofile',{data: req.session.data});
-//   } else {
-//     res.redirect('/');
-//   } 
+// app.get('/communityprofile' ,checkSession, (req,res)=>{
+//     res.render('communityprofile',{data: req.session.data}); 
 // })
 
-app.get('/superadmincommunityPage' , (req,res)=>{
-  if(req.session.isLogin){
+app.get('/superadmincommunityPage' ,checkSession, (req,res)=>{
     res.render('superadmincommunitylists',{data: req.session.data});
-  } else {
-    res.redirect('/');
-  } 
 })
 
-app.get('/tagpage' , (req,res)=>{
-  if(req.session.isLogin){
-    res.render('tagpage',{data: req.session.data});
-  } else {
-    res.redirect('/');
-  }  
+app.get('/tagpage' ,checkSession, (req,res)=>{
+    res.render('tagpage',{data: req.session.data}); 
 })
 
 
-app.get('/addUser' , (req,res)=>{
-  if(req.session.isLogin){
-    res.render('addUser',{data: req.session.data});
-  } else {
-    res.redirect('/');
-  }  
+app.get('/addUser' ,checkSession, (req,res)=>{
+    res.render('addUser',{data: req.session.data}); 
 })
 
-app.get('/homewithedit' , (req,res)=>{
-  if(req.session.isLogin){
+app.get('/homewithedit' ,checkSession, (req,res)=>{
     res.render('homewithedit',{data: req.session.data});
-  } else {
-    res.redirect('/');
-  }  
 })
 
-app.get('/editprofile' , (req,res)=>{
-  if(req.session.isLogin){
+app.get('/editprofile' ,checkSession, (req,res)=>{
     res.render('editprofile',{data: req.session.data});
-  } else {
-    res.redirect('/');
-  }  
 })
 
-app.get('/editcommunity' , (req,res)=>{
-  if(req.session.isLogin){
-    res.render('editcommunity',{data: req.session.data});
-  } else {
-    res.redirect('/');
-  }  
+app.get('/editcommunity' ,checkSession, (req,res)=>{
+    res.render('editcommunity',{data: req.session.data}); 
 })
 
-app.get('/changePassPage' , (req,res)=>{
-  if(req.session.isLogin){
+app.get('/changePassPage' ,checkSession, (req,res)=>{
     res.render('changepassword',{data: req.session.data});
-  } else {
-    res.redirect('/');
-  } 
 })
 
 let transporter = nodemailer.createTransport({
@@ -168,7 +114,7 @@ let transporter = nodemailer.createTransport({
       }
 });
 
-app.post('/sendMail',function(req,res){
+app.post('/sendMail',checkSession, function(req,res){
   console.log(req.body);
   transporter.sendMail(req.body, (error, info) => {
     if (error)
@@ -180,7 +126,7 @@ app.post('/sendMail',function(req,res){
 });
 })
 
-app.post('/sendMail',function(req,res){
+app.post('/sendMail',checkSession,function(req,res){
   console.log(req.body);
   transporter.sendMail(req.body, (error, info) => {
     if (error)
@@ -192,10 +138,10 @@ app.post('/sendMail',function(req,res){
 });
 })
 
-app.post('/logout',function (req, res) {
-    req.session.destroy();
-    res.redirect('/');
-    console.log('logout');
+app.post('/logout',checkSession,function (req, res) {
+  req.session.destroy();
+  res.redirect('/');
+  console.log('logouted');
 })
 
 console.log("Running on port 3000");

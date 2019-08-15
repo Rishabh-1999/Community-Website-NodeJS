@@ -20,6 +20,13 @@ app.use(bodyParser.json())
 var mongoose = require('mongoose');
 var mongoDB = 'mongodb://localhost/myDB';
 
+var checkSession = function (req, res, next) {
+    if(req.session.isLogin)
+      next();
+    else
+      res.redirect('/');
+}
+
 var user = new mongoose.Schema({
     email: String,
     password: String,
@@ -36,8 +43,7 @@ var user = new mongoose.Schema({
     aboutyou:String,
     expectations:String,
     photoloc:String,
-    githubid:String,
-    deleted: String
+    githubid:String
   })
 
 var UsersNames =  mongoose.model('usernames', user);
@@ -144,13 +150,14 @@ else {
   })
 })
 
-app.post('/activatesuperadmin',function(req,res){
+app.post('/activatesuperadmin',checkSession,function(req,res){
+  console.log('Activated issuperadmin /activatesuperadmin');
   req.session.data.issuperadmin="true";
 })
 
 app.post('/checkLogin',function(req,res) {
     console.log('login data recieved');
-    UsersNames.findOne({"email": req.body.email,"password":req.body.password,deleted:"0",restrict:"false"}, function(err, result) {
+    UsersNames.findOne({"email": req.body.email,"password":req.body.password,status:"Confirmed",restrict:"false"}, function(err, result) {
     console.log(result);
       if(result!=null) {
         req.session.isLogin=1;
@@ -195,13 +202,7 @@ app.post('/checkLogin',function(req,res) {
       })
 })
 
-app.post('/activateEditProfile',function() {
-  req.session.data.activateEditProfile="true";
-  res.redirect('/home')
-})
-
-app.post('/addUserToDataBase',function (req, res) {
-  if(req.session.isLogin){
+app.post('/addUserToDataBase',checkSession,function (req, res) {
     let newProduct = new UsersNames({
       email: req.body.email,
       password: req.body.password,
@@ -218,40 +219,31 @@ app.post('/addUserToDataBase',function (req, res) {
       aboutyou:"",
       expectations:"",
       photoloc:"/images/logo.png",
-      deleted:"0"
     })
     newProduct.save()
      .then(data => {
-       console.log(data)
+       console.log("New User created");
+       console.log(data);
        res.send(data)
      })
      .catch(err => {
-       console.error(err)
        res.send(error)
      })
-   }else {
-    res.redirect('/');
-}
 })
 
-app.post('/updatetodatabase',function(req,res) {
-  if(req.session.isLogin){
+app.post('/updatetodatabase',checkSession,function(req,res) {
   UsersNames.updateOne({"email":req.body.email},{$set:{"isActive":"true","email":req.body.email,"phoneno":req.body.phoneno,"city":req.body.city,"status":req.body.status,"role":req.body.role}},function(error,result){       
     if(error)
       throw error;
     else {
-    if(req.session.emailid==req.body.old)
-      req.session.emailid=req.body.emailid;
+    if(req.session.emailid!=req.body.email)
+      req.session.emailid=req.body.email;
     }
     res.send("1");
   })
-  } else {
-    res.redirect('/');
-  }
 })
 
-app.post('/activateUser',function(req,res) {
-  if(req.session.isLogin){
+app.post('/activateUser',checkSession,function(req,res) {
   UsersNames.updateOne({"_id":req.body._id},{$set:{"restrict":"true"}},function(error,result){
   if(error)
     throw error;
@@ -263,13 +255,9 @@ app.post('/activateUser',function(req,res) {
     res.send("true");
   }
   })
-}else {
-  res.redirect('/');
-}
 })
 // deactivate User
-app.post('/deactivateUser',function(req,res) {
-  if(req.session.isLogin){
+app.post('/deactivateUser',checkSession,function(req,res) {
   UsersNames.updateOne({"_id":req.body._id},{$set:{"restrict":"false"}},function(error,result){
   if(error)
     throw error;
@@ -281,13 +269,10 @@ app.post('/deactivateUser',function(req,res) {
      res.send("true");
   }
   })
-}else {
-  res.redirect('/');
-}
 })
 
 // Change Temp role
-app.post('/changetemprole',function(req,res) {
+app.post('/changetemprole',checkSession,function(req,res) {
   if(req.session.data.temprole=="SuperAdmin")
   {
     req.session.data.temprole="User"
@@ -303,7 +288,7 @@ app.post('/changetemprole',function(req,res) {
 })
 
 //Update Profile of Users
-app.post('/updateprofile',function(req,res){
+app.post('/updateprofile',checkSession,function(req,res){
   UsersNames.updateOne({"_id":req.session._id},{$set:{"isActive":"true","name":req.body.name,"DOB":req.body.DOB,"city":req.body.city,"gender":req.body.gender,"phoneno":req.body.phoneno,"interests":req.body.interests,
   "aboutyou":req.body.aboutyou,"expectations":req.body.expectations}},function(error,result){
   if(error)
@@ -315,7 +300,7 @@ app.post('/updateprofile',function(req,res){
   })
 })
 
-app.post('/changePassword' , (req,res)=>{
+app.post('/changePassword',checkSession, (req,res)=>{
   UsersNames.updateOne({"_id":req.session._id,"password":req.body.oldpass},{$set:{"password":req.body.newpass}},function(error,result){
   if(error)
     throw error;
@@ -331,7 +316,7 @@ app.post('/changePassword' , (req,res)=>{
 })
 
 //check duplicate for creating user emailid
-app.post('/checkDuplicate' , (req,res)=>{
+app.post('/checkDuplicate',checkSession, (req,res)=>{
   var data=UsersNames.find({}).exec(function(error,result)    {
   if(error)
     throw error;
@@ -352,7 +337,7 @@ app.post('/checkDuplicate' , (req,res)=>{
 })
 })
 
-app.post('/usersTable' , function(req, res) {
+app.post('/usersTable' ,checkSession, function(req, res) {
 if(req.body.role === 'All' && req.body.status === 'All')
 {
   UsersNames.countDocuments(function(e,count){
@@ -467,7 +452,7 @@ else if(req.body.role !== 'All' && req.body.status === 'All')
       storage : storage,
     }).single('file');
 
-app.post('/uploadphoto',(req,res)=>{
+app.post('/uploadphoto',checkSession,(req,res)=>{
   upload(req,res,(err)=>{
         if(err)
         {
@@ -506,7 +491,7 @@ var communitys = new mongoose.Schema({
 var communitys =  mongoose.model('communitys', communitys);
 
 // get users in communityes
-app.post('/getUsers',function(req,res) {
+app.post('/getUsers',checkSession,function(req,res) {
   if(req.session.isLogin){
 communitys.findOne({ "_id" : req.body._id }).populate('users').exec(function (err, result) {
     if (err) 
@@ -521,7 +506,7 @@ communitys.findOne({ "_id" : req.body._id }).populate('users').exec(function (er
 })
 
 // get managers in communityes
-app.post('/getManagers',function(req,res) {
+app.post('/getManagers',checkSession,function(req,res) {
 if(req.session.isLogin){
 communitys.findOne({ "_id" : req.body._id }).populate('managers').
   exec(function (err, result) {
@@ -537,7 +522,7 @@ communitys.findOne({ "_id" : req.body._id }).populate('managers').
 })
 
 // get invited users in communityes
-app.post('/getinveted',function(req,res) {
+app.post('/getinveted',checkSession,function(req,res) {
 if(req.session.isLogin){
 communitys.findOne({ "_id" : req.body._id }).populate('invited'). 
   exec(function (err, result) {
@@ -553,7 +538,7 @@ communitys.findOne({ "_id" : req.body._id }).populate('invited').
 })
 
 // get request users in communityes
-app.post('/getrequest',function(req,res) {
+app.post('/getrequest',checkSession,function(req,res) {
 if(req.session.isLogin){
 communitys.findOne({ "_id" : req.body._id }).populate('request').
   exec(function (err, result) {
@@ -627,7 +612,7 @@ communitys.findOne({ "_id" : req.body._id }).populate('request').
 // })
 
 // Get Community Lists for table 
-app.post('/getCommunityLists' , function(req, res) {
+app.post('/getCommunityLists',checkSession,function(req, res) {
   console.log(req.body);
   var count;
       communitys.countDocuments(function(e,c){
@@ -653,7 +638,7 @@ app.post('/getCommunityLists' , function(req, res) {
   });
 
 //Join Community
-app.post('/joincommunity',function(req,res) {
+app.post('/joincommunity',checkSession,function(req,res) {
   if(req.body.r==0)
   {
     communitys.updateOne({"_id":req.body._id},{$push:{"users":req.session._id}},function(error,result){       
@@ -679,7 +664,7 @@ else
 })
 
 // Update Community Details
-app.post('/communityupdate',function(req,res) {
+app.post('/communityupdate',checkSession,function(req,res) {
   if(req.session.isLogin){
   communitys.updateOne({"_id":req.body.id},{$set:{"name":req.body.name,"status":req.body.status}},function(error,result){       
     if(error)
@@ -695,7 +680,7 @@ app.post('/communityupdate',function(req,res) {
 })
 
 // Get Array which User is Owner
-app.get('/getArrayOwnCommunity',function(req,res) {
+app.get('/getArrayOwnCommunity',checkSession,function(req,res) {
   if(req.session.isLogin){
     console.log("okokok")
     communitys.find({'ownerid':req.session._id}, function(err, result){
@@ -708,7 +693,7 @@ app.get('/getArrayOwnCommunity',function(req,res) {
 })
 
 // Get Array in which User is Member or managers and Not Owner
-app.get('/getArrayOtherCommunity',function(req,res) {
+app.get('/getArrayOtherCommunity',checkSession,function(req,res) {
   if(req.session.isLogin){
     communitys.find({ $and:[{"users": { "$in" : [req.session._id]}},{ "ownerid" : { "$not":{ "$eq":req.session._id}}}]}, function(err, result){
      console.log("Got Array in which User in Member in Community");
@@ -720,7 +705,7 @@ app.get('/getArrayOtherCommunity',function(req,res) {
 })
 
 // Get Array in which User has Requested
-app.get('/getArrayOtherCommunityInvited',function(req,res) {
+app.get('/getArrayOtherCommunityInvited',checkSession,function(req,res) {
   if(req.session.isLogin){
     communitys.find({ $and:[{"invited": { "$in" : [req.session._id]}},{"users": { "$nin" : [req.session._id]}},{"managers": {  "$nin" : [req.session._id]}},{ "ownerid" : { "$not":{ "$eq":req.session._id}}}]}, function(err, result){
      console.log("Got array in which User has Requested to join Community");
@@ -744,7 +729,7 @@ function formatAMPM(date) {
 }
 
 //Add Community
-app.post('/addCommunity',function (req, res) {
+app.post('/addCommunity',checkSession,function (req, res) {
 var rule;
 console.log(req.body);
   var photoname;
@@ -816,7 +801,7 @@ var storagecomm = multer.diskStorage({
       storage : storagecomm,
     }).single('myfile');
 
-app.post('/uploadphotoCommunity',(req,res)=>{
+app.post('/uploadphotoCommunity',checkSession,(req,res)=>{
   uploadcomm(req,res,(err)=>{
         if(err)
         {
@@ -826,7 +811,7 @@ app.post('/uploadphotoCommunity',(req,res)=>{
 })
 })
 
-app.get('/getAllActive',function(req,res) {
+app.get('/getAllActive',checkSession,function(req,res) {
   if(req.session.isLogin){
     communitys.find({'ownerid':{"$ne":req.session._id}, "users": { "$nin" : [req.session._id]}}, function(err, result){
      console.log(result);
@@ -837,16 +822,15 @@ app.get('/getAllActive',function(req,res) {
   }
 })
 
-app.post('/updatecomm',function(req,res) {
-  if(req.session.isLogin){
-    communitys.findOneAndUpdate({"_id":req.body._id},{"name":req.body.name,"description":req.body.description,"rule":req.body.rule},function(err,result)
+app.post('/updatecomm',checkSession,function(req,res) {
+  communitys.findOneAndUpdate({"_id":req.body._id},{"name":req.body.name,"description":req.body.description,"rule":req.body.rule},function(err,result)
   {
     if(err)
       throw err
     else
     {
       communitys.findOne({"_id":req.body._id},function(err,result)
-    {
+      {
       if(err)
         throw err;
       else
@@ -856,86 +840,71 @@ app.post('/updatecomm',function(req,res) {
     })
     }
   });
-} else {
-    res.redirect('/');
-  }
 })
 
 
-app.get('/:pro' , (req,res)=>{
-  if(req.session.isLogin){
-    var id=req.params.pro.toString()
+app.get('/:pro',checkSession,(req,res)=>{
+    var id=req.params.pro.toString();
     communitys.findOne({"_id":id},function(err,result) {
       if(err)
         throw err;
-      else
-        res.render('manageCommunity',{data:req.session.data,data2:result})
-    })
-  } else {
-    res.redirect('/');
-  }  
+      else {
+        console.log("Manage Community");
+        res.render('manageCommunity',{data:req.session.data,data2:result});
+      }
+    })  
 })
 
-app.get('/edit/:pro' , (req,res)=>{
-  if(req.session.isLogin){
-    var id=req.params.pro.toString()
+app.get('/edit/:pro',checkSession,(req,res)=>{
+    var id=req.params.pro.toString();
     communitys.findOne({"_id":id},function(err,result)
     {
       if(err)
         throw err;
-      else
-        res.render('editcommunity',{data:req.session.data,data2:result})
+      else {
+        console.log("Edit Profile of Community");
+        res.render('editcommunity',{data:req.session.data,data2:result});
+      }
     })
-  } else {
-    res.redirect('/');
-  }  
 })
 
-app.get('/userprofile/:pro' , (req,res)=>{
-  if(req.session.isLogin){
-    var id=req.params.pro.toString()
+app.get('/userprofile/:pro',checkSession,(req,res)=>{
+    var id=req.params.pro.toString();
     UsersNames.findOne({"_id":id},function(err,result)
     {
       if(err)
         throw err;
-      else
-        res.render('userprofile',{data:req.session.data,data2:result})
-    })
-  } else {
-    res.redirect('/');
-  }  
+      else {
+        console.log("User Profile For Community");
+        res.render('userprofile',{data:req.session.data,data2:result});
+      }
+    }) 
 })
 
-app.get('/communitymembers/:pro' , (req,res)=>{
-  if(req.session.isLogin){
-    var id=req.params.pro.toString()
+app.get('/communitymembers/:pro',checkSession,(req,res)=>{
+    var id=req.params.pro.toString();
     communitys.findOne({"_id":id},function(err,result)
     {
       if(err)
         throw err;
-      else
-        res.render('communitymembers',{data:req.session.data,data2:result})
-    })
-  } else {
-    res.redirect('/');
-  }  
+      else {
+        console.log("Community Members");
+        res.render('communitymembers',{data:req.session.data,data2:result});
+      }
+    }) 
 })
 
-app.get('/profile/:pro' , (req,res)=>{
-  if(req.session.isLogin){
-    var id=req.params.pro.toString()
+app.get('/profile/:pro',checkSession,(req,res)=>{
+    var id=req.params.pro.toString();
     communitys.findOne({"_id":id},function(err,result)
     {
       if(err)
         throw err;
-      else
-        console.log("==="+result)
-        res.render('communityprofile',{data:req.session.data,data2:result})
-    })
-  } else {
-    res.redirect('/');
-  }  
+      else {
+        console.log("Community Profile");
+        res.render('communityprofile',{data:req.session.data,data2:result});
+      }
+    }) 
 })
 
-// mongoose.connect(mongoDB);
 module.exports=app
