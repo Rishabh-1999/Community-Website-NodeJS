@@ -157,7 +157,7 @@ app.post('/activatesuperadmin',checkSession,function(req,res){
 
 app.post('/checkLogin',function(req,res) {
     console.log('login data recieved');
-    UsersNames.findOne({"email": req.body.email,"password":req.body.password,status:"Confirmed",restrict:"false"}, function(err, result) {
+    UsersNames.findOne({"email": req.body.email,"password":req.body.password,restrict:"false"}, function(err, result) {
     console.log(result);
       if(result!=null) {
         req.session.isLogin=1;
@@ -186,7 +186,7 @@ app.post('/checkLogin',function(req,res) {
         req.session.name=result.name;
         req.session.data=ob;
         console.log(req.session)
-        if(result.isActive=="false")
+        if(result.status=="Pending")
         {
           res.send("not");
         }
@@ -214,7 +214,7 @@ app.post('/addUserToDataBase',checkSession,function (req, res) {
       role: req.body.role,
       restrict: "false",
       status:  "Pending",
-      isActive:"false",
+      isActive:"true",
       interests:"",
       aboutyou:"",
       expectations:"",
@@ -222,12 +222,15 @@ app.post('/addUserToDataBase',checkSession,function (req, res) {
     })
     newProduct.save()
      .then(data => {
+      //res.render('addUser',{data: req.session.data}); 
        console.log("New User created");
        console.log(data);
        res.send(data)
      })
      .catch(err => {
-       res.send(error)
+      res.render('addUser',{data: req.session.data}); 
+      window.location="\addUser";
+      res.send(err)
      })
 })
 
@@ -289,7 +292,7 @@ app.post('/changetemprole',checkSession,function(req,res) {
 
 //Update Profile of Users
 app.post('/updateprofile',checkSession,function(req,res){
-  UsersNames.updateOne({"_id":req.session._id},{$set:{"isActive":"true","name":req.body.name,"DOB":req.body.DOB,"city":req.body.city,"gender":req.body.gender,"phoneno":req.body.phoneno,"interests":req.body.interests,
+  UsersNames.updateOne({"_id":req.session._id},{$set:{"status":"Confirmed","isActive":"true","name":req.body.name,"DOB":req.body.DOB,"city":req.body.city,"gender":req.body.gender,"phoneno":req.body.phoneno,"interests":req.body.interests,
   "aboutyou":req.body.aboutyou,"expectations":req.body.expectations}},function(error,result){
   if(error)
     throw error;
@@ -492,7 +495,6 @@ var communitys =  mongoose.model('communitys', communitys);
 
 // get users in communityes
 app.post('/getUsers',checkSession,function(req,res) {
-  if(req.session.isLogin){
 communitys.findOne({ "_id" : req.body._id }).populate('users').exec(function (err, result) {
     if (err) 
       return err;
@@ -502,12 +504,10 @@ communitys.findOne({ "_id" : req.body._id }).populate('users').exec(function (er
       res.send(JSON.stringify(result.users))
     }
   })
-}
 })
 
 // get managers in communityes
 app.post('/getManagers',checkSession,function(req,res) {
-if(req.session.isLogin){
 communitys.findOne({ "_id" : req.body._id }).populate('managers').
   exec(function (err, result) {
     if (err) 
@@ -518,12 +518,10 @@ communitys.findOne({ "_id" : req.body._id }).populate('managers').
       res.send(JSON.stringify(result.managers))
     }
   })
-}
 })
 
 // get invited users in communityes
 app.post('/getinveted',checkSession,function(req,res) {
-if(req.session.isLogin){
 communitys.findOne({ "_id" : req.body._id }).populate('invited'). 
   exec(function (err, result) {
     if (err) 
@@ -534,12 +532,10 @@ communitys.findOne({ "_id" : req.body._id }).populate('invited').
       res.send(JSON.stringify(result.invited))
     }
   })
-}
 })
 
 // get request users in communityes
 app.post('/getrequest',checkSession,function(req,res) {
-if(req.session.isLogin){
 communitys.findOne({ "_id" : req.body._id }).populate('request').
   exec(function (err, result) {
     if (err) 
@@ -550,7 +546,6 @@ communitys.findOne({ "_id" : req.body._id }).populate('request').
       res.send(JSON.stringify(result.request))
     }
   })
-}
 })
 
 // get request users in communityes(Not Used)
@@ -665,7 +660,6 @@ else
 
 // Update Community Details
 app.post('/communityupdate',checkSession,function(req,res) {
-  if(req.session.isLogin){
   communitys.updateOne({"_id":req.body.id},{$set:{"name":req.body.name,"status":req.body.status}},function(error,result){       
     if(error)
       throw error;
@@ -674,46 +668,31 @@ app.post('/communityupdate',checkSession,function(req,res) {
     res.send("true");
   }
   })
-  } else {
-    res.redirect('/');
-  }
 })
 
 // Get Array which User is Owner
 app.get('/getArrayOwnCommunity',checkSession,function(req,res) {
-  if(req.session.isLogin){
     console.log("okokok")
     communitys.find({'ownerid':req.session._id}, function(err, result){
      console.log("Got Array in which User is Owner");
       res.send(result);
 });
-} else {
-    res.redirect('/');
-  }
 })
 
 // Get Array in which User is Member or managers and Not Owner
 app.get('/getArrayOtherCommunity',checkSession,function(req,res) {
-  if(req.session.isLogin){
     communitys.find({ $and:[{"users": { "$in" : [req.session._id]}},{ "ownerid" : { "$not":{ "$eq":req.session._id}}}]}, function(err, result){
      console.log("Got Array in which User in Member in Community");
       res.send(result);
 });
-} else {
-    res.redirect('/');
-  }
 })
 
 // Get Array in which User has Requested
 app.get('/getArrayOtherCommunityInvited',checkSession,function(req,res) {
-  if(req.session.isLogin){
     communitys.find({ $and:[{"invited": { "$in" : [req.session._id]}},{"users": { "$nin" : [req.session._id]}},{"managers": {  "$nin" : [req.session._id]}},{ "ownerid" : { "$not":{ "$eq":req.session._id}}}]}, function(err, result){
      console.log("Got array in which User has Requested to join Community");
       res.send(result);
 });
-} else {
-    res.redirect('/');
-  }
 })
 
 //Function to get Time in PM or AM
@@ -744,7 +723,6 @@ console.log(req.body);
   datestr=datestr+"-"+dat.getFullYear();
   datestr=datestr+" ("+formatAMPM(dat)+")";
   //"photoloc":"/images/defaultCommunity.jpg",
-  if(req.session.isLogin){
     let newProduct = new communitys({
   "photoloc":photoname,
   "name":req.body.name,
@@ -781,10 +759,6 @@ console.log(req.body);
        console.error(err)
        res.send(err)
      })
-   }else {
-    res.redirect('/');
-    res.send(true)
-}
 })
 var tempcomm;
 
@@ -811,15 +785,11 @@ app.post('/uploadphotoCommunity',checkSession,(req,res)=>{
 })
 })
 
-app.get('/getAllActive',checkSession,function(req,res) {
-  if(req.session.isLogin){
-    communitys.find({'ownerid':{"$ne":req.session._id}, "users": { "$nin" : [req.session._id]}}, function(err, result){
+app.post('/getAllActive',checkSession,function(req,res) {
+    communitys.find({'ownerid':{"$ne":req.session._id}, "users": { "$nin" : [req.session._id]}}).skip(req.body.start).limit(req.body.end).exec(function(error,result) {
      console.log(result);
       res.send(result);
 })
-} else {
-    res.redirect('/');
-  }
 })
 
 app.post('/updatecomm',checkSession,function(req,res) {

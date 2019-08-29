@@ -131,7 +131,9 @@
 </div></div>
 
 <script type="text/javascript">
-
+var start=0;
+var end=4;
+var tempdata=[];
 
 var totaldata;
 	$(document).ready(function() {
@@ -140,27 +142,62 @@ var totaldata;
 
 function initalise()
 {
+	let obj={
+        start:start,
+        end:end,
+	}
+	console.log(obj);
 	document.getElementById('search').innerHTML="";
 	var xml=new XMLHttpRequest()
-	xml.open("GET","/userTable/getAllActive")
+	xml.open("POST","/userTable/getAllActive")
 	xml.onload=function()
     {
-    	console.log(xml.responseText);
-        var d=totaldata=JSON.parse(xml.responseText)
-        for(var i=0;i<totaldata.length;i++)
+		document.getElementById('search').innerHTML="";
+		var d=JSON.parse(xml.responseText);
+		tempdata=tempdata.concat(d);
+        for(var i=0;i<tempdata.length;i++)
         {
-        	addToDOM(d[i])
-        }
+        	addToDOM(tempdata[i])
+		}
+		console.log(tempdata);
     }
     xml.setRequestHeader("Content-Type","application/json");
-    xml.send();
+    xml.send(JSON.stringify(obj));
+}
+
+function getDocumentHeight() {
+	console.log("getDocumentHeight");
+	const body = document.body;
+	const html = document.documentElement;
+	
+	return Math.max(
+		body.scrollHeight, body.offsetHeight,
+		html.clientHeight, html.scrollHeight, html.offsetHeight
+	);
+};
+
+ function getScrollTop() {
+	console.log("getScrollTop");
+	return (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+}
+
+    window.onscroll = function() {
+		console.log("onscroll");
+	if (getScrollTop()== getDocumentHeight() - window.innerHeight)
+        {
+	         start+=4;
+             end=4;
+             initalise();
+        }
+        else
+            return;
 }
 
 	function addToDOM(obj)
 	{
 		var div1=document.createElement('div');
 		div1.setAttribute("class","container mainDivDiscover-container")
-    div1.setAttribute("id","divid"+obj._id);
+    	div1.setAttribute("id","divid"+obj._id);
 		var div2=document.createElement('div')
 		div2.setAttribute("class","panel community-show-item panel-default allSidesSoft")
 		div2.setAttribute("style"," padding:0;background:white;")
@@ -193,15 +230,15 @@ function initalise()
 		var btn1=document.createElement('button')
 		btn1.setAttribute("class","tn btn-primary btn-sm pull-right")
 		if(obj.rule=="Direct")
-    {
+    	{
       btn1.innerHTML="Join"
      btn1.setAttribute("onclick","btnjoin(0,"+"'"+obj._id+"'"+")")
-    }
+    	}
 		else
-    {
+    	{
       btn1.innerHTML="Ask To Join"
       btn1.setAttribute("onclick","btnjoin(1,"+"'"+obj._id+"'"+")")
-    }
+    	}
 		
 		div7.appendChild(btn1)
 		div6.appendChild(div7)
@@ -215,7 +252,7 @@ function initalise()
 		div9.setAttribute("class","col-sm-12 col-xs-12 col-lg-12 col-md-12")
 		var p1=document.createElement('p')
 		p1.setAttribute("class","totalUsers")
-		p1.innerHTML="(static)1 Members"
+		p1.innerHTML="1 Members"
 		div9.appendChild(p1)
 		div8.appendChild(div9)
 		var div10=document.createElement('div')
@@ -234,8 +271,14 @@ function initalise()
 		div2.appendChild(div8)
 		div1.appendChild(div2)
 		document.getElementById('search').appendChild(div1)
-    console.log(div1)
+    	//console.log(div1)
 	}
+
+	function closeDragElement() {
+		/* stop moving when mouse button is released:*/
+		document.onmouseup = null;
+		document.onmousemove = null;
+	  }
 
 function btnjoin(r,_id)
 {
@@ -258,11 +301,11 @@ function btnjoin(r,_id)
 	{
 		document.getElementById('search').innerHTML=""
 		var val=document.getElementById('searchinput').value;
-		for(i in totaldata)
+		for(i in tempdata)
 		{
-			console.log(totaldata[i])
-			if((totaldata[i].name).includes(val) || (totaldata[i].description).includes(val))
-				addToDOM(totaldata[i])
+			console.log(tempdata[i])
+			if((tempdata[i].name).includes(val) || (tempdata[i].description).includes(val))
+				addToDOM(tempdata[i])
 		}
 	}
 </script>

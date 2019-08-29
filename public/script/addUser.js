@@ -31,24 +31,29 @@ document.getElementById('btnaddUser').addEventListener('click',function() {
 	var xml=new XMLHttpRequest();
 		xml.open("POST","/userTable/addUserToDataBase");
 		xml.setRequestHeader("Content-Type", "application/json");
-		xml.send(JSON.stringify(obj));
-		
-		var ob=new Object();
+		xml.addEventListener('onload', function()
+	  	{
+			var x=new XMLHttpRequest();
+			var ob=new Object();
   		ob.to=document.getElementById('adduser-email').value;
   		ob.text="Welcome to cq Community "+ document.getElementById('adduser-name').value+" Your password is "+document.getElementById('adduser-password').value+".Thank You";
   		ob.subject="Welcome to cq";
-
-		var x=new XMLHttpRequest();
-		
-		x.open("POST","/sendMail");
-		x.setRequestHeader("Content-Type","application/json");
-	  	x.addEventListener('onload', function()
-	  	{
-			window.location='/addUser';
+			x.open("POST","/sendMail");
+			x.setRequestHeader("Content-Type","application/json");
+			  x.addEventListener('onload', function()
+			  {
+				window.location='/addUser';
+			  })
+			  
+			  x.send(JSON.stringify(ob));
+			  console.log(ob);
+			
 	  	})
-	  	
-	  	x.send(JSON.stringify(ob));
-	  	console.log(ob);
+		xml.send(JSON.stringify(obj));
+		
+	
+
+		
 	  	
 	}
 })
