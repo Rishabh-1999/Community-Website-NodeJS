@@ -12,7 +12,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // parse application/json
 app.use(bodyParser.json())
@@ -22,6 +22,12 @@ var mongoDB = 'mongodb://localhost/myDB';
 
 var checkSession = function (req, res, next) {
     if(req.session.isLogin)
+      next();
+    else
+      res.redirect('/');
+}
+var checkSuperAdmin = function (req, res, next) {
+    if(req.session.data.role=="SuperAdmin")
       next();
     else
       res.redirect('/');
@@ -75,9 +81,9 @@ console.log("githubsignin succesful");
 if(result!=null)
 {
   console.log("result not null");
-  console.log(result);
-  console.log(result.email);
-  console.log(result.name);
+  //console.log(result);
+  //console.log(result.email);
+  //console.log(result.name);
 
         req.session.isLogin=1;
         req.session._id=result._id;
@@ -103,7 +109,7 @@ if(result!=null)
         ob.temprole=result.role;
         req.session.name=result.name;
         req.session.data=ob;
-        console.log(req.session.data)
+        //console.log(req.session.data)
         res.redirect('/home');
 }
 else
@@ -150,7 +156,7 @@ else {
   })
 })
 
-app.post('/activatesuperadmin',checkSession,function(req,res){
+app.post('/activatesuperadmin',checkSession,checkSuperAdmin,function(req,res){
   console.log('Activated issuperadmin /activatesuperadmin');
   req.session.data.issuperadmin="true";
 })
@@ -158,7 +164,7 @@ app.post('/activatesuperadmin',checkSession,function(req,res){
 app.post('/checkLogin',function(req,res) {
     console.log('login data recieved');
     UsersNames.findOne({"email": req.body.email,"password":req.body.password,restrict:"false"}, function(err, result) {
-    console.log(result);
+    //console.log(result);
       if(result!=null) {
         req.session.isLogin=1;
         req.session._id=result._id;
@@ -202,7 +208,7 @@ app.post('/checkLogin',function(req,res) {
       })
 })
 
-app.post('/addUserToDataBase',checkSession,function (req, res) {
+app.post('/addUserToDataBase',checkSession,checkSuperAdmin,function (req, res) {
     let newProduct = new UsersNames({
       email: req.body.email,
       password: req.body.password,
@@ -224,7 +230,7 @@ app.post('/addUserToDataBase',checkSession,function (req, res) {
      .then(data => {
       //res.render('addUser',{data: req.session.data}); 
        console.log("New User created");
-       console.log(data);
+       //console.log(data);
        res.send(data)
      })
      .catch(err => {
@@ -246,7 +252,7 @@ app.post('/updatetodatabase',checkSession,function(req,res) {
   })
 })
 
-app.post('/activateUser',checkSession,function(req,res) {
+app.post('/activateUser',checkSession,checkSuperAdmin,function(req,res) {
   UsersNames.updateOne({"_id":req.body._id},{$set:{"restrict":"true"}},function(error,result){
   if(error)
     throw error;
@@ -260,7 +266,7 @@ app.post('/activateUser',checkSession,function(req,res) {
   })
 })
 // deactivate User
-app.post('/deactivateUser',checkSession,function(req,res) {
+app.post('/deactivateUser',checkSession,checkSuperAdmin,function(req,res) {
   UsersNames.updateOne({"_id":req.body._id},{$set:{"restrict":"false"}},function(error,result){
   if(error)
     throw error;
@@ -275,17 +281,17 @@ app.post('/deactivateUser',checkSession,function(req,res) {
 })
 
 // Change Temp role
-app.post('/changetemprole',checkSession,function(req,res) {
+app.post('/changetemprole',checkSession,checkSuperAdmin,function(req,res) {
   if(req.session.data.temprole=="SuperAdmin")
   {
     req.session.data.temprole="User"
-    console.log(req.session.data)
+    //console.log(req.session.data)
     res.send("changed")
   }
   else
   {
     req.session.data.temprole="SuperAdmin"
-    console.log(req.session.data)
+    //console.log(req.session.data)
     res.send("changed")
   }
 })
@@ -340,107 +346,64 @@ app.post('/checkDuplicate',checkSession, (req,res)=>{
 })
 })
 
-app.post('/usersTable' ,checkSession, function(req, res) {
-if(req.body.role === 'All' && req.body.status === 'All')
-{
-  UsersNames.countDocuments(function(e,count){
-  var start=parseInt(req.body.start);
-  var len=parseInt(req.body.length);
-
-  UsersNames.find({}).skip(start).limit(len)
-  .then(data=> {
-  if (req.body.customsearch!="") {
-    data = data.filter((value) => {
-            flag = value.email.includes(req.body.customsearch) || value.phoneno.includes(req.body.customsearch)
-             || value.city.includes(req.body.customsearch) || value.status.includes(req.body.customsearch) 
-             || value.role.includes(req.body.customsearch);
-            return flag;
-          })
-  }
-  res.send({"recordsTotal": count, "recordsFiltered" : count, data})
-  })
-  .catch(err => {
-  res.send(err)
-  })
-  });
-}
-else if(req.body.role === 'All' && req.body.status !== 'All')
-{
-  var length;
-  UsersNames.countDocuments(function(e,count){
-  var start=parseInt(req.body.start);
-  var len=parseInt(req.body.length);
-
-  UsersNames.find({status: req.body.status}).then(data => length = data.length);
-  UsersNames.find({ status: req.body.status }).skip(start).limit(len)
-  .then(data=> {
-    if (req.body.customsearch!="") {
-    data = data.filter((value) => {
-            flag = value.email.includes(req.body.customsearch) || value.phoneno.includes(req.body.customsearch)
-             || value.city.includes(req.body.customsearch) || value.status.includes(req.body.customsearch) 
-             || value.role.includes(req.body.customsearch);
-            return flag;
-          })
-  }
-  res.send({"recordsTotal": count, "recordsFiltered" : length, data})
-  })
-  .catch(err => {
-  res.send(err)
-  })
-  });  
-}
-
+app.post('/usersTable' ,checkSession,checkSuperAdmin, function(req, res) {
+  let query = {};
+let params = {};
+if(req.body.role === 'All' && req.body.status !== 'All')
+    query = {status: req.body.status};
 else if(req.body.role !== 'All' && req.body.status === 'All')
-{
-  var length;
-  UsersNames.countDocuments(function(e,count){
-  var start=parseInt(req.body.start);
-  var len=parseInt(req.body.length);
+    query = {role: req.body.role};
+else if(req.body.role !== 'All' && req.body.status !== 'All')
+    query = {role: req.body.role , status: req.body.status};
 
-  UsersNames.find({role: req.body.role}).then(data => length = data.length);
+    if(req.body.customsearch)
+    {
+        query.name = {"$regex" : req.body.customsearch , "$options" : "i"};
+    }
 
-  UsersNames.find({ role: req.body.role }).skip(start).limit(len)
-  .then(data=> {
-    if (req.body.customsearch!="") {
-    data = data.filter((value) => {
-            flag = value.email.includes(req.body.customsearch) || value.phoneno.includes(req.body.customsearch)
-             || value.city.includes(req.body.customsearch) || value.status.includes(req.body.customsearch) 
-             || value.role.includes(req.body.customsearch);
-            return flag;
-          })
-  }
-  res.send({"recordsTotal": count, "recordsFiltered" : length, data})
-  })
-  .catch(err => {
-  res.send(err)
-  })
-  }); 
-} else {
-  var length;
-  UsersNames.countDocuments(function(e,count){
-  var start=parseInt(req.body.start);
-  var len=parseInt(req.body.length);
+let sortingType;
+if(req.body.order[0].dir === 'asc')
+    sortingType = 1;
+else
+    sortingType = -1;
 
-  UsersNames.find({role: req.body.role, status: req.body.status}).then(data => length = data.length);
+if(req.body.order[0].column === '0')
+    params = {skip : parseInt(req.body.start) , limit : parseInt(req.body.length), sort : {email : sortingType}};
+else if(req.body.order[0].column === '2')
+    params = {skip : parseInt(req.body.start) , limit : parseInt(req.body.length), sort : {city : sortingType}};
+else if(req.body.order[0].column === '3')
+    params = {skip : parseInt(req.body.start) , limit : parseInt(req.body.length), sort : {status : sortingType}};
+else if(req.body.order[0].column === '4')
+    params = {skip : parseInt(req.body.start) , limit : parseInt(req.body.length), sort : {role : sortingType}};
 
-  UsersNames.find({role: req.body.role, status: req.body.status}).skip(start).limit(len)
-  .then(data=> {
-    if (req.body.customsearch!="") {
-    data = data.filter((value) => {
-            flag = value.email.includes(req.body.customsearch) || value.phoneno.includes(req.body.customsearch)
-             || value.city.includes(req.body.customsearch) || value.status.includes(req.body.customsearch) 
-             || value.role.includes(req.body.customsearch);
-            return flag;
-          })
-  }
-  res.send({"recordsTotal": count, "recordsFiltered" : length, data})
-  })
-  .catch(err => {
-  res.send(err)
-  })
-  }); 
-  }
-  })
+
+    UsersNames.find(query , {} , params , function (err , data)
+    {
+        if(err)
+            console.log(err);
+        else
+        {
+            // console.log(data);
+            UsersNames.countDocuments(query, function(err , filteredCount)
+            {
+                if(err)
+                    console.log(err);
+                else
+                {
+                
+                    UsersNames.countDocuments(function (err, totalCount)
+                    {
+                        if(err)
+                            console.log(err);
+                        else
+                            res.send({"recordsTotal": totalCount,
+                                "recordsFiltered": filteredCount, data});
+                    })
+                }
+            });
+        }
+    })
+});
 
   var storage = multer.diskStorage({
   destination : './public/uploads/',
@@ -462,8 +425,8 @@ app.post('/uploadphoto',checkSession,(req,res)=>{
           throw err;
         }
         else{
-          console.log(req.file);
-          console.log(photoname);
+          //console.log(req.file);
+          //console.log(photoname);
           UsersNames.updateOne({"_id":req.session._id},{$set:{"photoloc":'/uploads/'+photoname}},function(error,result){
               console.log("photo updated to database"+result)
               req.session.data.photoloc = 'uploads/'+photoname;
@@ -608,28 +571,141 @@ communitys.findOne({ "_id" : req.body._id }).populate('request').
 
 // Get Community Lists for table 
 app.post('/getCommunityLists',checkSession,function(req, res) {
-  console.log(req.body);
-  var count;
-      communitys.countDocuments(function(e,c){
-        count=c;
-      })
-      var start=parseInt(req.body.start);
-      var len=parseInt(req.body.length);
+  // if(req.body.status === 'All') {
+  //   var flag;
+  //   communitys.countDocuments(function(e,count){
+  //     var start=parseInt(req.body.start);
+  //     var len=parseInt(req.body.length);
+  //     communitys.find({
+  //     }).skip(start).limit(len)
+  //   .then(data=> {
+  //     if (req.body.customsearch)
+  //     {
+  //       console.log(data)
+  //       data = data.filter((value) => {
+  //           flag = value.name.includes(req.body.customsearch);
+  //           return flag;
+  //       })
+  //     }   
+  //     res.send({"recordsTotal": count, "recordsFiltered" : count, data})
+  //    })
+  //    .catch(err => {
+  //     res.send(err)
+  //    })
+  //  });
 
-      communitys.find({}).skip(start).limit(len)
-    .then(data=> {
-       if (req.body.customsearch!="")
+  // }
+  // else if(req.body.status === 'Direct')
+  // {
+  //     //console.log(req.body);
+  //     var length;
+  //     var flag;
+  //     communitys.countDocuments(function(e,count){
+  //     var start=parseInt(req.body.start);
+  //     var len=parseInt(req.body.length);
+
+  //     communitys.find({rule: req.body.status}).then(data => length = data.length);
+
+  //     communitys.find({ rule: req.body.status }).skip(start).limit(len)
+  //   .then(data=> {
+  //     if (req.body.customsearch)
+  //     {
+  //       console.log(data)
+  //       data = data.filter((value) => {
+  //           flag = value.name.includes(req.body.customsearch);
+  //           return flag;
+  //       })
+  //     }
+  //     res.send({"recordsTotal": count, "recordsFiltered" : length, data})
+  //    })
+  //    .catch(err => {
+  //     res.send(err)
+  //    })
+  //  });  
+  // }
+
+  // else if(req.body.status === 'Permission')
+  // {
+  //     //console.log(req.body);
+  //     var length;
+  //      var flag;
+  //      communitys.countDocuments(function(e,count){
+  //     var start=parseInt(req.body.start);
+  //     var len=parseInt(req.body.length);
+
+  //     communitys.find({rule: req.body.status}).then(data => length = data.length);
+
+  //     communitys.find({ rule: req.body.status }).skip(start).limit(len)
+  //   .then(data=> {
+  //     if (req.body.customsearch)
+  //     {
+  //       console.log(data)
+  //       data = data.filter((value) => {
+  //           flag = value.name.includes(req.body.customsearch);
+  //           return flag;
+  //       })
+  //     }
+  //     res.send({"recordsTotal": count, "recordsFiltered" : length, data})
+  //    })
+  //    .catch(err => {
+  //     res.send(err)
+  //    })
+  //  });  
+  // }
+
+  let query = {};
+    let params = {};
+
+    if(req.body.status === 'Direct')
+        query = {rule: req.body.status};
+    else if(req.body.status === 'Permission')
+        query = {rule: req.body.status};
+
+    if(req.body.search.value)
+    {
+        query.name = {"$regex" : req.body.customsearch , "$options" : "i"};
+    }
+
+    let sortingType;
+    if(req.body.order[0].dir === 'asc')
+        sortingType = 1;
+    else
+        sortingType = -1;
+
+    if(req.body.order[0].column === '0')
+        params = {skip : parseInt(req.body.start), limit : parseInt(req.body.length), sort : {name : sortingType}};
+    else if(req.body.order[0].column === '2')
+        params = {skip : parseInt(req.body.start), limit : parseInt(req.body.length), sort : {communityloc : sortingType}};
+    else if(req.body.order[0].column === '3')
+        params = {skip : parseInt(req.body.start), limit : parseInt(req.body.length), sort : {owner : sortingType}};
+    else if(req.body.order[0].column === '4')
+        params = {skip : parseInt(req.body.start), limit : parseInt(req.body.length), sort : {createDate : sortingType}};
+
+        communitys.find(query, {}, params, function (err, data)
+    {
+        if(err)
+            console.log(err);
+        else
+        {
+          communitys.countDocuments(query, function(err , filteredCount)
+            {
+                if(err)
+                    console.log(err);
+                else
+                {
+                  communitys.countDocuments(function (err, totalCount)
                     {
-                        data = data.filter((value) => {
-                            return value.name.includes(req.body.customsearch)
-                        })
-                    }
-    console.log("SuperAdmin Community table sended /getCommunityLists")
-      res.send({"recordsTotal": count, "recordsFiltered" : count, data})
-     })
-     .catch(err => {
-      res.send(err)
-    })
+                        if(err)
+                            console.log(err);
+                        else
+                            res.send({"recordsTotal": totalCount,
+                                "recordsFiltered": filteredCount, data});
+                    })
+                }
+              });
+        }
+    });
+
   });
 
 //Join Community
@@ -708,9 +784,9 @@ function formatAMPM(date) {
 }
 
 //Add Community
-app.post('/addCommunity',checkSession,function (req, res) {
+app.post('/addCommunity',checkSession,checkSuperAdmin,function (req, res) {
 var rule;
-console.log(req.body);
+//console.log(req.body);
   var photoname;
   if(tempcomm==null)
     photoname="/images/defaultCommunity.jpg";
@@ -732,25 +808,18 @@ console.log(req.body);
   "createdate":datestr,
   "description":req.body.description,
   "owner":req.session.name,
-  "status":"false",
+  "status":"Active",
   "ownerid":req.session._id,
   "managers":null,
   "invited":null,
     })
     newProduct.save()
      .then(data => {
-       console.log(data)
+       //console.log(data)
        upload(req,res,(err)=>{
         if(err)
           throw err;
         else{
-          // if(photoname!=null && photoname!=undefined && photoname!="")
-          //  communitys.updateOne({"_id":data._id},{"photoloc":'/uploads/'+photoname},function(error,result){
-          //  })
-          // communitys.updateOne({"_id":data._id},{$push:{"users":req.session._id}},function(error,result){
-          //  })
-          // console.log("Community Created "+data)
-          //res.render('communitylists',{data: req.session.data});
           res.send(true)
         }
       })
@@ -787,7 +856,7 @@ app.post('/uploadphotoCommunity',checkSession,(req,res)=>{
 
 app.post('/getAllActive',checkSession,function(req,res) {
     communitys.find({'ownerid':{"$ne":req.session._id}, "users": { "$nin" : [req.session._id]}}).skip(req.body.start).limit(req.body.end).exec(function(error,result) {
-     console.log(result);
+     //console.log(result);
       res.send(result);
 })
 })

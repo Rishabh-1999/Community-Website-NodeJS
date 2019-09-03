@@ -2,6 +2,12 @@ $(document).ready(function() {
   initaliseTable();
 })
 var table;
+
+// document.getElementById("CommunityRuleFilter").addEventListener("change",function()
+// {
+//   initaliseTable();
+// })
+
 function initaliseTable(){
       table = $('#communitytable').DataTable({
       "processing": true,
@@ -13,7 +19,7 @@ function initaliseTable(){
        
         "data": function ( d )
               {
-                d.rule   = $('#CommunityRuleFilter').val();
+                d.status   = $('#CommunityRuleFilter').val();
                 d.customsearch=$('div.dataTables_filter input').val();
               }, 
       },
@@ -70,7 +76,7 @@ function initaliseTable(){
        });
 
 
-        $('#statusbtn').on('click', function () {
+        $('#CommunityRuleFilter').on('click', function () {
         table.ajax.reload(null, false);
       });
   }

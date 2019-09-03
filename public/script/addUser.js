@@ -33,7 +33,10 @@ document.getElementById('btnaddUser').addEventListener('click',function() {
 		xml.setRequestHeader("Content-Type", "application/json");
 		xml.addEventListener('onload', function()
 	  	{
-			var x=new XMLHttpRequest();
+			
+			
+		  })
+		  var x=new XMLHttpRequest();
 			var ob=new Object();
   		ob.to=document.getElementById('adduser-email').value;
   		ob.text="Welcome to cq Community "+ document.getElementById('adduser-name').value+" Your password is "+document.getElementById('adduser-password').value+".Thank You";
@@ -47,14 +50,9 @@ document.getElementById('btnaddUser').addEventListener('click',function() {
 			  
 			  x.send(JSON.stringify(ob));
 			  console.log(ob);
-			
-	  	})
 		xml.send(JSON.stringify(obj));
 		
-	
-
-		
-	  	
+		  alert('User Created');
 	}
 })
 function checkDuplicate() {

@@ -42,6 +42,14 @@ var checkSession = function (req, res, next) {
       res.redirect('/');
 }
 
+var checkSuperAdmin = function (req, res, next) {
+    console.log(req);
+    if(req.session.data.role=="SuperAdmin")
+      next();
+    else
+      res.redirect('/');
+}
+
 app.get('/home' ,checkSession, (req,res)=>{
     res.render('home',{data: req.session.data});
 })
@@ -50,7 +58,7 @@ app.get('/loading' ,checkSession, (req,res)=>{
     res.render('loading',{data: req.session.data});
 })
 
-app.get('/addCommunity' ,checkSession, (req,res)=>{
+app.get('/addCommunity' ,checkSession,checkSuperAdmin, (req,res)=>{
     res.render('addCommunity',{data: req.session.data}); 
 })
 
@@ -62,7 +70,7 @@ app.get('/taglists' ,checkSession, (req,res)=>{
     res.render('taglists',{data: req.session.data}); 
 })
 
-app.get('/table' ,checkSession, (req,res)=>{
+app.get('/table' ,checkSession,checkSuperAdmin, (req,res)=>{
     res.render('table',{data: req.session.data});
 })
 
@@ -74,7 +82,7 @@ app.get('/communityPage' ,checkSession, (req,res)=>{
 //     res.render('communityprofile',{data: req.session.data}); 
 // })
 
-app.get('/superadmincommunityPage' ,checkSession, (req,res)=>{
+app.get('/superadmincommunityPage' ,checkSession,checkSuperAdmin, (req,res)=>{
     res.render('superadmincommunitylists',{data: req.session.data});
 })
 
@@ -83,7 +91,7 @@ app.get('/tagpage' ,checkSession, (req,res)=>{
 })
 
 
-app.get('/addUser' ,checkSession, (req,res)=>{
+app.get('/addUser' ,checkSession,checkSuperAdmin, (req,res)=>{
     res.render('addUser',{data: req.session.data}); 
 })
 
@@ -115,18 +123,6 @@ let transporter = nodemailer.createTransport({
 });
 
 app.post('/sendMail',checkSession, function(req,res){
-  console.log(req.body);
-  transporter.sendMail(req.body, (error, info) => {
-    if (error)
-        res.send("false");
-    else {
-        console.log('success');
-        res.send("true");
-    }
-});
-})
-
-app.post('/sendMail',checkSession,function(req,res){
   console.log(req.body);
   transporter.sendMail(req.body, (error, info) => {
     if (error)

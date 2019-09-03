@@ -45,10 +45,10 @@ function initaliseTable(){
       },
       "columns": [
       {
-        "data" : "email"
+        "data" : "email",orderable:true
       },
       {
-        "data" : "phoneno"
+        "data" : "phoneno",orderable:false
       },
       {
         "data" : "city"
@@ -61,7 +61,7 @@ function initaliseTable(){
       },
       {
         "data" : null,
-        "orderable" : "false"
+        "orderable" : false
       },
       ],
       "columnDefs": [{
