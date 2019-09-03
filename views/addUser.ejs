@@ -13,7 +13,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
 <% include paritials/topbar.ejs %>
-<% if(data.status == "Confirmed"){ %>
+<% if(data.isActive == "true"){ %>
   <% include paritials/sidebar.ejs %>
 <% } %>
 
@@ -40,7 +40,7 @@
 				<optgroup label="Select User Role" >
 			        <option value="User">User</option>
 			        <option value="Commuity Builder">Community Builder</option>
-			        <option value="Admin">Admin</option>
+			        <option value="SuperAdmin">SuperAdmin</option>
 			     </optgroup>
 			</select>
 		</div>

@@ -99,8 +99,9 @@ function editmodal()
     $('#eusername').val(d[0].innerHTML);
     $('#ephone').val(d[1].innerHTML);
     $('#ecity').val(d[2].innerHTML);
+    $('#erole').val(d[4].innerHTML);
     document.getElementById('estatus').value=d[3].innerHTML;
-    document.getElementById('erole').value=d[4].innerHTML;
+    
   })
 }
 

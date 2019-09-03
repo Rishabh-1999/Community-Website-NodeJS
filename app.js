@@ -114,8 +114,8 @@ app.get('/changePassPage' ,checkSession, (req,res)=>{
 let transporter = nodemailer.createTransport({
   service:'gmail',
     auth: {
-        user: 'rishabhanand33@gmail.com',
-        pass: 'THMA15/Nov/99'
+        user: '',
+        pass: ''
     },
     tls: {
           rejectUnauthorized: false
@@ -132,6 +132,7 @@ app.post('/sendMail',checkSession, function(req,res){
         res.send("true");
     }
 });
+res.send("true");
 })
 
 app.post('/logout',checkSession,function (req, res) {

@@ -52,7 +52,8 @@ function initaliseTable(){
                 "targets": -2,
 
                 "render": function (data, type, row, meta) {
-                   data = '<a class="btn btn-sm editbtn actionbtns" onclick=addToEdit("'+row.status+'","'+row.name+'","'+row._id+'") data-toggle="modal" data-target="#updateCommunity" style="margin-top:35px;margin-right:5px;background-color: #2D312C;color: #fff"><span class="fa fa-edit"></span></a><a class="btn btn-sm infobtn actionbtns" data-toggle="modal" data-target="#CommunityInfo" onclick=addadatetoinfo("'+row.photoloc+'","'+row.name+'","'+row.description+'") style="margin-top:35px;background-color: #2D312C;color: #fff"><span class="fa fa-info"></span></a>';
+                  let addadatetoinfo = "addadatetoinfo(\'" + data.description + "\')";
+                   data = '<a id="editComm" class="btn btn-sm editbtn actionbtns" onclick=addToEdit("'+row.status+'","'+row.name+'","'+row._id+'") data-toggle="modal" data-target="#updateCommunity" style="margin-top:35px;margin-right:5px;background-color: #2D312C;color: #fff"><span class="fa fa-edit"></span></a><a id="btninfomation" class="btn btn-sm infobtn actionbtns" data-toggle="modal" data-target="#CommunityInfo" onclick=\"' + addadatetoinfo +'\" style="margin-top:35px;background-color: #2D312C;color: #fff"><span class="fa fa-info"></span></a>';
                 return data;
                 }},
               
@@ -82,19 +83,33 @@ function initaliseTable(){
   }
 var gd;
 
-  function addadatetoinfo(photoloc,name,desc)
+  function addadatetoinfo(desc)
   {
-    console.log(photoloc)
-    document.getElementById("CommunityProfilePic").src=photoloc;
-    document.getElementById("CommunityInfoPop").innerHTML="Community " + name;
-    document.getElementById("communityDesc").innerHTML=desc;
+    console.log(desc)
+    // document.getElementById("CommunityProfilePic").src=photoloc;
+    // document.getElementById("CommunityInfoPop").innerHTML="Community " + name;
+    // document.getElementById("communityDesc").innerHTML=desc;
+
+    $(document).on("click", "#btninfomation", function()
+    {
+        let d = $(this).parent().parent()[0].children;
+        document.getElementById("CommunityInfoPop").innerHTML = d[0].innerHTML;
+        document.getElementById("communityDesc").innerHTML = desc;
+        document.getElementById("CommunityProfilePic").src= d[6].lastChild.currentSrc;
+    });
   }
 
   function addToEdit(status,name,d)
   {
-    gd=d;
-    document.getElementById("CommuityName").value=name;
-    document.getElementById("communityStatus").value=status;
+     gd=d;
+    // document.getElementById("CommuityName").value=name;
+    // document.getElementById("communityStatus").value=status;
+    $(document).on("click", "#editComm", function() {
+      let d = $(this).parent().parent()[0].children;
+      document.getElementById("commNameinedit").innerHTML ="Commuity Name: "+ d[0].innerHTML;
+      document.getElementById("CommuityName").value = d[0].innerHTML;
+      document.getElementById("communityStatus").value=status;
+  });
   }
 
   document.getElementById("editsubmit").addEventListener("click",function()

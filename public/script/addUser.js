@@ -34,7 +34,7 @@ document.getElementById('btnaddUser').addEventListener('click',function() {
 		xml.addEventListener('onload', function()
 	  	{
 			
-			
+			//window.location='/addUser';
 		  })
 		  var x=new XMLHttpRequest();
 			var ob=new Object();
@@ -52,7 +52,9 @@ document.getElementById('btnaddUser').addEventListener('click',function() {
 			  console.log(ob);
 		xml.send(JSON.stringify(obj));
 		
+		  //alert('User Created');
 		  alert('User Created');
+		//window.location='/addUser';
 	}
 })
 function checkDuplicate() {

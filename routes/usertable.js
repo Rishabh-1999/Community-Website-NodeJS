@@ -231,11 +231,12 @@ app.post('/addUserToDataBase',checkSession,checkSuperAdmin,function (req, res) {
       //res.render('addUser',{data: req.session.data}); 
        console.log("New User created");
        //console.log(data);
+      //window.location="/addUser";
        res.send(data)
      })
      .catch(err => {
-      res.render('addUser',{data: req.session.data}); 
-      window.location="\addUser";
+     // res.render('addUser',{data: req.session.data}); 
+      //window.location="/addUser";
       res.send(err)
      })
 })
@@ -862,7 +863,7 @@ app.post('/getAllActive',checkSession,function(req,res) {
 })
 
 app.post('/updatecomm',checkSession,function(req,res) {
-  communitys.findOneAndUpdate({"_id":req.body._id},{"name":req.body.name,"description":req.body.description,"rule":req.body.rule},function(err,result)
+  communitys.findOneAndUpdate({"_id":req.body._id},{"name":req.body.name,"description":req.body.description,"status":req.body.status},function(err,result)
   {
     if(err)
       throw err
