@@ -710,7 +710,7 @@ app.post('/getCommunityLists',checkSession,function(req, res) {
   });
 
 //Join Community
-app.post('/joincommunity',checkSession,function(req,res) {
+app.post('/joinandrequestcommunity',checkSession,function(req,res) {
   if(req.body.r==0)
   {
     communitys.updateOne({"_id":req.body._id},{$push:{"users":req.session._id}},function(error,result){       
@@ -724,7 +724,7 @@ app.post('/joincommunity',checkSession,function(req,res) {
 }
 else
 {
-  communitys.updateOne({"_id":req.body._id},{$push:{"invited":req.session._id}},function(error,result){       
+  communitys.updateOne({"_id":req.body._id},{$push:{"request":req.session._id}},function(error,result){       
     if(error)
       throw error;
     else {
@@ -810,9 +810,7 @@ var rule;
   "description":req.body.description,
   "owner":req.session.name,
   "status":"Active",
-  "ownerid":req.session._id,
-  "managers":null,
-  "invited":null,
+  "ownerid":req.session._id
     })
     newProduct.save()
      .then(data => {
@@ -856,14 +854,14 @@ app.post('/uploadphotoCommunity',checkSession,(req,res)=>{
 })
 
 app.post('/getAllActive',checkSession,function(req,res) {
-    communitys.find({'ownerid':{"$ne":req.session._id}, "users": { "$nin" : [req.session._id]}}).skip(req.body.start).limit(req.body.end).exec(function(error,result) {
+    communitys.find({'ownerid':{"$ne":req.session._id}, "users": { "$nin" : [req.session._id]},"request": { "$nin" : [req.session._id]}}).skip(req.body.start).limit(req.body.end).exec(function(error,result) {
      //console.log(result);
       res.send(result);
 })
 })
 
 app.post('/updatecomm',checkSession,function(req,res) {
-  communitys.findOneAndUpdate({"_id":req.body._id},{"name":req.body.name,"description":req.body.description,"status":req.body.status},function(err,result)
+  communitys.findOneAndUpdate({"_id":req.body._id},{"name":req.body.name,"description":req.body.description,"rule":req.body.rule},function(err,result)
   {
     if(err)
       throw err
@@ -921,6 +919,17 @@ app.get('/userprofile/:pro',checkSession,(req,res)=>{
     }) 
 })
 
+app.post('/leaveCommunity',checkSession,(req,res)=>{
+  communitys.updateOne({"_id" :req.body.commid},{ $pull : {"users" : req.body._id}},function(error,result)
+  {
+      if(error)
+      throw error;
+      else {
+          res.send("true");
+      }
+  })
+})
+
 app.get('/communitymembers/:pro',checkSession,(req,res)=>{
     var id=req.params.pro.toString();
     communitys.findOne({"_id":id},function(err,result)
@@ -945,6 +954,18 @@ app.get('/profile/:pro',checkSession,(req,res)=>{
         res.render('communityprofile',{data:req.session.data,data2:result});
       }
     }) 
+})
+
+app.get('/community/chatroom/:pro',checkSession,(req,res)=>{
+  var id=req.params.pro.toString();
+  communitys.findOne({"_id":id},function(err,result)
+  {
+    if(err)
+      throw err;
+    else {
+      res.render('chatroom',{data:req.session.data,data2:result});
+    }
+  }) 
 })
 
 module.exports=app

@@ -21,7 +21,7 @@
   <% include paritials/sidebar.ejs %>
 <% } %>
 
-<div id="page-content-wrapper"> <!--Margin Top is new-->
+<div id="page-content-wrapper" style="position: relative;top: 70px;"> <!--Margin Top is new-->
   <div class="container-fluid page-content-div" style="padding:0">
     <div class="row">
       <div class="col-lg-12 scoll-possible" style="padding:0">
@@ -147,6 +147,7 @@
 
   function addToDOM(obj,s)
   {
+    console.log(obj)
     var div1=document.createElement('div');
     div1.setAttribute("class","col-sm-12 col-xs-12 myCommunity community-div");
     div1.setAttribute("style","display: flex;");
@@ -167,14 +168,14 @@
     var p=document.createElement('p')
     var a2=document.createElement('a');
     a2.setAttribute("class","comnametxt")
-    a2.href="#";
+    a2.href="usertable/community/chatroom/"+obj._id;
     a2.innerHTML=obj.name
     var a3=document.createElement('a')
     a3.setAttribute("class","comnametxt-user")
     if(s=="true")
     {
-    a3.setAttribute("href","/userTable/"+obj._id);
-    a3.innerHTML=" Managers()";
+      a3.setAttribute("href","/userTable/"+obj._id);
+      a3.innerHTML=" Members("+obj.users.length  +")";
     }
     else if(s=="pending")
     {
@@ -183,7 +184,7 @@
     else
     {
       a3.setAttribute("href","/userTable/communitymembers/"+obj._id);
-    a3.innerHTML=" Request()";
+      a3.innerHTML=" Request(" + obj.request.length +")";
     }
     p.appendChild(a2)
     p.appendChild(a3)
@@ -191,7 +192,7 @@
     div1.appendChild(div3)
     if(s=="true" || s=="pending")
     {
-    var div4=document.createElement('div')
+      var div4=document.createElement('div')
         div4.setAttribute("class","col-sm-1 col-xs-2")
         var a4=document.createElement('a')
         a4.setAttribute("class","community-short-btn")

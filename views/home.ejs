@@ -17,22 +17,15 @@
 <% if(data.isActive == "true"){ %>
   <% include paritials/sidebar.ejs %>
 <% } %>
-<style type="text/css">
-    .editbtn
-    {
-        float: right;
-     
-    }
-</style>
 
-<div class="content-div">
+<div class="content-div" style="padding-top: 100px;">
     <div class="container">
         <div class="card shadow">
             <div style="display:flex;">
-            <div class="image-container" style="flex:1;">
-                <img src="<%= data.photoloc %>" id="user-profile-image" class="image-content" />
+                <div class="image-container" style="flex:1;">
+                    <img src="<%= data.photoloc %>" id="user-profile-image" class="image-content" />
+                </div>
             </div>
-        </div>
             <div class="con">
                 <div class="col-div shadow">
                     <div class="panel-heading">Email</div>

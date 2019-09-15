@@ -17,9 +17,10 @@ display:none;
 @media(max-width: 768px)
 {
 	.adduser-container {
-    margin-right: 10%;
-    margin-left: 20%;
+    margin-right: 5%;
+    margin-left: 5%;
 }
+
 }
 label {
     display: inline-block;

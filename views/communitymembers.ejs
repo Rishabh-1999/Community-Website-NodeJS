@@ -44,8 +44,10 @@ dropdown-menu>li>a {
 }
 </style>
 
-<div class="container-fluid page-content-div" style="padding:0">
+<div id="page-content-wrapper" style="position: relative;top: 70px;"> <!--Margin Top is new-->
+  <div class="container-fluid page-content-div" style="padding:0">
     <div class="row">
+      <div class="col-lg-12 scoll-possible" style="padding:0">
         <div class="col-lg-12 scoll-possible" style="padding:0">
 			<div class="community-header-top communityheader-profile-mobile" style="padding-top:6px;position:relative;">
 			    <div class="container pc">
@@ -151,7 +153,7 @@ function initalise()
   xml.addEventListener("load",function()
   {
       var data=JSON.parse(xml.responseText);
-      if(data.length==0)
+      if(data.managers.length==0)
         noMangers();
       else
       {
@@ -174,7 +176,7 @@ function initalise2()
   xml.addEventListener("load",function()
   {
       var data=JSON.parse(xml.responseText);
-      if(data.length==0)
+      if(data.users.length==0)
         noMangers();
       else
       {

@@ -9,13 +9,12 @@
 <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="css/communitystyle.css">
 
-
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 <script type="text/javascript" src="script/select2.js"></script>
-
+<body>
 <% include paritials/topbar.ejs %>
 <% if(data.isActive == "true"){ %>
   <% include paritials/sidebar.ejs %>
@@ -68,12 +67,14 @@
     }
   }
   </style>
-
+  <div id="page-content-wrapper" style="position: relative;top: 70px;"> <!--Margin Top is new-->
+	<div class="container-fluid page-content-div" style="padding:0">
+	  <div class="row">
 <div class="container-fluid page-content-div" style="padding:0">
             <div class="row" style="background-color: #F3F4F4">
                <div class="col-lg-12 scoll-possible" style="padding:0">
 
-<div class="community-header-top" style="height:50px;padding-top:6px;background-color: #35AAC7;display: flex;">
+<!-- <div class="community-header-top" style="position: relative;top: 70px;height:50px;background-color: #35AAC7;display: flex;">
 <div class="col-sm-4 community-sub-head" style="flex:1">
     <a class="btn community-head-btn active" href="/communityPage">
       <i class="fa fa-users"></i>
@@ -85,13 +86,30 @@
 <div class="col-sm-4 col-sm-push-4 pc" style="padding:0 50px 0 0;flex:1">
     <input class="form-control searchCommunityDiscover" type="text" placeholder="Search Community..." id="searchinput">
   </div>
-</div>
+</div> -->
+<div class="community-header-top" style="height:50px;flex-direction: column-reverse;
+display: flex;">
+		<div class="col-sm-12 community-sub-head" style="z-index: 1100;">
+		  <a class="btn community-head-btn active" onclick="initaliseTable()">
+			<i class="fa fa-users"></i>
+		  </a>
+		  <a class="btn community-head-btn" style="margin-left:10px" href="/communityalllists">
+			<i class="fa fa-search"></i>
+		  </a>
+		</div>
+		<div class="col-sm-4 col-sm-push-4 pc" style="    padding: 0 50px 0 0;
+		position: relative;
+		flex: 1;
+		display: flex;">
+				<input class="form-control searchCommunityDiscover" type="text" placeholder="Search Community..." id="searchinput">
+			  </div>
+	  </div>
 <!--=======================================================-->
     <div class="col-sm-12">
         
         <br>
       <div class="container">
-        <div class="search" id="search">
+        <div class="search" id="search" style="top: 80px;position: relative;">
               <!--Community List-->
         <div class="container mainDivDiscover-container" >
         	<div class="panel community-show-item panel-default allSidesSoft" style=" padding:0;background:white;">
@@ -174,7 +192,7 @@ function getDocumentHeight() {
 		body.scrollHeight, body.offsetHeight,
 		html.clientHeight, html.scrollHeight, html.offsetHeight
 	);
-};
+}
 
  function getScrollTop() {
 	console.log("getScrollTop");
@@ -286,7 +304,7 @@ function btnjoin(r,_id)
   var obj=new Object()
   obj.r=r;
   obj._id=_id;
-  xml.open("POST","/userTable/joincommunity")
+  xml.open("POST","/userTable/joinandrequestcommunity")
   xml.onload=function()
     {
       $('#divid'+_id).fadeOut(600, function(){
@@ -309,3 +327,4 @@ function btnjoin(r,_id)
 		}
 	}
 </script>
+</body>

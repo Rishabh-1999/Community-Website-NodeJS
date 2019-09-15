@@ -19,6 +19,9 @@ body{
 	text-align: center;
 }
 .tabBar{
+	position: fixed;
+	z-index: 990;
+	margin-top: 70px;
 	background-color: black;
 	float: left;
 	overflow: hidden;

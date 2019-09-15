@@ -1,4 +1,5 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CQ</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
@@ -44,9 +45,10 @@
 }
 </style>
 
-<div class="container-fluid page-content-div" style="padding:0">
-  <div class="row">
-     <div class="col-lg-12 scoll-possible" style="padding:0">
+<div id="page-content-wrapper" style="position: relative;top: 70px;"> <!--Margin Top is new-->
+  <div class="container-fluid page-content-div" style="padding:0">
+    <div class="row">
+      <div class="col-lg-12 scoll-possible" style="padding:0">
         <div class="community-header-top communityheader-profile-mobile" style="padding-top:6px;position:relative;">
           <div class="container pc">
           </div>
@@ -172,18 +174,19 @@
       </div>
     
     <div class="panel-body allSidesSoft" style="background:#fff">
-        <a class="manageCommunity-child-btn manageCommunity-btn-active" onclick="initaliseusers()" id="UsersShowBtn">Users (0)</a>
+        <a class="manageCommunity-child-btn manageCommunity-btn-active" onclick="initaliseusers()" id="UsersShowBtn">
+          Users (<%= data2.users.length %>)</a>
         <br>
-        <a class="manageCommunity-child-btn" onclick="initalisemangers()" id="AdminsShowBtn">
-            Managers (0)
+        <a class="manageCommunity-child-btn" onclick="initalisemangers()" id="managersShowBtn">
+            Managers (<%= data2.managers.length %>)
         </a>
           <br>
           <a class="manageCommunity-child-btn" onclick="initaliserequest()" id="requestedUserShowBtn">
-            Requests (0)
+            Requests (<%= data2.request.length %>)
           </a>
         <br>
         <a class="manageCommunity-child-btn" onclick="initaliseinvited()" id="invitedUserShowBtn">
-          Invited Members (0)
+          Invited Members (<%= data2.invited.length %>)
         </a>
     </div>
     <br>
@@ -221,6 +224,14 @@ function initaliserequest()
   document.getElementById('comlist').innerHTML="";
   xml.addEventListener("load",function()
   {
+    $('#invitedUserShowBtn').removeClass()
+      $('#invitedUserShowBtn').addClass('manageCommunity-btn');
+      $('#managersShowBtn').removeClass();
+      $('#managersShowBtn').addClass('manageCommunity-child-btn');
+      $('#UsersShowBtn').removeClass();
+      $('#UsersShowBtn').addClass('manageCommunity-child-btn');
+      $('#requestedUserShowBtn').removeClass();
+      $('#requestedUserShowBtn').addClass('manageCommunity-btn-active');
       var data=JSON.parse(xml.responseText);
       if(data.length==0)
         noRequest();
@@ -247,16 +258,23 @@ function initaliseinvited()
   xml.addEventListener("load",function()
   {
       var data=JSON.parse(xml.responseText);
+      $('#invitedUserShowBtn').removeClass()
       $('#invitedUserShowBtn').addClass('manageCommunity-btn-active');
+      $('#managersShowBtn').removeClass();
+      $('#managersShowBtn').addClass('manageCommunity-child-btn');
+      $('#UsersShowBtn').removeClass();
+      $('#UsersShowBtn').addClass('manageCommunity-child-btn');
+      $('#requestedUserShowBtn').removeClass();
+      $('#requestedUserShowBtn').addClass('manageCommunity-child-btn');
       if(data.length==0)
         noinvitedMembers();
       else
       {
         for(i in data)
         {
-          //addToRequestDOM(data[i])
+          //addToInvited(data[i])
         }
-        document.getElementById('invitedUserShowBtn').innerHTML="Invited ("+data.length+")";
+        document.getElementById('invitedUserShowBtn').innerHTML="Invited Members("+data.length+")";
     }
   })
   xml.send(JSON.stringify({"_id":commid}));
@@ -271,6 +289,14 @@ function initalisemangers()
   document.getElementById('comlist').innerHTML=""
   xml.addEventListener("load",function()
   {
+      $('#invitedUserShowBtn').removeClass()
+      $('#invitedUserShowBtn').addClass('manageCommunity-btn');
+      $('#managersShowBtn').removeClass();
+      $('#managersShowBtn').addClass('manageCommunity-btn-active');
+      $('#UsersShowBtn').removeClass();
+      $('#UsersShowBtn').addClass('manageCommunity-child-btn');
+      $('#requestedUserShowBtn').removeClass();
+      $('#requestedUserShowBtn').addClass('manageCommunity-btn');
       var data=JSON.parse(xml.responseText);
       if(data.length==0)
         noMangers();
@@ -280,7 +306,7 @@ function initalisemangers()
         {
           addtoMangersDOM(data[i])
         }
-        document.getElementById('AdminsShowBtn').innerHTML="Managers ("+data.length+")";
+        document.getElementById('managersShowBtn').innerHTML="Managers ("+data.length+")";
     }
   })
   xml.send(JSON.stringify({"_id":commid}));
@@ -296,6 +322,14 @@ function initaliseusers()
 
   xml.addEventListener("load",function()
   {
+    $('#invitedUserShowBtn').removeClass()
+    $('#invitedUserShowBtn').addClass('manageCommunity-btn');
+    $('#managersShowBtn').removeClass();
+    $('#managersShowBtn').addClass('manageCommunity-child-btn');
+    $('#UsersShowBtn').removeClass();
+    $('#UsersShowBtn').addClass('manageCommunity-btn-active');
+    $('#requestedUserShowBtn').removeClass();
+    $('#requestedUserShowBtn').addClass('manageCommunity-btn');
       var data=JSON.parse(xml.responseText);
       if(data.length==0)
         noUser();
@@ -313,6 +347,7 @@ function initaliseusers()
 
 function addtoUserDOM(obj)
 {
+  var deletename="users";
   var div1=document.createElement('div')
   div1.setAttribute("class","col-sm-12 col-xs-12 allcoms community-user-div")
   div1.setAttribute("style","margin-top:5px;display:flex;")
@@ -350,7 +385,7 @@ function addtoUserDOM(obj)
   a4.setAttribute("class","community-user-short-btn")
   a4.setAttribute("style","float:right")
   a4.setAttribute("id","deletebtn")
-  a4.setAttribute("onclick","deleteb()")
+  a4.setAttribute("onclick","deleteb('"+obj._id+"')")
   var i2=document.createElement('i')
   i2.setAttribute("class","fa fa-times")
   a4.appendChild(i2)
@@ -379,7 +414,7 @@ function promote()
         });
 }
 
-function deleteb()
+function deleteb(id)
 {
   $(document).on("click", "#deletebtn", function() {
   $.confirm({
@@ -390,7 +425,17 @@ function deleteb()
              'Yes': {
                  btnClass: 'btn-success',
                  action: function(){
-                  alert("function not defined to delete")
+                  var xml=new XMLHttpRequest();
+                  xml.open("POST","/userTable/leaveCommunity");
+                  xml.setRequestHeader("Content-Type","application/json");
+                  xml.addEventListener("load",function()
+                  {
+                      var data=JSON.parse(xml.responseText);
+                      if(data=="true")
+                        alert("Users Removed");
+                      initaliseusers();
+                  })
+                  xml.send(JSON.stringify({"_id":id,"commid":commid}));
                 }},
                'No': {btnClass: 'btn-danger',}
             }
@@ -409,9 +454,19 @@ function noUser()
   div1.appendChild(center1)
   document.getElementById('comlist').appendChild(div1)
 }
-
+function noMangers()
+{
+  var div1=document.createElement('div')
+  div1.setAttribute("class","col-sm-12 allcoms well well-sm")
+  div1.setAttribute("style","argin-top:5px;font-weight:bold")
+  var center1=document.createElement('center')
+  center1.innerHTML="No any Managers"
+  div1.appendChild(center1)
+  document.getElementById('comlist').appendChild(div1)
+}
 function addtoMangersDOM(obj)
 {
+  var deletename="managers";
   var div1=document.createElement('div')
   div1.setAttribute("class","col-sm-12 col-xs-12 allcoms community-user-div")
   div1.setAttribute("style","margin-top:5px;display:flex;")

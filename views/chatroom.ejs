@@ -6,9 +6,10 @@
 
 <link rel="stylesheet" type="text/css" href="/css/navBar.css">
 <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
-<link rel="stylesheet" type="text/css" href="/css/trumbowyg.css">
 <link rel="stylesheet" type="text/css" href="/css/communitystyle.css">
 <link rel="stylesheet" type="text/css" href="/css/sirstyle.css">
+<link rel="stylesheet" type="text/css" href="/css/discussion.css">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
@@ -20,10 +21,232 @@
 
 <script src="/script/trumbowyg.min.js"></script>
 
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+
 <% include paritials/topbar.ejs %>
 <% if(data.isActive == "true"){ %>
   <% include paritials/sidebar.ejs %>
 <% } %>
+
+<style>
+    #commHeader
+{
+    background-image: linear-gradient(to bottom, #4ba2b7, #42a6be, #38aac6, #29adcd, #0fb1d5);
+}
+#first-btn
+{
+    border: 1px solid #fff !important;
+    color: #fff !important;
+    border-bottom: 4px solid #fff !important;
+    background-color: rgba(255,255,255,0.1) !important;
+    margin-left: 100px;
+}
+#search-btn
+{
+    background-color: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid #fff;
+}
+#dpimage
+{
+    cursor: pointer !important;
+    width: 40px;
+    margin-left: 30px;
+    margin-top: 10px;
+    margin-right: 10px;
+    float: right;
+    border-radius: 50%;
+    vertical-align: middle;
+    border: 0;
+}
+  </style>
+
+
+  <div id="page-content-wrapper" style="position: relative;top: 70px;"> <!--Margin Top is new-->
+    <div class="container-fluid page-content-div" style="padding:0">
+      <div class="row">
+        <div class="col-lg-12 scoll-possible" style="padding:0">
+          <div class="community-header-top communityheader-profile-mobile" style="padding-top:6px;position:relative;">
+    
+      <center>
+          <div class="communityprofile-name-mobile" style="max-height:40px;overflow:scroll">
+            <a href="" style="color:white">
+              
+            </a>
+          </div>
+      </center>
+
+    
+
+          </div>
+          <div class="container community-profile-conatiner">
+            <div class="col-sm-2 col-xs-12 center-mobile pc">
+              <a href="">
+                <img src="<%= data2.photoloc %>" class="img-communityprofile-pic allSides" style="background:#fff">
+              </a>
+            </div>
+            <div class="col-sm-8 communityprofile-name-pc communityprofile-system">
+              <a href="" class="communityprofile-name-pc">
+                <p><%=data2.name%></p>
+              </a>
+            </div>
+            <div class="col-sm-2 col-xs-12 center-mobile" style="padding-top:10px;float:right">
+              <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle commuity-profile-menu-btn" type="button" data-toggle="dropdown">
+                  <i class="fa fa-bars"></i>
+                </button>
+                <ul class="dropdown-menu custom-commuity-dropdown dropdown-menu-right" style="margin-top:40px">
+                <li>
+                    <a href="#" class="community-profile-option-btn">
+                      Discussions
+                    </a>
+                </li>
+                <li id="hideManage">
+                    <a href="/userTable/<%= data2._id %>" class="community-profile-option-btn">
+                      Manage Community
+                    </a>
+                </li>
+                <li>
+                    <a href="/userTable/<%= data2._id %>" class="community-profile-option-btn">
+                      Community Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="/userTable/communitymembers/<%= data2._id %>" class="community-profile-option-btn">
+                      Community Members
+                    </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+<center>
+    <hr style="border-top:2px solid #E6E6E6;width:85%;margin-top:0">
+</center>
+<style>
+  .child-reply-input{
+    display: none !important;
+  }
+</style>
+
+<div class="container" style="width:90% !important">
+  
+</div>
+<div class="container discussion-input discussion-container">
+  <div class="panel panel-default allSidesSoft" style="border-radius:0;border:1px solid rgb(182, 182, 182) !important;">
+    <div class="panel-body" style="padding:5px;background:#f9f9f9;">
+      <div class="col-sm-1 col-xs-3">
+        <a href="">
+          <img src= <%= data2.photoloc %> class="discussion-com-profile-pic allSidesSoft" id="dpimage" style="border:2px solid #fff;width: 50px;height: 50px;">
+        </a>
+      </div>
+      <p class="col-sm-11 col-xs-9 discussion-heading" style="margin-top: 20px;font-size: 20px;">
+        Start a discussion
+      </p>
+    </div>
+<form method="POST" enctype="multipart/form-data" id="discussionPostForm">
+
+    <div class="panel-body discussion-panel-body">
+      <div class="col-sm-12 col-xs-12" style="padding:0;border-top: 1px solid white;">
+        <input type="text" style="width:100%" class="discussion-input-title" name="title" placeholder="Enter a discussion title....." id="discussion-title" autocomplete="off" required="">
+      </div>
+    </div>
+
+    <div class="panel-body discussion-body" style="display: block;width: 100%;">
+        <div class="col-sm-12 col-xs-12" style="padding:0;border-top: 1px solid white;">
+          <!--Textarea-->
+            <textarea class="discussion-body-textarea" name="details" placeholder="Enter discussion details" id="discussion-details" autocomplete="off" required=""></textarea>
+          <!------------>
+        </div>
+
+        <div class="link-preview-main col-sm-12 col-xs-12">
+          <!-- preview here -->
+        </div>
+        <div class="tag-conatiner-custom-div">
+          <select id="tagEditor" name="tags" class="form-control input-sm select2-multiple select2-hidden-accessible" style="width:100%"  >
+            <!--Tags option appended here-->
+              <option class="tagSuggestInput">Hello</option>
+              <option class="tagSuggestInput">Hey</option>
+              <option class="tagSuggestInput">Rid</option>
+              <option class="tagSuggestInput">Ram</option>
+              <option class="tagSuggestInput">Ji</option>
+              <option class="tagSuggestInput">QWE</option>
+              <option class="tagSuggestInput">Looo</option>
+              <option class="tagSuggestInput">Bye</option>
+              <option class="tagSuggestInput">Bro</option>
+              <option class="tagSuggestInput">Li</option>
+          </select>
+        </div>
+
+        <div class="image-preview-main col-sm-12 col-xs-12" >
+          <center>
+            <img src="" class="allSides preview-image" id="previewImage">
+          </center>
+        </div>
+        <input type="file" multiple="" class="discussion-file-btn" name="discussionImageFile" id="discussionImageFile" accept="image/x-png,image/gif,image/jpeg">
+        <div class="col-sm-12 col-xs-12" style="padding:0; ">
+          
+          <a class="discussion-image-btn" id="discussionImageClickBtn" style="width:40px;height: 40px;"><i class="fa fa-image" ></i></a>
+          
+          <button class="btn btn-primary" type="submit" style="float:right" id="discussion-post">
+            <p class="discussion-post-btn-txt">Post</p>
+          
+          </button>
+        </div>
+    </div>
+  </form>
+  <div class="panel-footer"></div>
+  </div>
+</div> <!--Header-->  
+
+</div></div></div>
+
+
+                    <div>
+                      
+                 </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+<script type="text/javascript">
+  var hideManage = document.getElementById('hideManage');
+  var commid ="<%= data2._id %>";
+  var email_id ="<%= data.email %>";
+  $(document).ready(function() {
+      initaliseusers();   
+  })
+  function initaliseusers()
+  {
+    var xml=new XMLHttpRequest();
+    xml.open("POST","/usertable/getUsers");
+    xml.setRequestHeader("Content-Type","application/json");
+    xml.addEventListener("load",function()
+    {
+        var data=JSON.parse(xml.responseText);
+      
+        for(i in data)
+        {
+          addtoUserDOM(data[i])
+        }
+    })
+    xml.send(JSON.stringify({"_id":commid}));
+  }
+
+function addtoUserDOM(obj)
+{
+  console.log(obj.email)
+  console.log(email_id)
+  console.log(obj)
+  if(obj.email == email_id)
+  {
+     hideManage.setAttribute("style", "display:none");
+  }
+}
+</script>
 
 
 

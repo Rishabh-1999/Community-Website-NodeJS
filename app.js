@@ -70,8 +70,8 @@ app.get('/taglists' ,checkSession, (req,res)=>{
     res.render('taglists',{data: req.session.data}); 
 })
 
-app.get('/table' ,checkSession,checkSuperAdmin, (req,res)=>{
-    res.render('table',{data: req.session.data});
+app.get('/usertable' ,checkSession,checkSuperAdmin, (req,res)=>{
+    res.render('usertable',{data: req.session.data});
 })
 
 app.get('/communityPage' ,checkSession, (req,res)=>{
@@ -82,8 +82,8 @@ app.get('/communityPage' ,checkSession, (req,res)=>{
 //     res.render('communityprofile',{data: req.session.data}); 
 // })
 
-app.get('/superadmincommunityPage' ,checkSession,checkSuperAdmin, (req,res)=>{
-    res.render('superadmincommunitylists',{data: req.session.data});
+app.get('/communitytable' ,checkSession,checkSuperAdmin, (req,res)=>{
+    res.render('communitytable',{data: req.session.data});
 })
 
 app.get('/tagpage' ,checkSession, (req,res)=>{
@@ -114,8 +114,8 @@ app.get('/changePassPage' ,checkSession, (req,res)=>{
 let transporter = nodemailer.createTransport({
   service:'gmail',
     auth: {
-        user: '',
-        pass: ''
+        user: 'rishabhanand33@gmail.com',
+        pass: 'THMA15/Nov/99'
     },
     tls: {
           rejectUnauthorized: false

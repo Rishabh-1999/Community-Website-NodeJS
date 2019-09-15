@@ -94,8 +94,9 @@
 }
 </style>
 
-<div class="container-fluid page-content-div" style="padding:0">
-    <div class="row">
+<div id="page-content-wrapper" style="position: relative;top: 70px;"> <!--Margin Top is new-->
+	<div class="container-fluid page-content-div" style="padding:0">
+	  <div class="row">
     	<div class="col-lg-12 scoll-possible" style="padding:0">
 			<div class="community-header-top communityheader-profile-mobile" style="padding-top:6px;position:relative;">
     			<div class="container pc">
@@ -117,115 +118,126 @@
   						<img src="<%= data2.photoloc %>" class="img-communityprofile-pic allSides" style="background:#fff">
 					</a>
 				</div>
-			<div class="col-sm-8 communityprofile-name-pc communityprofile-system">
-  				<a href="" class="communityprofile-name-pc"><%= data2.name %></a>
+				<div class="col-sm-8 communityprofile-name-pc communityprofile-system">
+					<a href="" class="communityprofile-name-pc"><%= data2.name %></a>
+				</div>
+				<div class="col-sm-2 col-xs-12 center-mobile" style="padding-top:10px;float:right">
+					<div class="dropdown">
+						<button class="btn btn-default dropdown-toggle commuity-profile-menu-btn" type="button" data-toggle="dropdown">
+						<i class="fa fa-bars"></i>
+						</button>
+						<ul class="dropdown-menu custom-commuity-dropdown dropdown-menu-right" style="margin-top:40px">
+						<li>
+							<a href="#" class="community-profile-option-btn">
+							Discussions
+							</a>
+						</li>
+						<li>
+							<a href="/userTable/<%= data2._id %>" class="community-profile-option-btn">
+							Manage Community
+							</a>
+						</li>
+						<li>
+							<a href="/userTable/edit/<%= data2._id %>" class="community-profile-option-btn">
+							Community Profile
+							</a>
+						</li>
+						<li>
+							<a href="#" class="community-profile-option-btn">
+								Community Members
+							</a>
+						</li>
+						</ul>
+					</div>
+				</div>
 			</div>
-			<div class="col-sm-2 col-xs-12 center-mobile" style="padding-top:10px;float:right">
-			<div class="dropdown">
- 	 			<button class="btn btn-default dropdown-toggle commuity-profile-menu-btn" type="button" data-toggle="dropdown">
-    			<i class="fa fa-bars"></i>
-  				</button>
-  				<ul class="dropdown-menu custom-commuity-dropdown dropdown-menu-right" style="margin-top:40px">
-     			<li>
-          			<a href="#" class="community-profile-option-btn">
-            		Discussions
-          			</a>
-      			</li>
-      			<li>
-          			<a href="/userTable/<%= data2._id %>" class="community-profile-option-btn">
-            		Manage Community
-          			</a>
-      			</li>
-      			<li>
-          			<a href="/userTable/edit/<%= data2._id %>" class="community-profile-option-btn">
-            		Community Profile
-          			</a>
-      			</li>
-      			<li>
-          			<a href="#" class="community-profile-option-btn">
-            			Community Members
-          			</a>
-      			</li>
-    		</ul>
-			</div>
+			<center>
+				<hr style="border-top:2px solid #E6E6E6;width:85%;margin-top:0">
+			</center>
+		<div class="container">
+			<div style="margin-top:30px;">  
+				<div class="col-12">
+					<div class="card allSidesSoft">
+						<div class="card-body">
+							<div class="d-flex">
+							<div class="image-container"  id="profilepicform">
+								<img src="<%= data2.photoloc %>" id="user-profile-image" style="width: 150px; height: 150px" class="img-thumbnail allSidesSoft">
+								<div class="middle">
+									<div class="upload-btn-wrapper">
+									<form method="post" action="/userTable/uploadphoto" id="profilepicform1" enctype="multipart/form-data">
+									<button id="uploadfiletodatabase" class="btn">Upload a file</button>
+									<input type="file" id="up" name="file"/>
+									</form>
+								</div>
+								</div>
+							</div>
+							</div>
+							<br>
+							<form class="communitypicform" method="post" action="/#">
+							<div class="panel-group">
+								<div class="form-group">
+									<label>Community Name :</label>
+									<input type="text" value="<%= data2.name %>" class="form-control" name="communityName" maxlength="70" required="" id="commname">
+								</div>
+								<div class="form-group">
+									<label>Community Rule:</label>
+									<select class="form-control" name="communityMembershipRule" style="height:auto" id="rule">
+										<option value="Permission">Permission</option>
+										<option value="Direct" selected="">Direct</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label>Community Description:</label>
+									<textarea type="text" class="form-control trumbowyg-textarea" rows="15" name="communityDescription" id="description" required="" tabindex="-1" style="height: 260px;"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<input type="submit" class="btn btn-primary pull-right btnEditForm" style="margin:1px" value="Update" id="updatebtn">
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+    		</div>
 		</div>
 	</div>
-	<center>
-    	<hr style="border-top:2px solid #E6E6E6;width:85%;margin-top:0">
-	</center>
-  	<div class="container">
-    <div style="margin-top:30px;">  
-      	<div class="col-12">
-            <div class="card allSidesSoft">
-                <div class="card-body">
-                  	<div class="d-flex">
-                    <div class="image-container"  id="profilepicform">
-                        <img src="<%= data2.photoloc %>" id="user-profile-image" style="width: 150px; height: 150px" class="img-thumbnail allSidesSoft">
-                        <div class="middle">
-                            <div class="upload-btn-wrapper">
-                            <form method="post" action="/userTable/uploadphoto" id="profilepicform1" enctype="multipart/form-data">
-                              <button id="uploadfiletodatabase" class="btn">Upload a file</button>
-                              <input type="file" id="up" name="file"/>
-                            </form>
-                          </div>
-                        </div>
-                    </div>
-                </div>
-                  	<br>
-                  	<form class="communitypicform" method="post" action="/#">
-                    <div class="panel-group">
-                      	<div class="form-group">
-                           <label>Community Name :</label>
-                           <input type="text" value="<%= data2.name %>" class="form-control" name="communityName" maxlength="70" required="" id="commname">
-                      	</div>
-                      	<div class="form-group">
-                          	<label>Community Rule:</label>
-                            <select class="form-control" name="communityMembershipRule" style="height:auto" id="rule">
-                                <option value="Permission">Permission</option>
-                                <option value="Direct" selected="">Direct</option>
-                            </select>
-                      	</div>
-                      	<div class="form-group">
-                            <label>Community Description:</label>
-                            <textarea type="text" class="form-control trumbowyg-textarea" rows="15" name="communityDescription" id="description" required="" tabindex="-1" style="height: 260px;"></textarea>
-                      	</div>
-                    	</div>
-                    	<div class="form-group">
-                        	<input type="submit" class="btn btn-primary pull-right btnEditForm" style="margin:1px" value="Update" id="updatebtn">
-                    	</div>
-                  	</form>
-                </div>
-           </div>
-        </div>
-    </div>
-</div>
-<br>
-
 </div>
 </div>
 </div>
 <script type="text/javascript">
+function strip_html_tags(str)
+{
+   if ((str===null) || (str===''))
+       return false;
+  else
+   str = str.toString();
+  return str.replace(/<[^>]*>/g, '');
+}
 $.trumbowyg.svgPath = '/css/trumbowyg.svg';
 $('#description').trumbowyg();
 document.getElementById('rule').value="<%= data2.rule %>"
 document.getElementById('updatebtn').addEventListener("click",function()
 {
+	if(commname.value=="") {
+		alert("Enter Community Name");
+		return;
+	}
 	var xml=new XMLHttpRequest();
 	xml.open("POST","/userTable/updatecomm");
 	var obj=new Object()
 	obj._id="<%= data2._id %>"
 	obj.name=document.getElementById('commname').value;
-	obj.description=document.getElementById('description').value;
+	obj.description=strip_html_tags(document.getElementById('description').value);
 	obj.rule=document.getElementById('rule').value;
 	xml.setRequestHeader("Content-Type","application/json");
-  if( document.getElementById("up").files.length != 0 )
-    document.getElementById("profilepicform1").submit();
+	if( document.getElementById("up").files.length != 0 )
+		document.getElementById("profilepicform1").submit();
 	xml.addEventListener("load",function()
   	{
   		if(xml.responseText=="true")
   			window.location="/userTable/"+obj._id
   	})
-  xml.send(JSON.stringify(obj));
+  	xml.send(JSON.stringify(obj));
 	xml.send()
 })
 </script>
