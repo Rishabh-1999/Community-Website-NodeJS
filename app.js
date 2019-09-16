@@ -50,6 +50,13 @@ var checkSuperAdmin = function (req, res, next) {
       res.redirect('/');
 }
 
+var checkSuperAdminOrCommunityManagers = function (req, res, next) {
+    if(req.session.data.role=="SuperAdmin" || req.session.data.role=="CommunityManagers")
+      next();
+    else
+      res.redirect('/');
+}
+
 app.get('/home' ,checkSession, (req,res)=>{
     res.render('home',{data: req.session.data});
 })
@@ -58,7 +65,7 @@ app.get('/loading' ,checkSession, (req,res)=>{
     res.render('loading',{data: req.session.data});
 })
 
-app.get('/addCommunity' ,checkSession,checkSuperAdmin, (req,res)=>{
+app.get('/addCommunity' ,checkSession,checkSuperAdminOrCommunityManagers, (req,res)=>{
     res.render('addCommunity',{data: req.session.data}); 
 })
 

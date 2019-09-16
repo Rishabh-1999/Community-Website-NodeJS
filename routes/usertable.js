@@ -33,6 +33,13 @@ var checkSuperAdmin = function (req, res, next) {
       res.redirect('/');
 }
 
+var checkSuperAdminOrCommunityManagers = function (req, res, next) {
+    if(req.session.data.role=="SuperAdmin" || req.session.data.role=="CommunityManagers")
+      next();
+    else
+      res.redirect('/');
+}
+
 var user = new mongoose.Schema({
     email: String,
     password: String,
@@ -75,16 +82,11 @@ passport.use(new GitHubStrategy({
 app.get('/auth/github',passport.authenticate('github'));
 
 app.get('/auth/github/callback',passport.authenticate('github', { failureRedirect: 'index.html' }), function (req, res) {
-console.log(req.session.passport.user._json.id);
 UsersNames.findOne({"githubid" :req.session.passport.user._json.id},function(err, result) {
 console.log("githubsignin succesful");
 if(result!=null)
 {
   console.log("result not null");
-  //console.log(result);
-  //console.log(result.email);
-  //console.log(result.name);
-
         req.session.isLogin=1;
         req.session._id=result._id;
         req.session.name=result.name;
@@ -109,7 +111,6 @@ if(result!=null)
         ob.temprole=result.role;
         req.session.name=result.name;
         req.session.data=ob;
-        //console.log(req.session.data)
         res.redirect('/home');
 }
 else
@@ -164,7 +165,6 @@ app.post('/activatesuperadmin',checkSession,checkSuperAdmin,function(req,res){
 app.post('/checkLogin',function(req,res) {
     console.log('login data recieved');
     UsersNames.findOne({"email": req.body.email,"password":req.body.password,restrict:"false"}, function(err, result) {
-    //console.log(result);
       if(result!=null) {
         req.session.isLogin=1;
         req.session._id=result._id;
@@ -191,7 +191,6 @@ app.post('/checkLogin',function(req,res) {
         ob.temprole=result.role;
         req.session.name=result.name;
         req.session.data=ob;
-        console.log(req.session)
         if(result.status=="Pending")
         {
           res.send("not");
@@ -228,15 +227,10 @@ app.post('/addUserToDataBase',checkSession,checkSuperAdmin,function (req, res) {
     })
     newProduct.save()
      .then(data => {
-      //res.render('addUser',{data: req.session.data}); 
        console.log("New User created");
-       //console.log(data);
-      //window.location="/addUser";
        res.send(data)
      })
      .catch(err => {
-     // res.render('addUser',{data: req.session.data}); 
-      //window.location="/addUser";
       res.send(err)
      })
 })
@@ -286,13 +280,11 @@ app.post('/changetemprole',checkSession,checkSuperAdmin,function(req,res) {
   if(req.session.data.temprole=="SuperAdmin")
   {
     req.session.data.temprole="User"
-    //console.log(req.session.data)
     res.send("changed")
   }
   else
   {
     req.session.data.temprole="SuperAdmin"
-    //console.log(req.session.data)
     res.send("changed")
   }
 })
@@ -384,7 +376,6 @@ else if(req.body.order[0].column === '4')
             console.log(err);
         else
         {
-            // console.log(data);
             UsersNames.countDocuments(query, function(err , filteredCount)
             {
                 if(err)
@@ -426,8 +417,6 @@ app.post('/uploadphoto',checkSession,(req,res)=>{
           throw err;
         }
         else{
-          //console.log(req.file);
-          //console.log(photoname);
           UsersNames.updateOne({"_id":req.session._id},{$set:{"photoloc":'/uploads/'+photoname}},function(error,result){
               console.log("photo updated to database"+result)
               req.session.data.photoloc = 'uploads/'+photoname;
@@ -512,148 +501,8 @@ communitys.findOne({ "_id" : req.body._id }).populate('request').
   })
 })
 
-// get request users in communityes(Not Used)
-// app.post('/promoteuser',function(req,res) {
-// if(req.session.isLogin){
-//     var res;
-//     UsersNames.find({"_id":req.body._id}).exec(function(error,result)    {
-//   if(error)
-//     throw error;
-//   else
-//   {
-//     var ch=result.role;
-//     if(result.role=="User")
-//     {
-//       ch="Admin";
-//     }
-//     else if(result.role=="Admin")
-//     {
-//       ch="SuperAdmin"
-//     }
-//     UsersNames.updateOne({"_id":req.body._id},{$set:{"role":ch}},function(error,result){
-//   if(error)
-//     res.send("false")
-//   else
-//     res.send("true")
-//   })
-//   }
-// })
-//   }
-// })
-
-// Remove users from community (Not User)
-//   app.post('/remove',function(req,res) {
-//   if(req.session.isLogin){
-//     var res;
-//     =UsersNames.find({"_id":req.body._id}).exec(function(error,result)    {
-//   if(error)
-//     throw error;
-//   else
-//   {
-//     var ch=result.role;
-//     if(result.role=="User")
-//     {
-//       ch="Admin";
-//     }
-//     else if(result.role=="Admin")
-//     {
-//       ch="SuperAdmin"
-//     }
-//     UsersNames.updateOne({"_id":req.body._id},{$set:{"role":ch}},function(error,result){
-//   if(error)
-//     res.send("false")
-//   else
-//     res.send("true")
-//   })
-//   }
-// })
-//   }
-// })
-
 // Get Community Lists for table 
 app.post('/getCommunityLists',checkSession,function(req, res) {
-  // if(req.body.status === 'All') {
-  //   var flag;
-  //   communitys.countDocuments(function(e,count){
-  //     var start=parseInt(req.body.start);
-  //     var len=parseInt(req.body.length);
-  //     communitys.find({
-  //     }).skip(start).limit(len)
-  //   .then(data=> {
-  //     if (req.body.customsearch)
-  //     {
-  //       console.log(data)
-  //       data = data.filter((value) => {
-  //           flag = value.name.includes(req.body.customsearch);
-  //           return flag;
-  //       })
-  //     }   
-  //     res.send({"recordsTotal": count, "recordsFiltered" : count, data})
-  //    })
-  //    .catch(err => {
-  //     res.send(err)
-  //    })
-  //  });
-
-  // }
-  // else if(req.body.status === 'Direct')
-  // {
-  //     //console.log(req.body);
-  //     var length;
-  //     var flag;
-  //     communitys.countDocuments(function(e,count){
-  //     var start=parseInt(req.body.start);
-  //     var len=parseInt(req.body.length);
-
-  //     communitys.find({rule: req.body.status}).then(data => length = data.length);
-
-  //     communitys.find({ rule: req.body.status }).skip(start).limit(len)
-  //   .then(data=> {
-  //     if (req.body.customsearch)
-  //     {
-  //       console.log(data)
-  //       data = data.filter((value) => {
-  //           flag = value.name.includes(req.body.customsearch);
-  //           return flag;
-  //       })
-  //     }
-  //     res.send({"recordsTotal": count, "recordsFiltered" : length, data})
-  //    })
-  //    .catch(err => {
-  //     res.send(err)
-  //    })
-  //  });  
-  // }
-
-  // else if(req.body.status === 'Permission')
-  // {
-  //     //console.log(req.body);
-  //     var length;
-  //      var flag;
-  //      communitys.countDocuments(function(e,count){
-  //     var start=parseInt(req.body.start);
-  //     var len=parseInt(req.body.length);
-
-  //     communitys.find({rule: req.body.status}).then(data => length = data.length);
-
-  //     communitys.find({ rule: req.body.status }).skip(start).limit(len)
-  //   .then(data=> {
-  //     if (req.body.customsearch)
-  //     {
-  //       console.log(data)
-  //       data = data.filter((value) => {
-  //           flag = value.name.includes(req.body.customsearch);
-  //           return flag;
-  //       })
-  //     }
-  //     res.send({"recordsTotal": count, "recordsFiltered" : length, data})
-  //    })
-  //    .catch(err => {
-  //     res.send(err)
-  //    })
-  //  });  
-  // }
-
   let query = {};
     let params = {};
 
@@ -736,7 +585,7 @@ else
 })
 
 // Update Community Details
-app.post('/communityupdate',checkSession,function(req,res) {
+app.post('/communityupdate',checkSession,checkSuperAdminOrCommunityManagers,function(req,res) {
   communitys.updateOne({"_id":req.body.id},{$set:{"name":req.body.name,"status":req.body.status}},function(error,result){       
     if(error)
       throw error;
@@ -749,7 +598,6 @@ app.post('/communityupdate',checkSession,function(req,res) {
 
 // Get Array which User is Owner
 app.get('/getArrayOwnCommunity',checkSession,function(req,res) {
-    console.log("okokok")
     communitys.find({'ownerid':req.session._id}, function(err, result){
      console.log("Got Array in which User is Owner");
       res.send(result);
@@ -785,9 +633,8 @@ function formatAMPM(date) {
 }
 
 //Add Community
-app.post('/addCommunity',checkSession,checkSuperAdmin,function (req, res) {
+app.post('/addCommunity',checkSession,checkSuperAdminOrCommunityManagers,function (req, res) {
 var rule;
-//console.log(req.body);
   var photoname;
   if(tempcomm==null)
     photoname="/images/defaultCommunity.jpg";
@@ -814,7 +661,6 @@ var rule;
     })
     newProduct.save()
      .then(data => {
-       //console.log(data)
        upload(req,res,(err)=>{
         if(err)
           throw err;
@@ -824,7 +670,6 @@ var rule;
       })
      })
      .catch(err => {
-       console.error(err)
        res.send(err)
      })
 })
@@ -843,7 +688,7 @@ var storagecomm = multer.diskStorage({
       storage : storagecomm,
     }).single('myfile');
 
-app.post('/uploadphotoCommunity',checkSession,(req,res)=>{
+app.post('/uploadphotoCommunity',checkSession,checkSuperAdminOrCommunityManagers,(req,res)=>{
   uploadcomm(req,res,(err)=>{
         if(err)
         {
@@ -855,7 +700,6 @@ app.post('/uploadphotoCommunity',checkSession,(req,res)=>{
 
 app.post('/getAllActive',checkSession,function(req,res) {
     communitys.find({'ownerid':{"$ne":req.session._id}, "users": { "$nin" : [req.session._id]},"request": { "$nin" : [req.session._id]}}).skip(req.body.start).limit(req.body.end).exec(function(error,result) {
-     //console.log(result);
       res.send(result);
 })
 })

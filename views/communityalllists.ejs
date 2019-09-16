@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html>
+<head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CQ</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
@@ -14,6 +17,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 <script type="text/javascript" src="script/select2.js"></script>
+</head>
 <body>
 <% include paritials/topbar.ejs %>
 <% if(data.isActive == "true"){ %>
@@ -73,20 +77,6 @@
 <div class="container-fluid page-content-div" style="padding:0">
             <div class="row" style="background-color: #F3F4F4">
                <div class="col-lg-12 scoll-possible" style="padding:0">
-
-<!-- <div class="community-header-top" style="position: relative;top: 70px;height:50px;background-color: #35AAC7;display: flex;">
-<div class="col-sm-4 community-sub-head" style="flex:1">
-    <a class="btn community-head-btn active" href="/communityPage">
-      <i class="fa fa-users"></i>
-    </a>
-    <a class="btn community-head-btn" style="margin-left:10px" onclick="initalise()">
-      <i class="fa fa-search"></i>
-    </a>
-</div>
-<div class="col-sm-4 col-sm-push-4 pc" style="padding:0 50px 0 0;flex:1">
-    <input class="form-control searchCommunityDiscover" type="text" placeholder="Search Community..." id="searchinput">
-  </div>
-</div> -->
 <div class="community-header-top" style="height:50px;flex-direction: column-reverse;
 display: flex;">
 		<div class="col-sm-12 community-sub-head" style="z-index: 1100;">
@@ -111,38 +101,6 @@ display: flex;">
       <div class="container">
         <div class="search" id="search" style="top: 80px;position: relative;">
               <!--Community List-->
-        <div class="container mainDivDiscover-container" >
-        	<div class="panel community-show-item panel-default allSidesSoft" style=" padding:0;background:white;">
-        		<div class="panel-body" style="padding:0;padding-top:20px">
-        			<div class="col-sm-2 col-xs-3 col-lg-1 col-md-2">
-        				<a href="#">
-        					<img src="" class="allSides" style="height:70px;width:70px;border:3px solid rgb(235, 235, 235)">
-        				</a>  
-        			</div>
-        					<div class="col-sm-8 col-xs-6 col-lg-8 col-md-8 community-name">
-        						<a href="#" class="community-name">First Community
-        						</a>
-        					</div>
-        					<div class="col-sm-2 col-xs-3 col-lg-3 col-md-2" style="padding:15px 10px 0 10px">
-        						<div>
-        							<button class="btn btn-primary btn-sm pull-right" data-id="1">Join</button>
-        						</div> 
-        					</div>
-        				</div>
-        				<div class="panel-body" style="padding:10px 0 10px 0;">  
-        					<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12">    
-        						<p class="totalUsers">1 Members    </p>  
-        					</div> 
-        					 <div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 community-description" style="font-size:16px">
-        					 	<div id="less5cbf18d7f54a481812074358" class="community-description">hkhlaskdfhkla
-        					 	</div>
-        					 	<div id="more5cbf18d7f54a481812074358" class="community-description community-description-full">
-        					 		hkhlaskdfhkla
-        					 	</div> 
-        					 	 </div>
-        					 	</div>
-        					 </div>
-        	</div>
       </div>
   </div>
 </div>
@@ -289,7 +247,6 @@ function getDocumentHeight() {
 		div2.appendChild(div8)
 		div1.appendChild(div2)
 		document.getElementById('search').appendChild(div1)
-    	//console.log(div1)
 	}
 
 	function closeDragElement() {
@@ -328,3 +285,4 @@ function btnjoin(r,_id)
 	}
 </script>
 </body>
+</html>

@@ -1,15 +1,13 @@
-  $(document).ready(function() {
-  
-})
-  function strip_html_tags(str)
+function strip_html_tags(str)
 {
-   if ((str===null) || (str===''))
-       return false;
+  if((str===null) || (str===''))
+    return false;
   else
    str = str.toString();
   return str.replace(/<[^>]*>/g, '');
 }
-  $.trumbowyg.svgPath = '/css/trumbowyg.svg';
+
+$.trumbowyg.svgPath = '/css/trumbowyg.svg';
 $('#body').trumbowyg();
 
 function formatAMPM(date) {
@@ -23,11 +21,6 @@ function formatAMPM(date) {
   return strTime;
 }
 
-// document.getElementById('create').addEventListener("click",function()
-// {
-//   document.getElementById("add").submit();
-// })
-
 function createCommunity()
 {
   if(document.getElementById('communityname').value=="") {
@@ -36,7 +29,10 @@ function createCommunity()
   }
   var obj=new Object()
   obj.name=$('#communityname').val();
-  obj.description=strip_html_tags($('#body').val());
+  if($('#body').val()!="")
+    obj.description=strip_html_tags($('#body').val());
+  else
+  obj.description="";
   if(document.getElementById('direct').checked==true && document.getElementById('permission').checked==true)
   {
     alert("Select One Type of Rule");
@@ -59,14 +55,11 @@ function createCommunity()
 
   xml.open("POST","/userTable/addCommunity");
   xml.setRequestHeader("Content-Type","application/json");
-  // document.getElementById("communityform").submit();
   xml.addEventListener("load",function()
   {
     var res=xml.responseText;
-    console.log(res);
     if(res=="true")
     {
-      
       alert("Community Created");
       window.location="/communityPage"
     }

@@ -39,7 +39,7 @@
           <div class="col-sm-12">
               
             <div class="panel panel-default allSidesSoft community-panel-main-div">
-              <% if(data.role == "SuperAdmin" || data.role == "Community Builder"){ %>
+              <% if(data.role == "SuperAdmin" || data.role == "CommunityManagers"){ %>
               <div class="panel-heading community-panel-heading" style="color:white;font-weight:bold;display:flex; ">
               <p style="flex:1;float: left; margin: 10px;">My Communities</p>
               <a href="/addCommunity" class="btn btn-info community-panel-btn" style="float:right;margin: 10px;">Create</a>
@@ -47,34 +47,7 @@
               <% } %>
             <div class="panel-body" style="padding-bottom:0">
               <div id="can-create-community">
-                <div class="col-sm-12 col-xs-12 myCommunity community-div" style="display: flex;">
-                  <div class="col-sm-1 col-xs-3" style="padding:10px;flex:1;">
-                    <a href="">
-                    <img src="/images/defaultcommunity.jpg" class="cpic">
-                    </a>
-                  </div>
-                <div class="col-sm-10 col-xs-7" style="padding:20px;overflow:scroll">
-                  <p style="margin:0">
-                  <a class="comnametxt" href="">hi</a>
-                  <a class="comnametxt-user" href="">Request(0)</a>
-                  </p>
-                </div>
-                <div class="col-sm-1 col-xs-2">
-                  <a class="community-short-btn" href="" style="float:right;">
-                    <label class="btn btn-success" style="cursor:pointer !important;">
-                    <i class="fa fa-cogs"></i>
-                    </label>
-                  </a>
-                </div>
-              </div>
-
-              <div id="community-that-am-in">
-              </div>
-
-              <div class="panel-body">
-                <div id="my-pending-commuity">
-                </div>
-              </div>
+                
             </div>
           </div>
         </div>
