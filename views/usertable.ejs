@@ -1,5 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CQ</title>
+<title>CQ - <%= data.name %></title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -11,23 +14,26 @@
 <link rel="stylesheet" type="text/css" href="/css/trumbowyg.css">
 
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/script/sidebar-js.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-
 <script src="/script/trumbowyg.min.js"></script>
+</head>
+<body>
 
 <% include paritials/topbar.ejs %>
 <% if(data.isActive == "true"){ %>
   <% include paritials/sidebar.ejs %>
 <% } %>
 
-<!--Edit Modal-->
-<div class="container-fluid" id="containerid" style="padding-top:60px;">
-  <div class="row">
-    <div class="col-lg-12" style="padding:0">
+<div class="usercontainer" style="padding-top:60px;margin-left:45px;">
+    <div class="row" style="margin-right:0px">
+    <div class="col-lg-12">
       <div style="margin-top:1%">
+
+        <!-- Edit Modal -->
         <center>
         <div id="editModal" class="modal fade" role="dialog" style="z-index:9999;">
           <div class="modal-dialog">
@@ -75,7 +81,7 @@
                     <div class="col-sm-10">
                       <select class="form-control" id="erole">
                         <option value="User">User</option>
-                          <option value="CommunityManager">Community Manager</option>
+                          <option value="CommunityManagers">Community Manager</option>
                           <option value="SuperAdmin">SuperAdmin</option>
                         </select>
                     </div>
@@ -138,14 +144,14 @@
 <!-- AFTER MODEL-->
           <div class="form-control" id="userlist-icon" style="float:left;">User list
             </div>
-              <select class="form-control" id="rolebtn" style="float:right;margin-left:10px;width:110px;">
+              <select class="form-control" id="rolebtn" style="float:right;width:220px;margin-left:10px;">
                     <option value="All">All</option>
                     <option value="SuperAdmin">SuperAdmin</option>
                     <option value="User">Users</option>
                     <option value="CommunityManagers">Community Managers</option>
               </select>
 
-              <select class="form-control" id="statusbtn" style="float:right;margin-left:10px;width:110px;">
+              <select class="form-control" id="statusbtn" style="float:right;margin-left:10px;width:130px;">
                 <option value="All">All</option>
                 <option value="Pending">Pending</option>
                 <option value="Confirmed">Confirmed</option>
@@ -177,3 +183,5 @@
     </div>
     
 <script type="text/javascript" src="script/table-js.js"></script> 
+</body>
+</html>

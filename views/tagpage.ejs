@@ -1,5 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CQ</title>
+<title>CQ - <%= data.name %></title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
@@ -10,12 +13,6 @@
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-
-<% include paritials/topbar.ejs %>
-<% if(data.isActive == "true"){ %>
-  <% include paritials/sidebar.ejs %>
-<% } %>
-
 <style type="text/css">
     .containertag .col-sm-6
     {
@@ -23,13 +20,19 @@
         padding: 30px;
     }
 </style>
+</head>
+<body>
+<% include paritials/topbar.ejs %>
+<% if(data.isActive == "true"){ %>
+  <% include paritials/sidebar.ejs %>
+<% } %>
 
 <center>
 <div class="containertag" style="padding-top:100px;">
     <div class="col-sm-6">
-        <h3 class="page-header" style="color:#707070;float: left;border-bottom: 1px solid #eee;padding-top: 5px;">Create Tag</h3>
+        <h3 class="page-header" style="color:#707070;border-bottom: 1px solid #eee;">Create Tag</h3>
         <form id="createTagForm">
-        <div class="form-group" style="padding: 5px;">
+        <div class="form-group" style="padding: 7px;">
             <input class="form-control" type="text" name="tagName" placeholder="Tag Name" id="tagname">
         </div>
         <div class="form-group">
@@ -37,8 +40,10 @@
         </div>
         </form>
     </div>
-    <a id="tags" class="btn btn-warning btn-sm" style="margin:10px" onclick="taglists()">Tag Lists</a>
+    <a id="tags" class="btn btn-warning btn-m" style="margin-top:10px;font-size:110%;" onclick="taglists()">Tag Lists</a>
 </div>
 </center>
 
 <script type="text/javascript" src="/script/tagpage-js.js"></script>
+</body>
+</html>

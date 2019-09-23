@@ -54,13 +54,13 @@
           </div>
           <center>
           <div class="communityprofile-name-mobile" style="max-height:40px;overflow:scroll">
-            <a href="/userTable/profile/<%= data2._id %>" style="color:white" id="communityname">
+            <a href="/communityTable/profile/<%= data2._id %>" style="color:white" id="communityname">
              <%= data2.name %>
             </a>
           </div>
           </center>
           <center>
-          <a href="/userTable/profile/<%= data2._id %>">
+          <a href="/communityTable/profile/<%= data2._id %>">
             <img src="<%= data2.photoloc %>" class="mobile img-communityprofile-pic allSides" style="background:#fff" id="mobileimg">
           </a>
           </center>
@@ -69,7 +69,7 @@
         <div class="container community-profile-conatiner" style="flex-direction:row;height:auto;display: flex;">
           <div style="flex:1;">
             <div class="col-sm-2 col-xs-12 center-mobile pc">
-              <a href="/userTable/profile/<%= data2._id %>">
+              <a href="/communityTable/profile/<%= data2._id %>">
                 <img src="<%= data2.photoloc %>" class="img-communityprofile-pic allSides" style="background:#fff" id="pcimg">
               </a>
             </div>
@@ -98,12 +98,12 @@
                   </a>
                 </li>
                 <li>
-                  <a href="/userTable/profile/<%= data2._id %>" class="community-profile-option-btn">
+                  <a href="/communityTable/profile/<%= data2._id %>" class="community-profile-option-btn">
                   Community Profile
                   </a>
                 </li>
                 <li>
-                  <a href="/userTable/communitymembers/<%= data2._id %>" class="community-profile-option-btn">
+                  <a href="/communityTable/communitymembers/<%= data2._id %>" class="community-profile-option-btn">
                   Community Members
                   </a>
                 </li>
@@ -158,7 +158,7 @@
     Invite Users
   </a>
   
-  <a class="pc" href="/userTable/edit/<%= data2._id %>" style="float:right;font-weight:600;margin-right:15px">
+  <a class="pc" href="/communityTable/edit/<%= data2._id %>" style="float:right;font-weight:600;margin-right:15px">
     Edit Community
   </a>
   
@@ -219,7 +219,7 @@ function initaliseProfile()
 function initaliserequest()
 {
   var xml=new XMLHttpRequest();
-  xml.open("POST","/userTable/getrequest");
+  xml.open("POST","/communityTable/getrequest");
   xml.setRequestHeader("Content-Type","application/json");
   document.getElementById('comlist').innerHTML="";
   xml.addEventListener("load",function()
@@ -252,7 +252,7 @@ function initaliserequest()
 function initaliseinvited()
 {
   var xml=new XMLHttpRequest();
-  xml.open("POST","/userTable/getinveted");
+  xml.open("POST","/communityTable/getinveted");
   xml.setRequestHeader("Content-Type","application/json");
   document.getElementById('comlist').innerHTML=""
   xml.addEventListener("load",function()
@@ -284,7 +284,7 @@ function initaliseinvited()
 function initalisemangers()
 {
   var xml=new XMLHttpRequest();
-  xml.open("POST","/userTable/getManagers");
+  xml.open("POST","/communityTable/getManagers");
   xml.setRequestHeader("Content-Type","application/json");
   document.getElementById('comlist').innerHTML=""
   xml.addEventListener("load",function()
@@ -316,7 +316,7 @@ function initalisemangers()
 function initaliseusers()
 {
   var xml=new XMLHttpRequest();
-  xml.open("POST","/userTable/getUsers");
+  xml.open("POST","/communityTable/getUsers");
   xml.setRequestHeader("Content-Type","application/json");
   document.getElementById('comlist').innerHTML=""
 
@@ -355,7 +355,7 @@ function addtoUserDOM(obj)
   div2.setAttribute("class","col-sm-2 col-xs-3")
   div2.setAttribute("style","padding:5px;")
   var a1=document.createElement('a')
-  a1.setAttribute("href","/userTable/userprofile/"+obj._id)
+  a1.setAttribute("href","/communityTable/userprofile/"+obj._id)
   var img1=document.createElement('img')
   img1.setAttribute("src",obj.photoloc)
   img1.setAttribute("class","community-member-pic")
@@ -367,7 +367,7 @@ function addtoUserDOM(obj)
   var a2=document.createElement('a')
   a2.setAttribute("class","comusername")
   a2.innerHTML=obj.name
-  a2.setAttribute("href","/userTable/userprofile/"+obj._id)
+  a2.setAttribute("href","/communityTable/userprofile/"+obj._id)
   div3.appendChild(a2)
   div1.appendChild(div3)
   var div4=document.createElement('div')
@@ -426,7 +426,7 @@ function deleteb(id)
                  btnClass: 'btn-success',
                  action: function(){
                   var xml=new XMLHttpRequest();
-                  xml.open("POST","/userTable/leaveCommunity");
+                  xml.open("POST","/communityTable/leaveCommunity");
                   xml.setRequestHeader("Content-Type","application/json");
                   xml.addEventListener("load",function()
                   {
@@ -474,7 +474,7 @@ function addtoMangersDOM(obj)
   div2.setAttribute("class","col-sm-2 col-xs-3")
   div2.setAttribute("style","padding:5px;")
   var a1=document.createElement('a')
-  a1.setAttribute("href","/userTable/userprofile/"+obj._id)
+  a1.setAttribute("href","/communityTable/userprofile/"+obj._id)
   var img1=document.createElement('img')
   img1.setAttribute("src",obj.photoloc)
   img1.setAttribute("class","community-member-pic")
@@ -486,7 +486,7 @@ function addtoMangersDOM(obj)
   var a2=document.createElement('a')
   a2.setAttribute("class","comusername")
   a2.innerHTML=obj.name
-  a2.setAttribute("href","/userTable/userprofile/"+obj._id)
+  a2.setAttribute("href","/communityTable/userprofile/"+obj._id)
   div3.appendChild(a2)
   div1.appendChild(div3)
   if(obj._id=="<%= data2._id %>")

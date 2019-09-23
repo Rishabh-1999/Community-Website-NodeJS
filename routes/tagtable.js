@@ -35,7 +35,7 @@ var tag = new mongoose.Schema({
 
 var tagmodel =  mongoose.model('taglists', tag);
 
-app.post('/getTagTable',checkSession,function(req,res) {
+app.post('/getTagTable',checkSession,checkSuperAdmin,function(req,res) {
   let query = {deleted:'0'};
     let params = {};
 
@@ -59,7 +59,6 @@ app.post('/getTagTable',checkSession,function(req,res) {
                 console.log(err);
             else
             {
-                // console.log(data);
                 tagmodel.countDocuments(query, function(err , filteredCount)
                 {
                     if(err)
@@ -78,10 +77,10 @@ app.post('/getTagTable',checkSession,function(req,res) {
                 });
             }
         })
-  console.log('Tag Table Successfully fetched /getTagTable');
+  console.log('Tag Table Successfully fetched ->/getTagTable');
 })
 
-app.post('/addTag',checkSession,function(req,res){
+app.post('/addTag',checkSession,checkSuperAdmin,function(req,res){
   let newTag = new tagmodel({
     tagname: req.body.value,
     createdby: req.session.name,
@@ -90,7 +89,7 @@ app.post('/addTag',checkSession,function(req,res){
   })
   newTag.save()
   .then(data => {
-    console.log('Tag Added /addTag');
+    console.log('Tag Added ->/addTag');
     res.render('tagpage',{data: req.session.data});
   })
   .catch(err => {
@@ -98,7 +97,7 @@ app.post('/addTag',checkSession,function(req,res){
   })
 })
 
-app.post('/deletetag',checkSession,function(req,res){
+app.post('/deletetag',checkSession,checkSuperAdmin,function(req,res) {
   tagmodel.updateOne({tagname: req.body.tagname,createdby:req.body.createdby,createddate:req.body.createddate},
     {$set:{"deleted":"1"}})
   .then(data => {
@@ -110,33 +109,37 @@ app.post('/deletetag',checkSession,function(req,res){
   console.log('Tag deleted /deletetag');
 })
 
-app.post('/checkDuplicate' ,checkSession, (req,res)=>{
+app.post('/checkDuplicate' ,checkSession,checkSuperAdmin, (req,res)=>{
   tagmodel.find({deleted:'0'}).exec(function(error,result) {
-  if(error)
+  if(error) {
+    console.log(error);
     throw error;
+  }
   else
   {
-    var da=[];
+    var temp=[];
     var returnflag="false";
-    da=result;
+    temp=result;
     for(i in result) {
-      if(req.body.tagname==da[i].tagname)
+      if(req.body.tagname==temp[i].tagname)
         returnflag="true";
     }
-    console.log('Tag duplication /checkDuplicate '+returnflag);
+    console.log('Tag duplication ->/checkDuplicate ');
     res.send(returnflag);
   }
   })
 })
 
-app.post('/edittag' ,checkSession, (req,res)=>{
-  console.log(req.body);
+app.post('/edittag' ,checkSession,checkSuperAdmin, (req,res)=>{
   tagmodel.updateOne({"tagname":req.body.oldtagname},{$set:{"tagname":req.body.newtagname}},function(error,result){
-  if(error)
+  if(error) {
+    console.log(error);
     throw error;
+  }
   else
   {
-    console.log("Edited from :"+req.body.oldtagname +"to"+req.body.newtagname);
+    console.log("Updated tag ->edittag");
+    res.send("updated");
   }
   })
 })

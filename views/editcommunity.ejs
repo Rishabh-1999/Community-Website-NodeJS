@@ -133,12 +133,12 @@
 							</a>
 						</li>
 						<li>
-							<a href="/userTable/<%= data2._id %>" class="community-profile-option-btn">
+							<a href="/communityTable/<%= data2._id %>" class="community-profile-option-btn">
 							Manage Community
 							</a>
 						</li>
 						<li>
-							<a href="/userTable/edit/<%= data2._id %>" class="community-profile-option-btn">
+							<a href="/communityTable/edit/<%= data2._id %>" class="community-profile-option-btn">
 							Community Profile
 							</a>
 						</li>
@@ -164,7 +164,7 @@
 								<img src="<%= data2.photoloc %>" id="user-profile-image" style="width: 150px; height: 150px" class="img-thumbnail allSidesSoft">
 								<div class="middle">
 									<div class="upload-btn-wrapper">
-									<form method="post" action="/userTable/uploadphoto" id="profilepicform1" enctype="multipart/form-data">
+									<form method="post" action="/communityTable/uploadphotoCommunity" id="profilepicform1" enctype="multipart/form-data">
 									<button id="uploadfiletodatabase" class="btn">Upload a file</button>
 									<input type="file" id="up" name="file"/>
 									</form>
@@ -223,7 +223,7 @@ document.getElementById('updatebtn').addEventListener("click",function()
 		return;
 	}
 	var xml=new XMLHttpRequest();
-	xml.open("POST","/userTable/updatecomm");
+	xml.open("POST","/communityTable/updatecomm");
 	var obj=new Object()
 	obj._id="<%= data2._id %>"
 	obj.name=document.getElementById('commname').value;
@@ -234,8 +234,13 @@ document.getElementById('updatebtn').addEventListener("click",function()
 		document.getElementById("profilepicform1").submit();
 	xml.addEventListener("load",function()
   	{
-  		if(xml.responseText=="true")
-  			window.location="/userTable/"+obj._id
+		  if(xml.responseText=="true")
+		  {
+			if( document.getElementById("up").files.length != 0 )
+				document.getElementById("profilepicform1").submit();
+		  }
+		  else
+  			window.location="/communityTable/"+obj._id
   	})
   	xml.send(JSON.stringify(obj));
 	xml.send()

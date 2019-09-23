@@ -125,7 +125,7 @@ function initalise()
 	console.log(obj);
 	document.getElementById('search').innerHTML="";
 	var xml=new XMLHttpRequest()
-	xml.open("POST","/userTable/getAllActive")
+	xml.open("POST","/communityTable/getAllActive")
 	xml.onload=function()
     {
 		document.getElementById('search').innerHTML="";
@@ -183,7 +183,7 @@ function getDocumentHeight() {
 		var div4=document.createElement('div')
 		div4.setAttribute("class","col-sm-2 col-xs-3 col-lg-1 col-md-2")
 		var a1=document.createElement('a')
-		a1.setAttribute("href","/userTable/profile/"+obj._id)
+		a1.setAttribute("href","/communityTable/profile/"+obj._id)
 		var img1=document.createElement('img')
 		img1.setAttribute("src",obj.photoloc)
 		img1.setAttribute("class","allSides")
@@ -194,7 +194,7 @@ function getDocumentHeight() {
 		var div5=document.createElement('div')
 		div5.setAttribute("class","col-sm-8 col-xs-6 col-lg-8 col-md-8 community-name")
 		var a2=document.createElement('a')
-		a2.setAttribute("href","/userTable/profile/"+obj._id)
+		a2.setAttribute("href","/communityTable/profile/"+obj._id)
 		a2.setAttribute("class","community-name")
 		a2.innerHTML=obj.name
 		div5.appendChild(a2)
@@ -261,7 +261,7 @@ function btnjoin(r,_id)
   var obj=new Object()
   obj.r=r;
   obj._id=_id;
-  xml.open("POST","/userTable/joinandrequestcommunity")
+  xml.open("POST","/communityTable/joinandrequestcommunity")
   xml.onload=function()
     {
       $('#divid'+_id).fadeOut(600, function(){

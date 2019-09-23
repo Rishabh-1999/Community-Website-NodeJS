@@ -4,6 +4,7 @@ var app = express()
 var session= require('express-session')
 var nodemailer = require('nodemailer');
 const passport = require('passport');
+require('dotenv').config()
 
 app.use(session({
   secret: "abcUCAChitkara"
@@ -14,8 +15,65 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views',path.join(__dirname, 'views'));
 
+var mongoose = require('mongoose');
+var mongoDB = 'mongodb://localhost/myDB';
+
+var user = new mongoose.Schema({
+    email: String,
+    password: String,
+    gender: String,
+    phoneno: String,
+    city: String,
+    name:String,
+    DOB: String,
+    role:String,
+    status:String,
+    restrict:String,
+    isActive:String,
+    interests:String,
+    aboutyou:String,
+    expectations:String,
+    photoloc:String,
+    githubid:String
+  })
+
+var UsersNames =  mongoose.model('usernames', user);
+
+var communitys = new mongoose.Schema({
+    "photoloc":String,
+    "name":String,
+    "members":String,
+    "rule":String,
+    "communityloc":String,
+    "createdate":String,
+    "description":String,
+    "owner":String,
+    "status":String,
+    "ownerid":String,
+    "request":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
+    "managers":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
+    "invited":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
+    "users": [{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}]
+  })
+  
+  var communitys =  mongoose.model('communitys', communitys);
+
+  var discussionSchema = new mongoose.Schema({
+    title: String,
+    details: String,
+    tag: String,
+    communityName: String,
+    createdBy: String,
+    createdDate: String,
+    ownerId: String,
+})
+
+var discussion = mongoose.model('discussiones', discussionSchema);
+
 app.use('/tagTable' , require('./routes/tagtable'))
 app.use('/userTable' , require('./routes/usertable'))
+app.use('/communityTable' , require('./routes/community'))
+app.use('/dicussion' , require('./routes/dicussion'))
 
 //Bodyparser
 app.use(express.urlencoded({extended: true})); 
@@ -58,6 +116,7 @@ var checkSuperAdminOrCommunityManagers = function (req, res, next) {
 }
 
 app.get('/home' ,checkSession, (req,res)=>{
+	console.log(process.env.username + " "+process.env.password)
     res.render('home',{data: req.session.data});
 })
 
@@ -121,8 +180,8 @@ app.get('/changePassPage' ,checkSession, (req,res)=>{
 let transporter = nodemailer.createTransport({
   service:'gmail',
     auth: {
-        user: 'rishabhanand33@gmail.com',
-        pass: 'THMA15/Nov/99'
+        user: 'rishabhanand33@gmail.com' ,
+        pass: process.env.password
     },
     tls: {
           rejectUnauthorized: false
@@ -131,6 +190,7 @@ let transporter = nodemailer.createTransport({
 
 app.post('/sendMail',checkSession, function(req,res){
   console.log(req.body);
+  console.log(process.env.username + " "+process.env.password)
   transporter.sendMail(req.body, (error, info) => {
     if (error)
         res.send("false");
@@ -139,7 +199,7 @@ app.post('/sendMail',checkSession, function(req,res){
         res.send("true");
     }
 });
-res.send("true");
+// res.send("true");
 })
 
 app.post('/logout',checkSession,function (req, res) {

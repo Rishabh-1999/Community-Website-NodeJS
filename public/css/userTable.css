@@ -1,11 +1,3 @@
-.active
-{
-	background-color: #51a1e2 !important;
-}
-.div-min-width
-{
-    min-width: 360px;
-}
 #userlist-icon
 {
     border: 2px solid #2D312C;
@@ -14,13 +6,9 @@
     width: 100px;
     font-weight: bold;
 }
-.dataTables_filter input
-{
-	margin:10px;
-}
 #role-btn
 {
-    width:70px;
+    width:100px;
     border: 2px solid #2D312C;
     background-color: #2D312C;
     color: #fff;
@@ -54,10 +42,6 @@
 {
 	overflow:hidden;          
 }
-#containerid
-{
-	margin-left:50px;
-}
 @media (max-width:768px)
 {
     #role-btn
@@ -68,10 +52,6 @@
     {
         width:10%;
     }
-     #containerid
-    {
-        margin-left:0;
-    }
     .table-responsive
     {
 	overflow:auto;
@@ -80,12 +60,6 @@
 .form-group
 {
     display:flex;
-}
-.container-fluid
-{
-    margin-top:10px;
-    margin-left:10px;
-    margin-right:10px;
 }
 .form-inline
 {

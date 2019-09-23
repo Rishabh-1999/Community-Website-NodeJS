@@ -18,7 +18,7 @@ mailbtn.addEventListener("click", function()
   	if(res=="true")
   		alert("Mail Sent");
   	else
-  		alert("Mail failed");
+  		alert("Mail Failed");
   })
   xml.send(JSON.stringify(obj));
 });
@@ -150,7 +150,9 @@ function activateUser(v)
                   xhr.onload=function()
                   {
                   if(xhr.responseText=='true')
-                  alert("Updated Successfully");
+                    alert("Updated Successfully");
+                  else
+                    alert("Failed");
                   }
                   table.ajax.reload(null,false)
                 } 
@@ -160,6 +162,7 @@ function activateUser(v)
          })
         });
 }
+
 function deactivateUser(v)
 {
 		$(document).on("click", "#deactivatebtn", function() {
@@ -180,10 +183,11 @@ function deactivateUser(v)
                   xhr.send(JSON.stringify(ob));
                   xhr.onload=function()
                   {
-                    if(xhr.responseText=='true') {
-                    alert("Updated Successfully");
-                     table.ajax.reload(null, false);
-                   }
+                    if(xhr.responseText=='true')
+                      alert("Updated Successfully");
+                    else
+                      alert("Failed");
+                      table.ajax.reload(null, false);
                   }
                   table.ajax.reload(null,false)
                   }

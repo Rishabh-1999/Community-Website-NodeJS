@@ -54,25 +54,25 @@ dropdown-menu>li>a {
 				</div>
 				<center>
 				    <div class="communityprofile-name-mobile" style="max-height:40px;overflow:scroll">
-				        <a href="/userTable/profile/<%= data2._id %>" style="color:white">
+				        <a href="/communityTable/profile/<%= data2._id %>" style="color:white">
 				            <%= data2.name %>
 				        </a>
 				    </div>
 				</center>
 			    <center>
-			      <a href="/userTable/profile/<%= data2._id %>">
+			      <a href="/communityTable/profile/<%= data2._id %>">
 			        <img src="<%= data2.photoloc %>" class="mobile img-communityprofile-pic allSides" style="background:#fff">
 			      </a>
 			    </center>
 			</div>
 			<div class="container community-profile-conatiner" style="display:flex;">
 				<div class="col-sm-2 col-xs-12 center-mobile pc">
-				<a href="/userTable/profile/<%= data2._id %>">
+				<a href="/communityTable/profile/<%= data2._id %>">
 				  <img src="<%= data2.photoloc %>" class="img-communityprofile-pic allSides" style="background:#fff">
 				</a>
 			</div>
 			<div class="col-sm-8 communityprofile-name-pc communityprofile-system">
-			  <a href="/userTable/userprofile/<%= data2._id %>" class="communityprofile-name-pc">
+			  <a href="/communityTable/userprofile/<%= data2._id %>" class="communityprofile-name-pc">
 			    <%= data2.name %>
 			  </a>
 			</div>
@@ -88,17 +88,17 @@ dropdown-menu>li>a {
           </a>
       </li>
       <li>
-          <a href="/userTable/<%= data2._id %>" class="community-profile-option-btn">
+          <a href="/communityTable/<%= data2._id %>" class="community-profile-option-btn">
             Manage Community
           </a>
       </li>
       <li>
-          <a href="/userTable/profile/<%= data2._id %>" class="community-profile-option-btn">
+          <a href="/communityTable/profile/<%= data2._id %>" class="community-profile-option-btn">
             Community Profile
           </a>
       </li>
       <li>
-          <a href="/userTable/communitymembers/<%= data2._id %>" class="community-profile-option-btn">
+          <a href="/communityTable/communitymembers/<%= data2._id %>" class="community-profile-option-btn">
             Community Members
           </a>
       </li>
@@ -151,7 +151,7 @@ function initalise()
 {
 	 document.getElementById('colum').innerHTML="";
 	var xml=new XMLHttpRequest();
-  xml.open("POST","/userTable/getManagers");
+  xml.open("POST","/communityTable/getManagers");
   xml.setRequestHeader("Content-Type","application/json");
   xml.addEventListener("load",function()
   {
@@ -174,7 +174,7 @@ function initalise2()
 {
 	 document.getElementById('colum').innerHTML=""
 	var xml=new XMLHttpRequest();
-  xml.open("POST","/userTable/getusers");
+  xml.open("POST","/communityTable/getusers");
   xml.setRequestHeader("Content-Type","application/json");
   xml.addEventListener("load",function()
   {
@@ -201,7 +201,7 @@ function addToMangers(obj) {
 	div2.setAttribute("class","col-sm-2 col-xs-5")
 	div2.setAttribute("style","padding:5px;")
 	var a=document.createElement('a');
-	a.setAttribute("href","/userTable/profile/"+obj._id)
+	a.setAttribute("href","/communityTable/profile/"+obj._id)
 	var img1=document.createElement('img')
 	img1.setAttribute("src",obj.photoloc)
 	img1.setAttribute("class","community-member-pic")
@@ -219,7 +219,7 @@ function addToMangers(obj) {
 	div3.setAttribute("class","col-sm-9 col-xs-7 scrollable")
 	var a2=document.createElement('a')
 	a2.setAttribute("class","comusername")
-	a2.setAttribute("href","/userTable/profile/"+obj._id)
+	a2.setAttribute("href","/communityTable/profile/"+obj._id)
 	a2.innerHTML=obj.name;
 	div3.appendChild(a2)
 	div1.appendChild(div3)

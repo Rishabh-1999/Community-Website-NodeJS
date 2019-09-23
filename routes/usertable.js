@@ -40,26 +40,28 @@ var checkSuperAdminOrCommunityManagers = function (req, res, next) {
       res.redirect('/');
 }
 
-var user = new mongoose.Schema({
-    email: String,
-    password: String,
-    gender: String,
-    phoneno: String,
-    city: String,
-    name:String,
-    DOB: String,
-    role:String,
-    status:String,
-    restrict:String,
-    isActive:String,
-    interests:String,
-    aboutyou:String,
-    expectations:String,
-    photoloc:String,
-    githubid:String
-  })
+var UsersNames = mongoose.model('usernames');
 
-var UsersNames =  mongoose.model('usernames', user);
+// var user = new mongoose.Schema({
+//     email: String,
+//     password: String,
+//     gender: String,
+//     phoneno: String,
+//     city: String,
+//     name:String,
+//     DOB: String,
+//     role:String,
+//     status:String,
+//     restrict:String,
+//     isActive:String,
+//     interests:String,
+//     aboutyou:String,
+//     expectations:String,
+//     photoloc:String,
+//     githubid:String
+//   })
+
+// var UsersNames =  mongoose.model('usernames', user);
 
 passport.serializeUser(function(user,done) {
     done(null,user);
@@ -427,25 +429,25 @@ app.post('/uploadphoto',checkSession,(req,res)=>{
 })
 /*--------------------------------------------------------------------------------------------------------------*/
 
-var communitys = new mongoose.Schema({
-  "photoloc":String,
-  "name":String,
-  "members":String,
-  "rule":String,
-  "communityloc":String,
-  "createdate":String,
-  "description":String,
-  "owner":String,
-  "status":String,
-  "ownerid":String,
-  "request":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
-  "managers":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
-  "invited":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
-  "users": [{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}]
-})
+// var communitys = new mongoose.Schema({
+//   "photoloc":String,
+//   "name":String,
+//   "members":String,
+//   "rule":String,
+//   "communityloc":String,
+//   "createdate":String,
+//   "description":String,
+//   "owner":String,
+//   "status":String,
+//   "ownerid":String,
+//   "request":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
+//   "managers":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
+//   "invited":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
+//   "users": [{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}]
+// })
 
-var communitys =  mongoose.model('communitys', communitys);
-
+// var communitys =  mongoose.model('communitys', communitys);
+/*
 // get users in communityes
 app.post('/getUsers',checkSession,function(req,res) {
 communitys.findOne({ "_id" : req.body._id }).populate('users').exec(function (err, result) {
@@ -810,6 +812,6 @@ app.get('/community/chatroom/:pro',checkSession,(req,res)=>{
       res.render('chatroom',{data:req.session.data,data2:result});
     }
   }) 
-})
+})*/
 
 module.exports=app

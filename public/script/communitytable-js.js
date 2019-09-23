@@ -14,7 +14,7 @@ function initaliseTable(){
       "serverSide": true,
       "dataSrc":"",
       "ajax": {
-        "url": "/userTable/getCommunityLists",
+        "url": "/communityTable/getCommunityLists",
         "type": "POST",
        
         "data": function ( d )
@@ -120,7 +120,7 @@ var gd;
     obj.status=$("#communityStatus").val();
     console.log(obj);
     var xml=new XMLHttpRequest();
-    xml.open("POST","/userTable/communityupdate");
+    xml.open("POST","/communityTable/communityupdate");
     xml.onload=function()
                   {
                     if(xml.responseText=='true')

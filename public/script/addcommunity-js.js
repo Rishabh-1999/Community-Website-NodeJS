@@ -53,7 +53,7 @@ function createCommunity()
   console.log(obj)
   var xml=new XMLHttpRequest();
 
-  xml.open("POST","/userTable/addCommunity");
+  xml.open("POST","/communityTable/addCommunity");
   xml.setRequestHeader("Content-Type","application/json");
   xml.addEventListener("load",function()
   {

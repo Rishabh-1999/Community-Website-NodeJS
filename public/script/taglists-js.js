@@ -1,8 +1,14 @@
 $(document).ready(function() {
   initaliseTable();
 });
+
+document.getElementById('tagdiv').addEventListener('click',function(){
+  window.location='taglists';
+});
+
 var oldtag;
 var table;
+
 function initaliseTable()
 {
     table=$('#tagstable').DataTable({
@@ -43,10 +49,10 @@ function initaliseTable()
             }],
     });
       $('#refresh').on('click',function(){
-      table.ajax.reload(null,false)
+      table.ajax.reload(null,false);
     });
       $('#refresh').on('click',function(){
-      table.ajax.reload(null,false)
+      table.ajax.reload(null,false);
     });
   }
 
@@ -73,7 +79,7 @@ function deletetag()
                         request.open('POST','/tagTable/deletetag');
                         request.setRequestHeader("Content-Type","application/json");
                         request.send(JSON.stringify(obj));
-                        table.ajax.reload(null,false)
+                        table.ajax.reload(null,false);
                     }
                     },
                 'No': {btnClass: 'btn-danger',}
@@ -81,27 +87,25 @@ function deletetag()
             })
     })
 }
+
 document.getElementById('btntagupdate').addEventListener("click",function(){
   var request = new XMLHttpRequest();
   var obj=new Object();
   obj.oldtagname=oldtag;
   obj.newtagname=document.getElementById('tag').value;
-                        request.open('POST','/tagTable/edittag');
-                        request.setRequestHeader("Content-Type","application/json");
-                        request.onload=function()
-                  {
-                    table.ajax.reload(null, false);
-                  }
-                        request.send(JSON.stringify(obj));
-                        table.ajax.reload(null,false)
+  request.open('POST','/tagTable/edittag');
+  request.setRequestHeader("Content-Type","application/json");
+  request.onload=function()
+  {
+    table.ajax.reload(null,false);
+  }
+  request.send(JSON.stringify(obj));
 })
 
 function editTagModel(){
   $(document).on("click", "#editbtn", function() {
     d = $(this).parent().parent()[0].children;
-    console.log(d[0]);
-    var u=d[0];
-      oldtag=d[0].innerHTML;
+    oldtag=d[0].innerHTML;
     document.getElementById('tag').value=d[0].innerHTML;
-    })
+  })
 }

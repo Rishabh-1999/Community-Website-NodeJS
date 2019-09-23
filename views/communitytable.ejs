@@ -1,5 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CQ</title>
+<title>CQ - <%= data.name %></title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -8,73 +11,48 @@
 <link rel="stylesheet" type="text/css" href="/css/navBar.css">
 <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
 <link rel="stylesheet" type="text/css" href="/css/trumbowyg.css">
-<link rel="stylesheet" type="text/css" href="/css/communitystyle.css">
-<link rel="stylesheet" type="text/css" href="/css/sirstyle.css">
+
 
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/script/sidebar-js.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
 <script src="/script/trumbowyg.min.js"></script>
-
+</head>
+<body>
 <% include paritials/topbar.ejs %>
 <% if(data.isActive == "true"){ %>
   <% include paritials/sidebar.ejs %>
 <% } %>
 
-<style type="text/css">
-  #communitytable
-  {
-    width:1315px;
-  }
-  .communitytable_filter input
-  {
-    float: right;
-  }
-  .dataTables_wrapper .row
-  {
-    width: 100%;
-  }
-  .container-fluid1
-{
-    margin-top:10px;
-    margin-left:10px;
-}
-
-</style>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-lg-12 scoll-possible" style="padding:0">
-        <div style="margin-left:20px;margin-right:20px">
-          <!-- Modal -->
-          <div class="modal fade" id="updateCommunity" role="dialog" style="z-index: 9999; display: none;">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header" style="word-wrap:break-word;">
-                    <h4 class="modal-title" id="CommunityNamePop" style="font-weight:bold"><p id="CommunityAdminPop" style="font-size:10px;"></p></h4>
-                    <br>
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                </div>
-                <div class="modal-body">
-                  <div class="form-horizontal">
-                    <div class="form-group">
-                      <div class="col-lg-5 col-lg-offset-3" style="width:50%">
-                        <input style="display:none" type="text" name="_id" class="form-control" id="_id" readonly="">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label id="commNameinedit" class="control-label col-sm-2">Commuity Name:</label>
-                      <p id="commNameinedit"></p>
-                      <div class="col-sm-10">
-                        <input type="text" name="communityName" class="form-control" id="CommuityName" placeholder="Community Name">
-                      </div>
-                    </div>
-
+<!-- Edit Modal -->
+<div class="modal fade" id="updateCommunity" role="dialog" style="z-index: 9999; display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="word-wrap:break-word;">
+        <h4 class="modal-title" id="CommunityNamePop" style="font-weight:bold"><p id="CommunityAdminPop" style="font-size:10px;"></p></h4>
+        <br>
+        <button type="button" class="close" data-dismiss="modal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <div class="col-lg-5 col-lg-offset-3" style="width:50%">
+              <input style="display:none" type="text" name="_id" class="form-control" id="_id" readonly="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label id="commNameinedit" class="control-label col-sm-2">Commuity Name:</label>
+            <p id="commNameinedit"></p>
+            <div class="col-sm-10">
+              <input type="text" name="communityName" class="form-control" id="CommuityName" placeholder="Community Name">
+            </div>
+          </div>
           <div class="form-group">
             <label class="control-label col-sm-2">Community Status:</label>
-          
             <div class="col-sm-10">
               <select class="form-control" id="communityStatus" name="communityActive">
                   <option value="Active">Active</option>
@@ -82,99 +60,88 @@
               </select>
             </div>
           </div>
-
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
               <button class="btn btn-default" id="editsubmit">Update</button>
             </div>
           </div>
         </div>
-        <!---------------------------------------------------------------------------------->
+      </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Info Modal -->
+<div class="modal fade" id="CommunityInfo" role="dialog" style="z-index: 9999; display: none;">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div id="CommunityProfile"><img id="CommunityProfilePic" class="CommunityProfilePic allSides" src="/images/defaultCommunity.jpg" style="width:100px;height:100px;"></div>
+      <p id="CommunityInfoPop" style="margin: 30px;"></p>
+      <a href="" id="mapLink" target="_blank">
+        <p id="locInfo" style="font-size:15px;float:right;bottom:0;font-weight:bold"></p>
+      </a>
+      <button type="button" class="close" data-dismiss="modal">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:15px;font-weight:bold;">Community Description</p><p id="locInfo" style="font-size:15px;float:right"></p>
+      <div id="communityDesc" class="well well-lg" style="word-wrap: break-word;"></div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="usercontainer" style="padding-top:60px;margin-left:45px;">
+    <div class="row" style="margin-right:0px">
+    <div class="col-lg-12">
+      <div style="margin-top:1%">
+        <div class="form-control allSides" id="roleFilter" style="float: left;width:200px;font-weight:bold;background-color: #2D312C;color:#eee;">
+          Community List
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+        <button onclick="refresh()" class="btn btn-default" style="float: right;background-color: #2D312C;color: #fff">
+            <span class="glyphicon glyphicon-refresh"></span> Refresh
+        </button>
+
+        <select class="form-control filter-button" id="CommunityRuleFilter" name="CommunityRule" style="float: right;margin-left: 10px;width:140px;">
+          <option name="All" value="All">All</option>
+          <option name="Direct" value="Direct">Direct</option>
+          <option name="Permission" value="Permission">Permission</option>
+        </select>
+
+        
+        <br>
+        <br>
+        <br>
+            <div class="table-responsive">
+            <table class="table table-striped table-condensed table-hover table-bordered" id="communitytable">
+              <thead>
+                <tr>
+                  <th>Community Name</th>
+                  <th>Membership Rule</th>
+                  <th>Community Location</th>
+                  <th>Community Owner</th>
+                  <th>Create Date</th>
+                  <th>Actions</th>
+                  <th>Community Pic</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+         </div>
         </div>
       </div>
     </div>
   </div>
-<!---------------------------------------------------------------------------------------->
-<!---Community Info----------------------------------------------------------------------->
-<!---------------------------------------------------------------------------------------->
-  <div class="modal fade" id="CommunityInfo" role="dialog" style="z-index: 9999; display: none;">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            
-            <div id="CommunityProfile"><img id="CommunityProfilePic" class="CommunityProfilePic allSides" src="/images/defaultCommunity.jpg" style="width:100px;height:100px;">
-            </div>
-            <p id="CommunityInfoPop" style="margin: 30px;"></p>
-            <a href="" id="mapLink" target="_blank">
-              <p id="locInfo" style="font-size:15px;float:right;bottom:0;font-weight:bold"></p>
-            </a>
-            <button type="button" class="close" data-dismiss="modal">×</button>
-          </div>
-          <div class="modal-body">
-          <!------------------------------------------------------------------------------------>
-          <p style="font-size:15px;font-weight:bold;">Community Description</p><p id="locInfo" style="font-size:15px;float:right"></p>
-          <div id="communityDesc" class="well well-lg" style="word-wrap: break-word;"></div>
-          </div>
-          <!---------------------------------------------------------------------------------->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-    <div class="container-fluid container-fluid1" id="containerid" style="padding-top:70px;">
-        <div class="form-control allSides" id="roleFilter" style="float: left;width:200px;font-weight:bold;background-color: #2D312C;color:#eee;">
-          Community List
-        </div>
-
-        <select class="form-control filter-button" id="CommunityRuleFilter" name="CommunityRule" style="float: right;margin-left: 10px;width:100px;">
-        <option name="All" value="All">All</option>
-            <option name="Direct" value="Direct">Direct</option>
-            <option name="Permission" value="Permission">Permission</option>
-        </select>
-
-        <button onclick="refresh()" class="btn btn-default" style="float: right;background-color: #2D312C;color: #fff">
-          <span class="glyphicon glyphicon-refresh"></span> Refresh
-        </button>
-        <br>
-        <br>
-        <br>
-        <div class="table-wrapper">
-          <div id="communitytable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-
-          <div class="table-responsive">
-            <div class="col-sm-12">
-            <table class="table table-striped table-bordered" id="communitytable" width="100%" style="width: 1285px;">
-          <thead>
-            <tr>
-              <th>Community Name</th>
-              <th>Membership Rule</th>
-              <th>Community Location</th>
-              <th>Community Owner</th>
-              <th>Create Date</th>
-              <th>Actions</th>
-              <th>Community Pic</th>
-            </tr>
-          </thead>
-          <tbody>
-           
-          </tbody>
-          </table>
-         </div>
-        </div>
 </div>
 </div>
-
-
-</div>
-</div>
-</div>
-</div>
-</div>
-<script type="text/javascript" src="script/superadmincommunity.js"></script>
+<script type="text/javascript" src="script/communitytable-js.js"></script>
+</body>
+</html>

@@ -68,7 +68,7 @@
     document.getElementById('can-create-community').innerHTML="";
     var s="true"
     var xml=new XMLHttpRequest();
-    xml.open("GET","/userTable/getArrayOwnCommunity");
+    xml.open("GET","/communityTable/getArrayOwnCommunity");
     xml.setRequestHeader("Content-Type","application/json");
     console.log("okokokoko");
     xml.addEventListener("load",function()
@@ -87,7 +87,7 @@
   {
     var s="false"
     var xml=new XMLHttpRequest();
-    xml.open("GET","/userTable/getArrayOtherCommunity");
+    xml.open("GET","/communityTable/getArrayOtherCommunity");
     xml.setRequestHeader("Content-Type","application/json");
     
     xml.addEventListener("load",function()
@@ -104,7 +104,7 @@
   {
     var s="pending"
     var xml=new XMLHttpRequest();
-    xml.open("GET","/userTable/getArrayOtherCommunityInvited");
+    xml.open("GET","/communityTable/getArrayOtherCommunityInvited");
     xml.setRequestHeader("Content-Type","application/json");
     
     xml.addEventListener("load",function()
@@ -141,13 +141,13 @@
     var p=document.createElement('p')
     var a2=document.createElement('a');
     a2.setAttribute("class","comnametxt")
-    a2.href="usertable/community/chatroom/"+obj._id;
+    a2.href="/communityTable/communityDicussion/"+obj._id;
     a2.innerHTML=obj.name
     var a3=document.createElement('a')
     a3.setAttribute("class","comnametxt-user")
     if(s=="true")
     {
-      a3.setAttribute("href","/userTable/"+obj._id);
+      a3.setAttribute("href","/communityTable/"+obj._id);
       a3.innerHTML=" Members("+obj.users.length  +")";
     }
     else if(s=="pending")
@@ -156,7 +156,7 @@
     }
     else
     {
-      a3.setAttribute("href","/userTable/communitymembers/"+obj._id);
+      a3.setAttribute("href","/communityTable/communitymembers/"+obj._id);
       a3.innerHTML=" Request(" + obj.request.length +")";
     }
     p.appendChild(a2)
@@ -170,7 +170,7 @@
         var a4=document.createElement('a')
         a4.setAttribute("class","community-short-btn")
         if(s=="true")
-        a4.href="/userTable/"+obj._id;
+        a4.href="/communityTable/"+obj._id;
         else
           a4.href="#";
         a4.setAttribute("style","float:right;")

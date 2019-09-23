@@ -1,5 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CQ</title>
+<title>CQ - <%= data.name %></title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -13,49 +16,44 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
+<script type="text/javascript" src="/script/sidebar-js.js"></script>
+
+<style type="text/css">
+  #tagdiv
+  {
+      border: 2px solid #2D312C;
+      background-color: #2D312C;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+  }
+  </style>
+
+</head>
+<body>
 <% include paritials/topbar.ejs %>
 <% if(data.status == "Confirmed"){ %>
   <% include paritials/sidebar.ejs %>
 <% } %>
-
-<style type="text/css">
-.div-min-width
-{
-  min-width: 360px;
-}
-.scrollclass
-{
-  overflow:scroll;
-}
-#tagdiv
-{
-    border: 2px solid #2D312C;
-    background-color: #2D312C;
-    color: #fff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.6);
-}
-</style>
+ <!-- Edit Modal-->
 <center>
   <div id="editModal" class="modal fade" role="dialog" style="z-index:9999;">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 id="eheading" class="modal-title"></h3>
+          <h3 id="eheading" class="modal-title">Tag</h3>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-
         <div class="modal-body">
           <div class="form-horizontal">
             <div class="form-group">
               <div class="col-lg-5 col-lg-offset-3" style="width:50%;"></div>
             </div>
             <div class="form-group">
-              <label class="control-label col-sm-2">Tag:</label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" id="tag" placeholder="tag">
               </div>
               <div class="form-group">
-                <div class="col-sm-10 col-sm-offset-2 pull-left">
+                <div class="col-sm-10 col-sm-offset-2 pull-left" style="margin:5px;">
                   <button class = "btn btn-default" id="btntagupdate" data-dimiss="modal">Update</button>
                 </div>
               </div>
@@ -69,33 +67,31 @@
     </div>
     </center>
 
-<center>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-12 scoll-possible" style="padding:0">
-        <div style="margin-left:20px;margin-right:20px">
-          <div class="container-fluid container-fluid1" id="containerid" style="padding-top:60px;">
-            <div class="row">
-              <div class = "col-lg-12 scrollclass" style="padding:0">
-                <div style="margin-right:20px;margin-left:20px;margin-top:1%">
-                  <center>
-                  <div id="delModal" class="modal fade" role = "dialog">
-                    <div class="modal-dialog modal-sm" style="position:relative;top:35%!important;">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h4 class="modal-title">Delete Tag!</h4>
-                        </div>
-                        <div class="modal-body">
-                          <p>Are you Sure you want to delete </p>
-                        </div>
-                          <div class="modal-footer">
-                            <button id="Yes" type="button" class="btn btn-success">Yes</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </center>
+     <!-- Delete Modal-->
+    <center>
+        <div id="delModal" class="modal fade" role = "dialog">
+          <div class="modal-dialog modal-sm" style="position:relative;top:35%!important;">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Delete Tag!</h4>
+              </div>
+              <div class="modal-body">
+                <p>Are you Sure you want to delete </p>
+              </div>
+                <div class="modal-footer">
+                  <button id="Yes" type="button" class="btn btn-success">Yes</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </center>
+
+          <div id="containerid" style="padding-top:60px;">
+            <div class="row" style="margin-right:0px">
+              <div class = "col-lg-12">
+                <div style="margin-right:0px;margin-left:60px;margin-bottom:20px;margin-top:1%">
+                
 
                 <div class="form-control" id="tagdiv" style="float:left;width:100px;font-weight:bold;">
                     Tags List
@@ -119,9 +115,7 @@
         </div>
     </div>
 </div>
-</div>
-</div>
-</div>
-</div>
 
 <script type="text/javascript" src="/script/taglists-js.js"></script>
+</body>
+</html>

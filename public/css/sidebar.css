@@ -1,23 +1,9 @@
-::-webkit-scrollbar {
-  width: 0px;
-}
 body{
 	padding: 0;
 	margin: 0;
 	font-family: sans-serif;
 }
 
-.container2{
-	flex: 1;
-	display: flex;
-}
-.content{
-	flex: 1;
-	transition: 0.5s;
-	background-color: rgb(243,244,244);
-	overflow-y: scroll;
-	text-align: center;
-}
 .tabBar{
 	position: fixed;
 	z-index: 990;
@@ -25,25 +11,26 @@ body{
 	background-color: black;
 	float: left;
 	overflow: hidden;
-	overflow-y: scroll;
 	height: 100%;
-	width: 50px;
+	width: 45px;
 	transition: 0.5s;
 }
+
 .tabBar a{
 	display: block;
 	margin: 5px 0px;
 	padding: 10px 5px;
 	min-width: 200px;
 	text-decoration: none;
-	/*margin-left: 8px;*/
 	color: rgb(153,153,153);
 }
+
 .tabBar a:hover{
 	border-left: 3px solid red;
 	background-color: #333333;
 	color: white;
 }
+
 .tabBar i{
 	width: 35px;
 	height: 25px;
@@ -51,14 +38,17 @@ body{
 	text-align: center;
 	margin-right: 10px;
 }
+
 .tabBar span{
 	font-size: 17px;
 }
+
 .tabBar > div{
 	text-align: center;
 	min-width: 200px;
 	display: none;
 }
+
 .tabBar > div > img{
 	width: 100px;
 	height: 100px;
@@ -68,15 +58,14 @@ body{
 {
 	margin-top: 100px;
 }
-a{
+
+a {
 	cursor: pointer;
 }
+
 @media screen and (max-width: 950px) {
 	.tabBar{
 		width: 0px;
-	}
-	.content{
-		width: 100%;
 	}
 	.tabBar > div{
 		display: block;

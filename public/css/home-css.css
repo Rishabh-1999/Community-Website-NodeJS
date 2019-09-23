@@ -1,13 +1,12 @@
-.editbtn
-{
-    float: right;
- 
-}
 .content-div
 {
-    padding:3%;
     display:flex;
     background:rgb(249, 249, 249);
+}
+.edtbtn {
+    margin:25px;
+    padding: 10px;
+    font-size: 15px;
 }
 .con
 {
@@ -17,8 +16,7 @@
 @media (max-width:768px)
 {
 .image-container{
-    display: block;
-    margin-left: 70px;
+text-align-last: center;
 }
     .con
     {
@@ -52,7 +50,7 @@
 .image-content {
     width: 150px; 
     height: 150px;
-    padding: 20px;
+    padding: 15px;
     margin:2%;
     background-color: #FCFCFC;
 }

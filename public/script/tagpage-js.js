@@ -14,7 +14,7 @@ function addTag()
             var v=document.getElementById('tagname').value;
             if(v=="")
             {
-                alert('First Enter some value');
+                alert('First Enter some Input');
             }
             else
             {
@@ -33,10 +33,12 @@ function addTag()
                 xml.send(JSON.stringify({value :v,datestr:datestr}));
             }
         }
+        
 function taglists()
 {
   window.location="/taglists";
 }
+
 function checkDuplicate() {
     var xml=new XMLHttpRequest();
     xml.open("POST","/tagTable/checkDuplicate");

@@ -71,11 +71,11 @@
 				  		<ul class="dropdown-menu custom-commuity-dropdown dropdown-menu-right">
 							<li><a href="#" class="community-profile-option-btn">Discussions</a></li>
              <% if(data._id == data2.ownerid){ %>
-      	 					<li><a href="/userTable/<%= data2._id %>" class="community-profile-option-btn">Manage Community</a></li>
+      	 					<li><a href="/communityTable/<%= data2._id %>" class="community-profile-option-btn">Manage Community</a></li>
       						<li><a href="#">Community Profile</a></li>
               <% } %>
 
-							<li><a href="/userTable/communitymembers/<%= data2._id %>" class="community-profile-option-btn">Community Members</a></li>
+							<li><a href="/communityTable/communitymembers/<%= data2._id %>" class="community-profile-option-btn">Community Members</a></li>
 						</ul>
 					</div>
 				</div>
@@ -88,7 +88,7 @@
       				<div class="panel panel-default allSidesSoft" style="border-radius:0">
         				<div class="panel-heading" style="border:0;border-radius:0">
 							Members
-              				<a href="/userTable/communitymembers/<%= data2._id %>" style="float:right">View all</a>
+              				<a href="/communityTable/communitymembers/<%= data2._id %>" style="float:right">View all</a>
           				</div>
         				<div class="panel-body" style="border:0;border-radius:0" id="special">
 	          				<div class="col-sm-12 col-xs-12" style="padding:0;display: flex;" id="membersDiv-4joinedUser">
@@ -122,7 +122,7 @@
               Owner Info
             <div class="col-sm-12 col-md-12 col-lg-12 adminInfo" style="margin-right: 250px;">
             	<div class="col-sm-6 col-md-6 col-lg-4 col-xs-4 center-all">
-            	<a href="/userTable/userprofile/<%= data2.ownerid %>">
+            	<a href="/communityTable/userprofile/<%= data2.ownerid %>">
             		<img src="<%= data2.photoloc %>" class="adminPic allSides"></a>
             	</div>
             	<div class="col-sm-6 col-md-6 col-lg-8 col-xs-8 adminContent" style="padding:0">
@@ -130,7 +130,7 @@
             			<span class="label label-success" style="margin-top:10px;">Owner</span>
             		</div>
             		<div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" style="overflow:scroll;padding:0;">
-            			<a href="/userTable/userprofile/<%= data2.ownerid %>"><%= data2.owner %></a>
+            			<a href="/communityTable/userprofile/<%= data2.ownerid %>"><%= data2.owner %></a>
             		</div>
             	</div>
             </div>
@@ -182,7 +182,7 @@ $(document).ready(function() {
 function initalise()
 {
   var xml=new XMLHttpRequest();
-  xml.open("POST","/userTable/getUsers");
+  xml.open("POST","/communityTable/getUsers");
   xml.setRequestHeader("Content-Type","application/json");
   document.getElementById("special").innerHTML="";
 
@@ -216,7 +216,7 @@ function addtoSpecialDOM(obj)
 	div1.setAttribute("class","col-sm-6 col-xs-3 col-md-3 col-lg-3 center-all")
 	div1.setAttribute("style","padding:0")
 	var a=document.createElement('a');
-	a.setAttribute("href","/userTable/userprofile/"+obj._id)
+	a.setAttribute("href","/communityTable/userprofile/"+obj._id)
 	var img=document.createElement('img')
 	img.setAttribute("class","communityProfileUserImage allSidesSoft");
 	img.setAttribute("src",obj.photoloc)

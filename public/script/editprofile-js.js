@@ -35,7 +35,7 @@ document.getElementById('gender').value="<%= data.gender %>"
     var xml=new XMLHttpRequest();
     xml.open("POST","/userTable/updateprofile");
     if( document.getElementById("up").files.length != 0 )
-    document.getElementById("profilepicform1").submit();
+      document.getElementById("profilepicform1").submit();
     xml.addEventListener("load",function()
     {
         window.location='/home';
