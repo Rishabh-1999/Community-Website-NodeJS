@@ -7,6 +7,12 @@ function strip_html_tags(str)
   return str.replace(/<[^>]*>/g, '');
 }
 
+$('.rulecheckbox').on('change', function() {
+  $('.rulecheckbox').not(this).prop('checked', false);  
+});
+
+
+
 $.trumbowyg.svgPath = '/css/trumbowyg.svg';
 $('#body').trumbowyg();
 
@@ -60,7 +66,9 @@ function createCommunity()
     var res=xml.responseText;
     if(res=="true")
     {
+      document.getElementById("communityform").submit();
       alert("Community Created");
+      
       window.location="/communityPage"
     }
     else

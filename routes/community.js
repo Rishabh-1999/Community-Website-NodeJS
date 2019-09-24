@@ -17,7 +17,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // parse application/json
 app.use(bodyParser.json())
 
-
 var mongoose = require('mongoose');
 var mongoDB = 'mongodb://localhost/myDB';
 
@@ -43,6 +42,7 @@ var checkSuperAdminOrCommunityManagers = function (req, res, next) {
 
 var communitys = mongoose.model('communitys');
 var UsersNames = mongoose.model('usernames');
+var tempcomm;
 
 app.post('/getUsers',checkSession,function(req,res) {
 communitys.findOne({ "_id" : req.body._id }).populate('users').exec(function (err, result) {
@@ -258,16 +258,21 @@ var rule;
     })
     newProduct.save()
      .then(data => {
+      console.log("->"+data);
+      tempid=data._id;
+      res.send("true")
        upload(req,res,(err)=>{
         if(err)
           throw err;
         else{
-          res.send(true)
+          console.log(res);
+          tempid=res._id;
+          res.send("true")
         }
       })
      })
      .catch(err => {
-       res.send(err)
+       console.log(err);
      })
 })
 var tempid;
@@ -276,6 +281,7 @@ var storagecomm = multer.diskStorage({
       destination : './public/uploads/',
       filename : function(req, file, callback)
       {
+        console.log("tempid"+tempid)
         tempcomm='community'+tempid+path.extname(file.originalname);
         callback(null,tempcomm);
       }
@@ -286,6 +292,7 @@ var storagecomm = multer.diskStorage({
     }).single('file');
 
 app.post('/uploadphotoCommunity',checkSession,checkSuperAdminOrCommunityManagers,(req,res)=>{
+  console.log("uploadphotoCommunity")
   uploadcomm(req,res,(err)=>{
         if(err)
         {

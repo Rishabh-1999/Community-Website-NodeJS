@@ -1,5 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CQ</title>
+<title>CQ - <%= data.name %></title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
@@ -13,9 +16,9 @@
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-
 <script src="script/trumbowyg.min.js"></script>
-
+</head>
+<body>
 <% include paritials/topbar.ejs %>
 <% if(data.isActive == "true"){ %>
   <% include paritials/sidebar.ejs %>
@@ -137,7 +140,7 @@
     div1.appendChild(div2)
     var div3=document.createElement('div')
     div3.setAttribute("class","col-sm-10 col-xs-7")
-    div3.setAttribute("style","padding:20px;overflow:scroll")
+    div3.setAttribute("style","padding:20px;")
     var p=document.createElement('p')
     var a2=document.createElement('a');
     a2.setAttribute("class","comnametxt")
@@ -190,3 +193,5 @@
     document.getElementById('can-create-community').appendChild(div1)
   }
 </script>
+</body>
+</html>

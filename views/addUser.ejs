@@ -1,5 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CQ</title>
+<title>CQ - <%= data.name %></title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
@@ -11,13 +14,14 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-
+</head>
+<body>
 <% include paritials/topbar.ejs %>
 <% if(data.isActive == "true"){ %>
   <% include paritials/sidebar.ejs %>
 <% } %>
 
-<div class="outer" style="padding-top: 100px;">
+<div class="outer" style="padding-top: 80px;">
 	<div class="adduser-container">
 		<div class="alert alert-dismissible" style="border: 1px solid rgb(226, 229, 225);" id="alert-div-avilability">
         	<center>
@@ -29,11 +33,11 @@
 		</div>
 
 		<div class="adduser-input">
-			<input type="text" id="adduser-name" placeholder="Name" name="name" required="required">
-			<input type="text" id="adduser-email" placeholder="Email" name="email" required="required" onChange="checkDuplicate()">
-			<input type="text" id="adduser-password" placeholder="User Password" name="password" required="required">
-			<input type="number" id="adduser-phoneno" placeholder="Phone" name="phoneno" required="required">
-			<input type="text" id="adduser-city" placeholder="City" name="city" required="required">
+			<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="adduser-name" placeholder="Name" name="name" required="required">
+			<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="adduser-email" placeholder="Email" name="email" required="required" onChange="checkDuplicate()">
+			<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="adduser-password" placeholder="User Password" name="password" required="required">
+			<input type="number" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="adduser-phoneno" placeholder="Phone" name="phoneno" required="required">
+			<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="adduser-city" placeholder="City" name="city" required="required">
 
 			<label>Role :</label><br>
 			<select id="addUser-select">
@@ -52,3 +56,5 @@
 </div>
 
 <script type="text/javascript" src="script/addUser.js"></script>
+</body>
+</html>

@@ -3,6 +3,7 @@ $('#body').trumbowyg();
 
 var mailbtn=document.getElementById('mailbutton');
 
+
 mailbtn.addEventListener("click", function()
 {
   var obj=new Object();
@@ -26,7 +27,9 @@ mailbtn.addEventListener("click", function()
 $(document).ready(function() {
   initaliseTable();
 })
+
 var table;
+
 function initaliseTable(){
       table = $('#usertable').DataTable({
       "processing": true,
@@ -81,7 +84,7 @@ function initaliseTable(){
 
     });
 
-     $('#refresh').on('click', function () {
+     $('#refreshbtn').on('click', function () {
         table.ajax.reload(null, false);
        });
         $('#statusbtn').on('click', function () {
@@ -90,6 +93,9 @@ function initaliseTable(){
       $('#rolebtn').on('click', function () {
         table.ajax.reload(null, false);
     });
+    $('#userlist-icon').on('click', function () {
+      table.ajax.reload(null, false);
+  });
   }
   
 function editmodal()

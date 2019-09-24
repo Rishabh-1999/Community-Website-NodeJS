@@ -1,5 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CQ</title>
+<title>CQ - <%= data.name %></title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
@@ -13,9 +16,9 @@
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-
 <script src="/script/trumbowyg.min.js"></script>
-
+</head>
+<body>
 <% include paritials/topbar.ejs %>
 <% if(data.status == "Confirmed"){ %>
   <% include paritials/sidebar.ejs %>
@@ -43,9 +46,8 @@
               <div class="form-horizontal col-sm-3 col-md-3 col-lg-3"></div>
                 <div class="form-horizontal col-sm-6 col-md-6 col-lg-6">
                     <h3 class="page-header" style="color:#707070">Create Community</h3>
-                    <form action="/userTable/addCommunity" method="POST" enctype="multipart/form-data" id="add">
                     <div class="form-group">
-                      <input class="form-control" type="text" required="" name="commname" placeholder="Name" maxlength="70" id="communityname">
+                      <input class="form-control" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required="" name="commname" placeholder="Name" maxlength="70" id="communityname">
 
                     </div>
                     </form>
@@ -56,15 +58,15 @@
                     </div>
                     <div class="form-group ">
                       <label style="color:#707070">Rule :</label>
-                      <input class="radio radio-inline" type="radio" checked value="D" name="direct" id="direct"> Direct
-                      <input class="radio radio-inline" type="radio" value="P" name="communityMembershipRule" id="permission"> Permission
+                      <input class="radio radio-inline  rulecheckbox" type="radio" checked value="D" name="direct" id="direct"> Direct
+                      <input class="radio radio-inline rulecheckbox" type="radio" value="P" name="communityMembershipRule" id="permission"> Permission
                     </div>
                     
                   
                     <div class="form-group">
                     <div class="col-xs-4 col-sm-3">
-                      <form action="/userTable/uploadphotoCommunity" method="POST" enctype="multipart/form-data" id="add">
-                      <input type="file" name="myfile" accept="image/*">
+                      <form action="/communityTable/uploadphotoCommunity" method="POST" enctype="multipart/form-data" id="communityform">
+                      <input type="file" name="file" accept="image/*">
                       <input type="submit" name="photo">
                       </form>
                     </div>
@@ -98,3 +100,5 @@
 </div>
 
 <script type="text/javascript" src="/script/addcommunity-js.js"></script>
+</body>
+</html>

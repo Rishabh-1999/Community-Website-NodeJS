@@ -123,10 +123,6 @@ box-shadow: 0 0 10px rgba(0,0,0,0.6);
 -ms-user-select: none;
 user-select: none;
 }
-::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
-}
 
 html{
   overflow-x:hidden;
@@ -230,19 +226,12 @@ position: absolute;
 z-index: 100;
 
 }
-::-webkit-scrollbar {
-width: 0px;
-background: transparent;
-}
 #alert-div-avilability{  /* adduser page */
   display: none;
 }
 .mobile-fixed-header-profile
 {
 display: none;
-}
-.header-buttons
-{
 }
 #profileUpload{
   opacity: 0;

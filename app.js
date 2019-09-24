@@ -7,7 +7,9 @@ const passport = require('passport');
 require('dotenv').config()
 
 app.use(session({
-  secret: "abcUCAChitkara"
+  secret: "abcUCAChitkara",
+  resave: true,
+  saveUninitialized: true
 }));
 
 //Acces static files
@@ -91,7 +93,7 @@ mongoose.connection.on('connected', (err) => {
     console.log('DB connected');
 });
 
-mongoose.connect(mongoDB);
+mongoose.connect(mongoDB,{ useNewUrlParser: true });
 
 var checkSession = function (req, res, next) {
     if(req.session.isLogin)
@@ -101,7 +103,6 @@ var checkSession = function (req, res, next) {
 }
 
 var checkSuperAdmin = function (req, res, next) {
-    console.log(req);
     if(req.session.data.role=="SuperAdmin")
       next();
     else
@@ -116,12 +117,7 @@ var checkSuperAdminOrCommunityManagers = function (req, res, next) {
 }
 
 app.get('/home' ,checkSession, (req,res)=>{
-	console.log(process.env.username + " "+process.env.password)
     res.render('home',{data: req.session.data});
-})
-
-app.get('/loading' ,checkSession, (req,res)=>{
-    res.render('loading',{data: req.session.data});
 })
 
 app.get('/addCommunity' ,checkSession,checkSuperAdminOrCommunityManagers, (req,res)=>{
@@ -144,10 +140,6 @@ app.get('/communityPage' ,checkSession, (req,res)=>{
     res.render('communitylists',{data: req.session.data});
 })
 
-// app.get('/communityprofile' ,checkSession, (req,res)=>{
-//     res.render('communityprofile',{data: req.session.data}); 
-// })
-
 app.get('/communitytable' ,checkSession,checkSuperAdmin, (req,res)=>{
     res.render('communitytable',{data: req.session.data});
 })
@@ -156,17 +148,12 @@ app.get('/tagpage' ,checkSession, (req,res)=>{
     res.render('tagpage',{data: req.session.data}); 
 })
 
-
 app.get('/addUser' ,checkSession,checkSuperAdmin, (req,res)=>{
     res.render('addUser',{data: req.session.data}); 
 })
 
 app.get('/homewithedit' ,checkSession, (req,res)=>{
     res.render('homewithedit',{data: req.session.data});
-})
-
-app.get('/editprofile' ,checkSession, (req,res)=>{
-    res.render('editprofile',{data: req.session.data});
 })
 
 app.get('/editcommunity' ,checkSession, (req,res)=>{
@@ -189,8 +176,6 @@ let transporter = nodemailer.createTransport({
 });
 
 app.post('/sendMail',checkSession, function(req,res){
-  console.log(req.body);
-  console.log(process.env.username + " "+process.env.password)
   transporter.sendMail(req.body, (error, info) => {
     if (error)
         res.send("false");
@@ -198,8 +183,7 @@ app.post('/sendMail',checkSession, function(req,res){
         console.log('success');
         res.send("true");
     }
-});
-// res.send("true");
+    });
 })
 
 app.post('/logout',checkSession,function (req, res) {

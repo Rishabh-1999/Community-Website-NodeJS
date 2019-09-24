@@ -1,12 +1,8 @@
 $(document).ready(function() {
   initaliseTable();
 })
-var table;
 
-// document.getElementById("CommunityRuleFilter").addEventListener("change",function()
-// {
-//   initaliseTable();
-// })
+var table;
 
 function initaliseTable(){
       table = $('#communitytable').DataTable({
@@ -16,7 +12,6 @@ function initaliseTable(){
       "ajax": {
         "url": "/communityTable/getCommunityLists",
         "type": "POST",
-       
         "data": function ( d )
               {
                 d.status   = $('#CommunityRuleFilter').val();
@@ -50,18 +45,14 @@ function initaliseTable(){
       ],
       "columnDefs": [{
                 "targets": -2,
-
                 "render": function (data, type, row, meta) {
                   let addadatetoinfo = "addadatetoinfo(\'" + data.description + "\')";
                    data = '<a id="editComm" class="btn btn-sm editbtn actionbtns" onclick=addToEdit("'+row.status+'","'+row.name+'","'+row._id+'") data-toggle="modal" data-target="#updateCommunity" style="margin-top:35px;margin-right:5px;background-color: #2D312C;color: #fff"><span class="fa fa-edit"></span></a><a id="btninfomation" class="btn btn-sm infobtn actionbtns" data-toggle="modal" data-target="#CommunityInfo" onclick=\"' + addadatetoinfo +'\" style="margin-top:35px;background-color: #2D312C;color: #fff"><span class="fa fa-info"></span></a>';
                 return data;
                 }},
-              
-{
+              {
                 "targets": -1,
-
                 "render": function (data, type, row, meta) {
-             
                    if(row.status=="Active")
                       data ='<img src='+ row.photoloc +' style="width: 80px;height: 80px;border: 4px solid green;">';
                   else
@@ -69,15 +60,15 @@ function initaliseTable(){
                 return data;
                 }
             }],
-
     });
 
-     $('#refresh').on('click', function () {
+     $('#refreshbtn').on('click', function () {
         table.ajax.reload(null, false);
-       });
-
-
-        $('#CommunityRuleFilter').on('click', function () {
+      });
+      $('#CommunityRuleFilter').on('click', function () {
+        table.ajax.reload(null, false);
+      });
+      $('#roleFilter').on('click', function () {
         table.ajax.reload(null, false);
       });
   }
@@ -102,11 +93,8 @@ var gd;
   function addToEdit(status,name,d)
   {
      gd=d;
-    // document.getElementById("CommuityName").value=name;
-    // document.getElementById("communityStatus").value=status;
     $(document).on("click", "#editComm", function() {
       let d = $(this).parent().parent()[0].children;
-      document.getElementById("commNameinedit").innerHTML ="Commuity Name: "+ d[0].innerHTML;
       document.getElementById("CommuityName").value = d[0].innerHTML;
       document.getElementById("communityStatus").value=status;
   });

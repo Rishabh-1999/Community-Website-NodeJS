@@ -2,10 +2,6 @@ $(document).ready(function() {
   initaliseTable();
 });
 
-document.getElementById('tagdiv').addEventListener('click',function(){
-  window.location='taglists';
-});
-
 var oldtag;
 var table;
 
@@ -51,7 +47,7 @@ function initaliseTable()
       $('#refresh').on('click',function(){
       table.ajax.reload(null,false);
     });
-      $('#refresh').on('click',function(){
+    $('#tagdiv').on('click',function(){
       table.ajax.reload(null,false);
     });
   }
