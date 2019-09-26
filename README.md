@@ -57,3 +57,7 @@ npm install ejs
 ```
 npm install passport-github
 ```
+- Dotenv
+```
+npm install dotenv
+```
