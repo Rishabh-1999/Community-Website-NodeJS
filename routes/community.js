@@ -390,6 +390,39 @@ app.post('/leaveCommunity',checkSession,(req,res)=>{
   })
 })
 
+app.post('/promoteusers',checkSession,(req,res)=>{
+  communitys.updateOne({"_id" :req.body.commid},{ $pull : {"users" : req.body._id},$push:{"managers":req.body._id}},function(error,result)
+  {
+      if(error)
+      throw error;
+      else {
+          res.send("true");
+      }
+  })
+})
+
+app.post('/acceptrequest',checkSession,(req,res)=>{
+  communitys.updateOne({"_id" :req.body.commid},{ $pull : {"request" : req.body._id},$push:{"users":req.body._id}},function(error,result)
+  {
+      if(error)
+      throw error;
+      else {
+          res.send("true");
+      }
+  })
+})
+
+app.post('/rejectrequest',checkSession,(req,res)=>{
+  communitys.updateOne({"_id" :req.body.commid},{ $pull : {"request" : req.body._id}},function(error,result)
+  {
+      if(error)
+      throw error;
+      else {
+          res.send("true");
+      }
+  })
+})
+
 app.get('/communitymembers/:pro',checkSession,(req,res)=>{
     var id=req.params.pro.toString();
     communitys.findOne({"_id":id},function(err,result)

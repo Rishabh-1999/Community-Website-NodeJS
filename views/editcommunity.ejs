@@ -1,46 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CQ</title>
+<title>CQ - <%= data.name %></title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-
 
 <link rel="stylesheet" type="text/css" href="/css/navBar.css">
 <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
 <link rel="stylesheet" type="text/css" href="/css/trumbowyg.css">
 <link rel="stylesheet" type="text/css" href="/css/communitystyle.css">
 <link rel="stylesheet" type="text/css" href="/css/sirstyle.css">
-<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 <script src="/script/trumbowyg.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-
+</head>
+<body>
 <% include paritials/topbar.ejs %>
 <% if(data.isActive == "true"){ %>
   <% include paritials/sidebar.ejs %>
 <% } %>
 
 <style type="text/css">
-	@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css")
-	  .dropdown-menu>li>a {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: 400;
-    line-height: 1.42857143;
-    color: #333;
-    white-space: nowrap;
-}
+
 .d-flex {
-    display: -webkit-box!important;
-    display: -ms-flexbox!important;
     display: flex!important;
 }
 .image-container:hover .middle {
@@ -50,29 +38,10 @@
     position: relative;
 }
 
-.middle {
-    transition: .5s ease;
-    opacity: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    text-align: center;
-}
 .image-container {
     position: relative;
 }
-.middle {
-    transition: .5s ease;
-    opacity: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    text-align: center;
-}
+
 
 .image-container:hover .image {
     opacity: 0.3;
@@ -85,12 +54,6 @@
   position: relative;
   overflow: hidden;
   display: inline-block;
-}
-.upload-btn-wrapper input[type=file] {
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
 }
 </style>
 
@@ -188,7 +151,7 @@
 								</div>
 								<div class="form-group">
 									<label>Community Description:</label>
-									<textarea type="text" class="form-control trumbowyg-textarea" rows="15" name="communityDescription" id="description" required="" tabindex="-1" style="height: 260px;"></textarea>
+									<textarea type="text" class="form-control trumbowyg-textarea" rows="15" name="communityDescription" id="description" required="" tabindex="-1" style="height: 260px;"><%= data2.description %></textarea>
 								</div>
 							</div>
 							<div class="form-group">
@@ -213,7 +176,9 @@ function strip_html_tags(str)
    str = str.toString();
   return str.replace(/<[^>]*>/g, '');
 }
+
 $.trumbowyg.svgPath = '/css/trumbowyg.svg';
+
 $('#description').trumbowyg();
 document.getElementById('rule').value="<%= data2.rule %>"
 document.getElementById('updatebtn').addEventListener("click",function()
@@ -223,15 +188,13 @@ document.getElementById('updatebtn').addEventListener("click",function()
 		return;
 	}
 	var xml=new XMLHttpRequest();
-	xml.open("POST","/communityTable/updatecomm");
+	xml.open("POST","/community/updatecomm");
 	var obj=new Object()
 	obj._id="<%= data2._id %>"
 	obj.name=document.getElementById('commname').value;
 	obj.description=strip_html_tags(document.getElementById('description').value);
 	obj.rule=document.getElementById('rule').value;
 	xml.setRequestHeader("Content-Type","application/json");
-	if( document.getElementById("up").files.length != 0 )
-		document.getElementById("profilepicform1").submit();
 	xml.addEventListener("load",function()
   	{
 		  if(xml.responseText=="true")
@@ -246,3 +209,5 @@ document.getElementById('updatebtn').addEventListener("click",function()
 	xml.send()
 })
 </script>
+</body>
+</html>
