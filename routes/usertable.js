@@ -7,6 +7,8 @@ var passport=require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
 var nodemailer = require('nodemailer');
 var mongojs = require('mongojs')
+var bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -142,39 +144,43 @@ app.post('/activatesuperadmin',checkSession,checkSuperAdmin,function(req,res){
 
 app.post('/checkLogin',function(req,res) {
     console.log('login data recieved');
-    UsersNames.findOne({"email": req.body.email,"password":req.body.password,restrict:"false"}, function(err, result) {
-      if(result!=null) {
-        req.session.isLogin=1;
-        req.session._id=result._id;
-        req.session.name=result.name;
-        
-        req.session.password=req.body.password;
-        var ob=new Object()
-        ob.name=result.name;
-        ob._id=result._id;
-        ob.email=result.email;
-        ob.photoloc=result.photoloc;
-        ob.gender=result.gender;
-        ob.city=result.city;
-        ob.DOB=result.DOB;
-        ob.phoneno=result.phoneno
-        ob.role=result.role
-        ob.status=result.status
-        ob.restrict=result.restrict
-        ob.isActive=result.isActive
-        ob.githubid=result.githubid
-        ob.temprole=result.role;
-        req.session.name=result.name;
-        req.session.data=ob;
-        if(result.status=="Pending")
-        {
-          res.send("not");
-        }
-        else
-        res.send("Logined");
-      }
-      else
-        res.send("wrong details");  
+    UsersNames.findOne({"email": req.body.email,restrict:"false"}, function(err, result) {
+      console.log(result);
+      bcrypt.compare(req.body.password, result.password, function (err, password) {
+        console.log(password);
+        if (password) {
+            req.session.isLogin=1;
+            req.session._id=result._id;
+            req.session.name=result.name;
+            
+            req.session.password=req.body.password;
+            var ob=new Object()
+            ob.name=result.name;
+            ob._id=result._id;
+            ob.email=result.email;
+            ob.photoloc=result.photoloc;
+            ob.gender=result.gender;
+            ob.city=result.city;
+            ob.DOB=result.DOB;
+            ob.phoneno=result.phoneno
+            ob.role=result.role
+            ob.status=result.status
+            ob.restrict=result.restrict
+            ob.isActive=result.isActive
+            ob.githubid=result.githubid
+            ob.temprole=result.role;
+            req.session.name=result.name;
+            req.session.data=ob;
+            if(result.status=="Pending")
+            {
+              res.send("not");
+            }
+            else
+            res.send("Logined");
+          }
+          else
+            res.send("wrong details");
+        });  
       })
       .catch(err => {
         console.error(err)
@@ -183,9 +189,10 @@ app.post('/checkLogin',function(req,res) {
 })
 
 app.post('/addUserToDataBase',checkSession,checkSuperAdmin,function (req, res) {
+  bcrypt.hash(req.body.password, saltRounds, function (err,   hash) {
     let newProduct = new UsersNames({
       email: req.body.email,
-      password: req.body.password,
+      password: hash,
       gender: "",
       DOB: "",
       phoneno: req.body.phoneno,
@@ -208,6 +215,7 @@ app.post('/addUserToDataBase',checkSession,checkSuperAdmin,function (req, res) {
      .catch(err => {
       res.send(err)
      })
+    });
 })
 
 app.post('/updatetodatabase',checkSession,function(req,res) {
@@ -278,19 +286,70 @@ app.post('/updateprofile',checkSession,function(req,res){
 })
 
 app.post('/changePassword',checkSession, (req,res)=>{
-  UsersNames.updateOne({"_id":req.session._id,"password":req.body.oldpass},{$set:{"password":req.body.newpass}},function(error,result){
-  if(error)
-    throw error;
-  else
-  {
-    if(result.n==0)
-      res.send("false");
-    else
-      res.send("true");
-  }
-    console.log("Password Changed Successfully /changePassword");
-  })
-})
+  UsersNames.findOne({"_id":req.session._id},function(error,result){
+        if(error)
+          throw error;
+        else
+        {
+          if(result==null)
+            res.send("false");
+          else {
+            bcrypt.compare(req.body.oldpass,result.password, function (err, boolans) {
+              if(boolans==true) {
+              bcrypt.hash(req.body.newpass, saltRounds, function(err, newpass) {
+              UsersNames.updateOne({"_id":req.session._id,},{$set:{"password":newpass}},function(error,result){
+                          if(error)
+                            throw error;
+                          else
+                          {
+                            if(result==null)
+                              res.send("false");
+                            else {   
+                              res.send("true");
+                            }
+                          }
+                        });
+            });
+          }
+            res.send("false");
+        });
+      }
+    }
+  });
+});
+  // bcrypt.hash(req.body.oldpass, saltRounds, function(err, oldhash) {
+  //   console.log("oldhash"+oldhash);
+  //   UsersNames.findOne({"_id":req.session._id,"password":oldhash},function(error,result){
+  //     if(error)
+  //       throw error;
+  //     else
+  //     {
+  //       console.log("ol"+result);
+  //       if(result==null)
+  //         res.send("false");
+  //       else {
+  //         bcrypt.hash(req.body.newpass, saltRounds, function(err, newhash) {
+  //         UsersNames.updateOne({"_id":req.session._id,"password":oldhash},{$set:{"password":newhash}},function(error,result){
+  //           if(error)
+  //             throw error;
+  //           else
+  //           {
+  //             console.log("ok"+result);
+  //             if(result==null)
+  //               res.send("false");
+  //             else {
+                
+  //               res.send("true");
+  //             }
+  //           }
+  //         });
+  //       });
+  //     }
+  //       console.log("Password Changed Successfully /changePassword");
+  //     }
+  //   });
+  // });
+//})
 
 //check duplicate for creating user emailid
 app.post('/checkDuplicate',checkSession, (req,res)=>{
