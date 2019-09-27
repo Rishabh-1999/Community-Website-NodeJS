@@ -61,3 +61,7 @@ npm install passport-github
 ```
 npm install dotenv
 ```
+- Bcrpty
+```
+npm install bcrpty  / npm i bcrpty
+```
