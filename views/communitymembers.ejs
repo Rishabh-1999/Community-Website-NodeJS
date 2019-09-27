@@ -1,4 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CQ - <%= data.name %></title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
@@ -16,6 +20,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 
 <script src="/script/trumbowyg.min.js"></script>
+</head>
+<body>
 
 <% include paritials/topbar.ejs %>
 <% if(data.isActive == "true"){ %>
@@ -53,7 +59,7 @@ dropdown-menu>li>a {
 			    <div class="container pc">
 				</div>
 				<center>
-				    <div class="communityprofile-name-mobile" style="max-height:40px;overflow:scroll">
+				    <div class="communityprofile-name-mobile" style="max-height:40px;">
 				        <a href="/communityTable/profile/<%= data2._id %>" style="color:white">
 				            <%= data2.name %>
 				        </a>
@@ -201,7 +207,7 @@ function addToMangers(obj) {
 	div2.setAttribute("class","col-sm-2 col-xs-5")
 	div2.setAttribute("style","padding:5px;")
 	var a=document.createElement('a');
-	a.setAttribute("href","/communityTable/profile/"+obj._id)
+	a.setAttribute("href","/communityTable/userprofile/"+obj._id)
 	var img1=document.createElement('img')
 	img1.setAttribute("src",obj.photoloc)
 	img1.setAttribute("class","community-member-pic")
@@ -216,7 +222,7 @@ function addToMangers(obj) {
 	div2.appendChild(span);
 	}
 	var div3=document.createElement('div')
-	div3.setAttribute("class","col-sm-9 col-xs-7 scrollable")
+	div3.setAttribute("class","col-sm-9 col-xs-7")
 	var a2=document.createElement('a')
 	a2.setAttribute("class","comusername")
 	a2.setAttribute("href","/communityTable/profile/"+obj._id)
@@ -226,3 +232,5 @@ function addToMangers(obj) {
 	document.getElementById('colum').appendChild(div1)
 }
 </script>
+</body>
+</html>

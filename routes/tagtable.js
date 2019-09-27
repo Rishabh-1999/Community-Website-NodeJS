@@ -26,14 +26,7 @@ var checkSuperAdmin = function (req, res, next) {
     res.redirect('/');
 }
 
-var tag = new mongoose.Schema({
-    tagname:String,
-    createdby:String,
-    createddate:String,
-    deleted:String
-  })
-
-var tagmodel =  mongoose.model('taglists', tag);
+var tagmodel = require('../models/tag');
 
 app.post('/getTagTable',checkSession,checkSuperAdmin,function(req,res) {
   let query = {deleted:'0'};

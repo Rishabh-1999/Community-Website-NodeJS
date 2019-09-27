@@ -9,6 +9,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // parse application/json
 app.use(bodyParser.json())
 
+var discussion = require('../models/discussion');
+
 var mongoose = require('mongoose');
 var mongoDB = 'mongodb://localhost/myDB';
 

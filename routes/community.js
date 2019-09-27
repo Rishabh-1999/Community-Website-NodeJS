@@ -40,8 +40,8 @@ var checkSuperAdminOrCommunityManagers = function (req, res, next) {
       res.redirect('/');
 }
 
-var communitys = mongoose.model('communitys');
-var UsersNames = mongoose.model('usernames');
+var UsersNames = require('../models/usernames');
+var communitys = require('../models/communitys');
 var tempcomm;
 
 app.post('/getUsers',checkSession,function(req,res) {
@@ -229,6 +229,8 @@ function formatAMPM(date) {
   return strTime;
 }
 
+var tempid;
+
 //Add Community
 app.post('/addCommunity',checkSession,checkSuperAdminOrCommunityManagers,function (req, res) {
 var rule;
@@ -275,7 +277,6 @@ var rule;
        console.log(err);
      })
 })
-var tempid;
 
 var storagecomm = multer.diskStorage({
       destination : './public/uploads/',
@@ -379,8 +380,30 @@ app.get('/userprofile/:pro',checkSession,(req,res)=>{
     }) 
 })
 
-app.post('/leaveCommunity',checkSession,(req,res)=>{
+app.post('/leaveCommunitybyforce',checkSession,(req,res)=>{
   communitys.updateOne({"_id" :req.body.commid},{ $pull : {"users" : req.body._id}},function(error,result)
+  {
+      if(error)
+      throw error;
+      else {
+          res.send("true");
+      }
+  })
+})
+
+app.post('/cancelRequestByUser',checkSession,(req,res)=>{
+  communitys.updateOne({"_id" :req.body.commid},{ $pull : {"request" : req.body._id}},function(error,result)
+  {
+      if(error)
+      throw error;
+      else {
+          res.send("true");
+      }
+  })
+})
+
+app.post('/leaveCommunity',checkSession,(req,res)=>{
+  communitys.updateOne({"_id" :req.body.commid},{ $pull : {"users" : req.session._id}},function(error,result)
   {
       if(error)
       throw error;

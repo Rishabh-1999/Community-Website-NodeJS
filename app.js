@@ -3,7 +3,6 @@ var path = require('path')
 var app = express()
 var session= require('express-session')
 var nodemailer = require('nodemailer');
-const passport = require('passport');
 require('dotenv').config()
 
 app.use(session({
@@ -19,58 +18,6 @@ app.set('views',path.join(__dirname, 'views'));
 
 var mongoose = require('mongoose');
 var mongoDB = 'mongodb://localhost/myDB';
-
-var user = new mongoose.Schema({
-    email: String,
-    password: String,
-    gender: String,
-    phoneno: String,
-    city: String,
-    name:String,
-    DOB: String,
-    role:String,
-    status:String,
-    restrict:String,
-    isActive:String,
-    interests:String,
-    aboutyou:String,
-    expectations:String,
-    photoloc:String,
-    githubid:String
-  })
-
-var UsersNames =  mongoose.model('usernames', user);
-
-var communitys = new mongoose.Schema({
-    "photoloc":String,
-    "name":String,
-    "members":String,
-    "rule":String,
-    "communityloc":String,
-    "createdate":String,
-    "description":String,
-    "owner":String,
-    "status":String,
-    "ownerid":String,
-    "request":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
-    "managers":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
-    "invited":[{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}],
-    "users": [{'type': mongoose.Schema.Types.ObjectId , 'ref':UsersNames}]
-  })
-  
-  var communitys =  mongoose.model('communitys', communitys);
-
-  var discussionSchema = new mongoose.Schema({
-    title: String,
-    details: String,
-    tag: String,
-    communityName: String,
-    createdBy: String,
-    createdDate: String,
-    ownerId: String,
-})
-
-var discussion = mongoose.model('discussiones', discussionSchema);
 
 app.use('/tagTable' , require('./routes/tagtable'))
 app.use('/userTable' , require('./routes/usertable'))

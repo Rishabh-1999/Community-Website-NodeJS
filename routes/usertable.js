@@ -10,6 +10,8 @@ var mongojs = require('mongojs')
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+var UsersNames = require('../models/usernames');
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -41,8 +43,6 @@ var checkSuperAdminOrCommunityManagers = function (req, res, next) {
     else
       res.redirect('/');
 }
-
-var UsersNames = mongoose.model('usernames');
 
 passport.serializeUser(function(user,done) {
     done(null,user);
@@ -317,39 +317,6 @@ app.post('/changePassword',checkSession, (req,res)=>{
     }
   });
 });
-  // bcrypt.hash(req.body.oldpass, saltRounds, function(err, oldhash) {
-  //   console.log("oldhash"+oldhash);
-  //   UsersNames.findOne({"_id":req.session._id,"password":oldhash},function(error,result){
-  //     if(error)
-  //       throw error;
-  //     else
-  //     {
-  //       console.log("ol"+result);
-  //       if(result==null)
-  //         res.send("false");
-  //       else {
-  //         bcrypt.hash(req.body.newpass, saltRounds, function(err, newhash) {
-  //         UsersNames.updateOne({"_id":req.session._id,"password":oldhash},{$set:{"password":newhash}},function(error,result){
-  //           if(error)
-  //             throw error;
-  //           else
-  //           {
-  //             console.log("ok"+result);
-  //             if(result==null)
-  //               res.send("false");
-  //             else {
-                
-  //               res.send("true");
-  //             }
-  //           }
-  //         });
-  //       });
-  //     }
-  //       console.log("Password Changed Successfully /changePassword");
-  //     }
-  //   });
-  // });
-//})
 
 //check duplicate for creating user emailid
 app.post('/checkDuplicate',checkSession, (req,res)=>{

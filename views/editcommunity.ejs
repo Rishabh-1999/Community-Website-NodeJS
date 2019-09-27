@@ -188,7 +188,7 @@ document.getElementById('updatebtn').addEventListener("click",function()
 		return;
 	}
 	var xml=new XMLHttpRequest();
-	xml.open("POST","/community/updatecomm");
+	xml.open("POST","/communityTable/updatecomm");
 	var obj=new Object()
 	obj._id="<%= data2._id %>"
 	obj.name=document.getElementById('commname').value;
@@ -197,7 +197,8 @@ document.getElementById('updatebtn').addEventListener("click",function()
 	xml.setRequestHeader("Content-Type","application/json");
 	xml.addEventListener("load",function()
   	{
-		  if(xml.responseText=="true")
+		  var resp=xml.responseText;
+		  if(resp=="true")
 		  {
 			if( document.getElementById("up").files.length != 0 )
 				document.getElementById("profilepicform1").submit();
@@ -206,7 +207,6 @@ document.getElementById('updatebtn').addEventListener("click",function()
   			window.location="/communityTable/"+obj._id
   	})
   	xml.send(JSON.stringify(obj));
-	xml.send()
 })
 </script>
 </body>

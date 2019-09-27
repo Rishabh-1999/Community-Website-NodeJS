@@ -497,7 +497,7 @@ function deleteb(id)
                  btnClass: 'btn-success',
                  action: function(){
                   var xml=new XMLHttpRequest();
-                  xml.open("POST","/communityTable/leaveCommunity");
+                  xml.open("POST","/communityTable/leaveCommunitybyforce");
                   xml.setRequestHeader("Content-Type","application/json");
                   xml.addEventListener("load",function()
                   {

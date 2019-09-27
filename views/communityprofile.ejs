@@ -1,5 +1,8 @@
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CQ</title>
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CQ - <%= data.name %></title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
@@ -19,41 +22,43 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+<style>
+		.full-description{
+		  display:none;
+		}
+		.less-description-btn{
+		  display: none;
+		}
+	  </style>
+</head>
+<body>
 
 <% include paritials/topbar.ejs %>
 <% if(data.isActive == "true"){ %>
   <% include paritials/sidebar.ejs %>
 <% } %>
-
-<style>
-  .child-reply-input{
-    display: none !important;
-  }
-</style>
-
-<div id="page-content-wrapper" style="position: relative;top: 70px;"> <!--Margin Top is new-->
+<div id="page-content-wrapper" style="position: relative;top: 70px;">
 	<div class="container-fluid page-content-div" style="padding:0">
 	  <div class="row">
     	<div class="col-lg-12 scoll-possible" style="padding:0">
-    <div class="row">
-        <div class="col-lg-12 scoll-possible" style="padding:0">
-  			<div class="community-header-top communityheader-profile-mobile" style="padding-top:6px;position:relative;">
-    			<div class="container pc">
-    			</div>
-				<div>
-    				<center>
-        			<div class="communityprofile-name-mobile" style="max-height:40px;overflow:scroll">
-          				<a href="" style="color:white"><%= data2.name %></a>
-        			</div>
-    				</center>
-
-    				<center>
-			      	<a href="#">
-			        <img src="<%= data2.photoloc %>" class="mobile img-communityprofile-pic allSides" style="background:#fff">
-			      </a>
-    				</center>
+    		<div class="row">
+        		<div class="col-lg-12 scoll-possible" style="padding:0">
+  					<div class="community-header-top communityheader-profile-mobile" style="padding-top:6px;position:relative;">
+    					<div class="container pc">
+    					</div>
+						<div>
+						<center>
+						<div class="communityprofile-name-mobile" style="max-height:40px;overflow:scroll">
+							<a href="" style="color:white"><%= data2.name %></a>
+						</div>
+						</center>
+						<center>
+						<a href="#">
+						<img src="<%= data2.photoloc %>" class="mobile img-communityprofile-pic allSides" style="background:#fff">
+						</a>
+						</center>
+					</div>
 				</div>
-			</div>
 			<div class="container community-profile-conatiner" style="display:flex;">
 				<div class="col-sm-2 col-xs-12 center-mobile pc">
 					<a href="#">
@@ -70,10 +75,10 @@
 				  		</button>
 				  		<ul class="dropdown-menu custom-commuity-dropdown dropdown-menu-right">
 							<li><a href="#" class="community-profile-option-btn">Discussions</a></li>
-             <% if(data._id == data2.ownerid){ %>
-      	 					<li><a href="/communityTable/<%= data2._id %>" class="community-profile-option-btn">Manage Community</a></li>
-      						<li><a href="#">Community Profile</a></li>
-              <% } %>
+						<% if(data._id == data2.ownerid){ %>
+										<li><a href="/communityTable/<%= data2._id %>" class="community-profile-option-btn">Manage Community</a></li>
+										<li><a href="#">Community Profile</a></li>
+						<% } %>
 
 							<li><a href="/communityTable/communitymembers/<%= data2._id %>" class="community-profile-option-btn">Community Members</a></li>
 						</ul>
@@ -105,56 +110,45 @@
           				</div>
         				<div class="panel-footer community-panel-sideBtn-link">
           				<a href="#" style="" id="mem">
-                		2 Members
-						  </a>
-						  <a href="#" style="float:right" id="leavecommunitytxt">
-								Leave Community
+                			No Members
+						</a>
+						<a href="#" style="float:right" id="leavecommunitytxt" onclick="leaveCommunity()">
+							Leave Community
 						</a>
 		        	</div>
 		      	</div>
-
-        <div class="panel panel-default allSidesSoft" style="border-radius:0">
-          <div class="panel-heading" style="border:0;border-radius:0">
-            Community Managers
-          </div>
-          <div class="panel-body" style="border:0;border-radius:0;display: flex;">
-            <div id="commuity-owner-detail">
-              Owner Info
-            <div class="col-sm-12 col-md-12 col-lg-12 adminInfo" style="margin-right: 250px;">
-            	<div class="col-sm-6 col-md-6 col-lg-4 col-xs-4 center-all">
-            	<a href="/communityTable/userprofile/<%= data2.ownerid %>">
-            		<img src="<%= data2.photoloc %>" class="adminPic allSides"></a>
-            	</div>
-            	<div class="col-sm-6 col-md-6 col-lg-8 col-xs-8 adminContent" style="padding:0">
-            		<div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" style="padding:0">
-            			<span class="label label-success" style="margin-top:10px;">Owner</span>
-            		</div>
-            		<div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" style="overflow:scroll;padding:0;">
+				<div class="panel panel-default allSidesSoft" style="border-radius:0">
+				<div class="panel-heading" style="border:0;border-radius:0">
+					Community Managers
+				</div>
+				<div class="panel-body" style="border:0;border-radius:0;display: flex;">
+					<div id="commuity-owner-detail">
+					Owner Info
+				<div class="col-sm-12 col-md-12 col-lg-12 adminInfo" style="margin-right: 250px;">
+					<div class="col-sm-6 col-md-6 col-lg-4 col-xs-4 center-all">
+					<a href="/communityTable/userprofile/<%= data2.ownerid %>">
+						<img src="<%= data2.photoloc %>" class="adminPic allSides"></a>
+					</div>
+					<div class="col-sm-6 col-md-6 col-lg-8 col-xs-8 adminContent" style="padding:0">
+						<div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" style="padding:0">
+							<span class="label label-success" style="margin-top:10px;">Owner</span>
+						</div>
+            			<div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" style="padding:0;">
             			<a href="/communityTable/userprofile/<%= data2.ownerid %>"><%= data2.owner %></a>
+            			</div>
             		</div>
             	</div>
-            </div>
-        </div>
-        <div id="commuity-admins-detail">
-              Admin Info
-      </div>
-    </div>
+        	</div>
+    	</div>
+	</div>
 </div>
-    </div>
-    <style>
-      .full-description{
-        display:none;
-      }
-      .less-description-btn{
-        display: none;
-      }
-    </style>
+
     <div class="col-sm-8 col-xs-12 separator-community-admin" style="padding:0 10px 10px 10px;">
       <div class="panel panel-default allSidesSoft" style="border-radius:0">
         <div class="panel-heading center-all" style="border:0;border-radius:0">
           About Community
         </div>
-        <div class="panel-body" style="border:0;border-radius:0;overflow:scroll">
+        <div class="panel-body" style="border:0;border-radius:0;">
               <p class="short-description center-all">
                  <%= data2.description %>
               </p>
@@ -167,8 +161,9 @@
         </div>
     </div>
 </div>
-
-
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -178,14 +173,13 @@ $(document).ready(function() {
   initalise();
   initaliseusers();
 })
-  var commid="<%= data2._id %>"
+var commid="<%= data2._id %>"
 function initalise()
 {
   var xml=new XMLHttpRequest();
   xml.open("POST","/communityTable/getUsers");
   xml.setRequestHeader("Content-Type","application/json");
   document.getElementById("special").innerHTML="";
-
   xml.addEventListener("load",function()
   {
 	  var data=JSON.parse(xml.responseText);
@@ -195,7 +189,6 @@ function initalise()
 	  }
       else
       {
-      	
       	var n;
       	if(4<data.length)
       		n=4;
@@ -224,10 +217,11 @@ function addtoSpecialDOM(obj)
 	div1.appendChild(a);
 	document.getElementById("special").appendChild(div1);
 }
+var email_id ="<%= data.email %>";
 function initaliseusers()
   {
     var xml=new XMLHttpRequest();
-    xml.open("POST","/usertable/getUsers");
+    xml.open("POST","/communityTable/getUsers");
     xml.setRequestHeader("Content-Type","application/json");
     xml.addEventListener("load",function()
     {
@@ -236,28 +230,33 @@ function initaliseusers()
 		var o=0;
         for(i in data)
         {
-		  addtoUserDOM(data[i]);
+		  //addtoUserDOM(data[i]);
 		  if(data[i].email == email_id)
 		  {
 			 o=1;
 		  }
-
 		}
 		if(o==0)
 		document.getElementById("leavecommunitytxt").setAttribute("style", "display:none;");
     })
     xml.send(JSON.stringify({"_id":commid}));
   }
-  var email_id ="<%= data.email %>";
-function addtoUserDOM(obj)
-{
-  console.log(obj.email)
-  console.log(email_id)
-  console.log(obj)
-  if(obj.email == email_id)
+
+  function leaveCommunity()
   {
-     document.getElementById("leavecommunitytxt").setAttribute("style", "display:none;");
+	var xml=new XMLHttpRequest();
+    xml.open("POST","/communityTable/leaveCommunity");
+    xml.setRequestHeader("Content-Type","application/json");
+    xml.addEventListener("load",function()
+    {
+        var data=JSON.parse(xml.responseText);
+		alert('Community Leaved');
+		window.location = '/communityPage';
+    })
+    xml.send(JSON.stringify({"commid":commid}));
   }
-}
+
 
 </script>   
+</body>
+</html>

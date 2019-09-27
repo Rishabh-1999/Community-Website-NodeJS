@@ -45,7 +45,7 @@ $(document).ready(function() {
       {
        var data=JSON.parse(xml.responseText);
         for(var i=0;i<data.length;i++)
-         addToDOM(data[i],s)
+         addToDOM(data[i],s);
        })
       xml.send();
     }
@@ -118,3 +118,4 @@ $(document).ready(function() {
       }
       document.getElementById('can-create-community').appendChild(div1)
     }
+
