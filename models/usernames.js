@@ -6,7 +6,7 @@ var user = new mongoose.Schema({
     phoneno: {type:String},
     city: {type:String},
     name:{type:String,required:true,unique:false,trim:true},
-    DOB: {type:Date},
+    DOB: {type:String},
     role:{type:String},
     status:{type:String},
     restrict:{type:String},

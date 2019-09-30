@@ -9,26 +9,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // parse application/json
 app.use(bodyParser.json())
 
-var mongoose = require('mongoose');
-var mongoDB = 'mongodb://localhost/myDB';
-
-var checkSession = function (req, res, next) {
-    if(req.session.isLogin)
-      next();
-    else
-      res.redirect('/');
-}
-
-var checkSuperAdmin = function (req, res, next) {
-  if(req.session.data.role=="SuperAdmin")
-    next();
-  else
-    res.redirect('/');
-}
+var middleware = require('../middlewares/middleware');
 
 var tagmodel = require('../models/tag');
 
-app.post('/getTagTable',checkSession,checkSuperAdmin,function(req,res) {
+app.post('/getTagTable',middleware.checkSession,middleware.checkSuperAdmin,function(req,res) {
   let query = {deleted:'0'};
     let params = {};
 
@@ -73,7 +58,7 @@ app.post('/getTagTable',checkSession,checkSuperAdmin,function(req,res) {
   console.log('Tag Table Successfully fetched ->/getTagTable');
 })
 
-app.post('/addTag',checkSession,checkSuperAdmin,function(req,res){
+app.post('/addTag',middleware.checkSession,middleware.checkSuperAdmin,function(req,res){
   let newTag = new tagmodel({
     tagname: req.body.value,
     createdby: req.session.name,
@@ -90,7 +75,7 @@ app.post('/addTag',checkSession,checkSuperAdmin,function(req,res){
   })
 })
 
-app.post('/deletetag',checkSession,checkSuperAdmin,function(req,res) {
+app.post('/deletetag',middleware.checkSession,middleware.checkSuperAdmin,function(req,res) {
   tagmodel.updateOne({tagname: req.body.tagname,createdby:req.body.createdby,createddate:req.body.createddate},
     {$set:{"deleted":"1"}})
   .then(data => {
@@ -102,7 +87,7 @@ app.post('/deletetag',checkSession,checkSuperAdmin,function(req,res) {
   console.log('Tag deleted /deletetag');
 })
 
-app.post('/checkDuplicate' ,checkSession,checkSuperAdmin, (req,res)=>{
+app.post('/checkDuplicate' ,middleware.checkSession,middleware.checkSuperAdmin, (req,res)=>{
   tagmodel.find({deleted:'0'}).exec(function(error,result) {
   if(error) {
     console.log(error);
@@ -123,7 +108,7 @@ app.post('/checkDuplicate' ,checkSession,checkSuperAdmin, (req,res)=>{
   })
 })
 
-app.post('/edittag' ,checkSession,checkSuperAdmin, (req,res)=>{
+app.post('/edittag' ,middleware.checkSession,middleware.checkSuperAdmin, (req,res)=>{
   tagmodel.updateOne({"tagname":req.body.oldtagname},{$set:{"tagname":req.body.newtagname}},function(error,result){
   if(error) {
     console.log(error);

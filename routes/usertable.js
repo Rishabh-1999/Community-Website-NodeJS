@@ -5,12 +5,12 @@ const app = express.Router();
 const multer = require('multer');
 var passport=require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
-var nodemailer = require('nodemailer');
 var mongojs = require('mongojs')
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 var UsersNames = require('../models/usernames');
+var middleware = require('../middlewares/middleware');
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -20,29 +20,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // parse application/json
 app.use(bodyParser.json())
-
-var mongoose = require('mongoose');
-var mongoDB = 'mongodb://localhost/myDB';
-
-var checkSession = function (req, res, next) {
-    if(req.session.isLogin)
-      next();
-    else
-      res.redirect('/');
-}
-var checkSuperAdmin = function (req, res, next) {
-    if(req.session.data.role=="SuperAdmin")
-      next();
-    else
-      res.redirect('/');
-}
-
-var checkSuperAdminOrCommunityManagers = function (req, res, next) {
-    if(req.session.data.role=="SuperAdmin" || req.session.data.role=="CommunityManagers")
-      next();
-    else
-      res.redirect('/');
-}
 
 passport.serializeUser(function(user,done) {
     done(null,user);
@@ -137,7 +114,7 @@ else {
   })
 })
 
-app.post('/activatesuperadmin',checkSession,checkSuperAdmin,function(req,res){
+app.post('/activatesuperadmin',middleware.checkSession,middleware.checkSuperAdmin,function(req,res){
   console.log('Activated issuperadmin /activatesuperadmin');
   req.session.data.issuperadmin="true";
 })
@@ -145,9 +122,7 @@ app.post('/activatesuperadmin',checkSession,checkSuperAdmin,function(req,res){
 app.post('/checkLogin',function(req,res) {
     console.log('login data recieved');
     UsersNames.findOne({"email": req.body.email,restrict:"false"}, function(err, result) {
-      console.log(result);
       bcrypt.compare(req.body.password, result.password, function (err, password) {
-        console.log(password);
         if (password) {
             req.session.isLogin=1;
             req.session._id=result._id;
@@ -172,11 +147,9 @@ app.post('/checkLogin',function(req,res) {
             req.session.name=result.name;
             req.session.data=ob;
             if(result.status=="Pending")
-            {
               res.send("not");
-            }
             else
-            res.send("Logined");
+              res.send("Logined");
           }
           else
             res.send("wrong details");
@@ -188,7 +161,7 @@ app.post('/checkLogin',function(req,res) {
       })
 })
 
-app.post('/addUserToDataBase',checkSession,checkSuperAdmin,function (req, res) {
+app.post('/addUserToDataBase',middleware.checkSession,middleware.checkSuperAdmin,function (req, res) {
   bcrypt.hash(req.body.password, saltRounds, function (err,   hash) {
     let newProduct = new UsersNames({
       email: req.body.email,
@@ -218,7 +191,7 @@ app.post('/addUserToDataBase',checkSession,checkSuperAdmin,function (req, res) {
     });
 })
 
-app.post('/updatetodatabase',checkSession,function(req,res) {
+app.post('/updatetodatabase',middleware.checkSession,function(req,res) {
   UsersNames.updateOne({"email":req.body.email},{$set:{"isActive":"true","email":req.body.email,"phoneno":req.body.phoneno,"city":req.body.city,"status":req.body.status,"role":req.body.role}},function(error,result){       
     if(error)
       throw error;
@@ -230,7 +203,7 @@ app.post('/updatetodatabase',checkSession,function(req,res) {
   })
 })
 
-app.post('/activateUser',checkSession,checkSuperAdmin,function(req,res) {
+app.post('/activateUser',middleware.checkSession,middleware.checkSuperAdmin,function(req,res) {
   UsersNames.updateOne({"_id":req.body._id},{$set:{"restrict":"true"}},function(error,result){
   if(error)
     throw error;
@@ -244,7 +217,7 @@ app.post('/activateUser',checkSession,checkSuperAdmin,function(req,res) {
   })
 })
 // deactivate User
-app.post('/deactivateUser',checkSession,checkSuperAdmin,function(req,res) {
+app.post('/deactivateUser',middleware.checkSession,middleware.checkSuperAdmin,function(req,res) {
   UsersNames.updateOne({"_id":req.body._id},{$set:{"restrict":"false"}},function(error,result){
   if(error)
     throw error;
@@ -259,7 +232,7 @@ app.post('/deactivateUser',checkSession,checkSuperAdmin,function(req,res) {
 })
 
 // Change Temp role
-app.post('/changetemprole',checkSession,checkSuperAdmin,function(req,res) {
+app.post('/changetemprole',middleware.checkSession,middleware.checkSuperAdmin,function(req,res) {
   if(req.session.data.temprole=="SuperAdmin")
   {
     req.session.data.temprole="User"
@@ -273,7 +246,7 @@ app.post('/changetemprole',checkSession,checkSuperAdmin,function(req,res) {
 })
 
 //Update Profile of Users
-app.post('/updateprofile',checkSession,function(req,res){
+app.post('/updateprofile',middleware.checkSession,function(req,res){
   UsersNames.updateOne({"_id":req.session._id},{$set:{"status":"Confirmed","isActive":"true","name":req.body.name,"DOB":req.body.DOB,"city":req.body.city,"gender":req.body.gender,"phoneno":req.body.phoneno,"interests":req.body.interests,
   "aboutyou":req.body.aboutyou,"expectations":req.body.expectations}},function(error,result){
   if(error)
@@ -285,7 +258,7 @@ app.post('/updateprofile',checkSession,function(req,res){
   })
 })
 
-app.post('/changePassword',checkSession, (req,res)=>{
+app.post('/changePassword',middleware.checkSession, (req,res)=>{
   UsersNames.findOne({"_id":req.session._id},function(error,result){
         if(error)
           throw error;
@@ -319,7 +292,7 @@ app.post('/changePassword',checkSession, (req,res)=>{
 });
 
 //check duplicate for creating user emailid
-app.post('/checkDuplicate',checkSession, (req,res)=>{
+app.post('/checkDuplicate',middleware.checkSession, (req,res)=>{
   var data=UsersNames.find({}).exec(function(error,result)    {
   if(error)
     throw error;
@@ -340,7 +313,7 @@ app.post('/checkDuplicate',checkSession, (req,res)=>{
 })
 })
 
-app.post('/usersTable' ,checkSession,checkSuperAdmin, function(req, res) {
+app.post('/usersTable' ,middleware.checkSession,middleware.checkSuperAdmin, function(req, res) {
   let query = {};
 let params = {};
 if(req.body.role === 'All' && req.body.status !== 'All')
@@ -411,7 +384,7 @@ else if(req.body.order[0].column === '4')
       storage : storage,
     }).single('file');
 
-app.post('/uploadphoto',checkSession,(req,res)=>{
+app.post('/uploadphoto',middleware.checkSession,(req,res)=>{
   upload(req,res,(err)=>{
         if(err)
         {
@@ -427,7 +400,7 @@ app.post('/uploadphoto',checkSession,(req,res)=>{
       })
 })
 
-app.get('/editprofile' ,checkSession, (req,res)=>{
+app.get('/editprofile' ,middleware.checkSession, (req,res)=>{
   UsersNames.findOne({"_id":req.session._id}, function(err, result) {
     var userdata=new Object();
     userdata.interests=result.interests

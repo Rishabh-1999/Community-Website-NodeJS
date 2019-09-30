@@ -8,7 +8,7 @@ var communitys = new mongoose.Schema({
     "members":{type:String},
     "rule":{type:String},
     "communityloc":{type:String},
-    "createdate":{type:Date},
+    "createdate":{type:String},
     "description":{type:String},
     "owner":{type:String},
     "status":{type:String},
