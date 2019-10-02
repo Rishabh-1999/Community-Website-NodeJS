@@ -454,7 +454,7 @@ app.get('/communityDicussion/:pro',middleware.checkSession,(req,res)=>{
     if(err)
       throw err;
     else {
-      res.render('chatroom',{data:req.session.data,data2:result});
+      res.render('discussion',{data:req.session.data,data2:result});
     }
   }) 
 })

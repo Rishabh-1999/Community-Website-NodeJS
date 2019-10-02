@@ -109,7 +109,7 @@
           </div>
           <div class="panel-body discussion-body" style="display: block;width: 100%;">
             <div class="col-sm-12 col-xs-12" style="padding:0;border-top: 1px solid white;">
-              <textarea class="discussion-body-textarea" name="details" placeholder="Enter discussion details" id="discussion_details" autocomplete="off" required=""></textarea>
+              <textarea class="discussion-body-textarea" name="details" placeholder="Enter discussion details" id="discussion_description" autocomplete="off" required=""></textarea>
             </div>
 
             <div class="link-preview-main col-sm-12 col-xs-12">
@@ -163,6 +163,7 @@ $(document).ready(function() {
     initaliseusers();   
     initaliseDiscussions();
 })
+
 function initaliseusers()
 {
   var xml=new XMLHttpRequest();
@@ -173,37 +174,35 @@ function initaliseusers()
       var data=JSON.parse(xml.responseText);
      
       for(i in data)
-      {
         addtoUserDOM(data[i])
-      }
   })
   xml.send(JSON.stringify({"_id":commid}));
 }
 function initaliseDiscussions()
 {
-  //   var n = "<%=data.name%>";
-  //   var ob = new Object();
-  //   ob.communityName = "<%=data2.name%>";
-  //    var xml=new XMLHttpRequest();
-  // xml.open("POST","/discussion/getDiscussion");
-  // xml.setRequestHeader("Content-Type","application/json");
-  // xml.addEventListener("load",function()
-  // {
-  //     var data=JSON.parse(xml.responseText);
-  //    //console.log(data)
-  //     for(j in data)
-  //     {
-  //       if(data[j].createdBy == n)
-  //       {
-  //         addtoDiscussionDOM(data[j])
-  //       }
-  //       else
-  //       {
-  //         addtoDiscussionDOMwithOutOptions(data[j])
-  //       }
-  //     }
-  // })
-  // xml.send(JSON.stringify(ob));
+    var n = "<%=data.name%>";
+    var ob = new Object();
+    ob.community_id = "<%= data2.id %>";
+     var xml=new XMLHttpRequest();
+  xml.open("POST","/discussion/getDiscussion");
+  xml.setRequestHeader("Content-Type","application/json");
+  xml.addEventListener("load",function()
+  {
+      var data=JSON.parse(xml.responseText);
+     //console.log(data)
+      for(j in data)
+      {
+        if(data[j].createdBy == n)
+        {
+          addtoDiscussionDOM(data[j])
+        }
+        else
+        {
+          addtoDiscussionDOMwithOutOptions(data[j])
+        }
+      }
+  })
+  xml.send(JSON.stringify(ob));
 }
 function addtoUserDOM(obj)
 {
@@ -213,11 +212,11 @@ function addtoUserDOM(obj)
   }
 }
 var discussion_title = document.getElementById('discussion_title');
-var discussion_details = document.getElementById('discussion_details');
+var discussion_description = document.getElementById('discussion_description');
 var tagEditor = document.getElementById('tagEditor');
 var discussion_post = document.getElementById('discussion_post');
 discussion_post.addEventListener("click",function() {
-  if(discussion_title.value == '' || discussion_details.value  == '')
+  if(discussion_title.value == '' || discussion_description.value  == '')
   {
     alert("Field can't be Empty");
   }
@@ -238,7 +237,7 @@ discussion_post.addEventListener("click",function() {
     today = today + "(" + hrs + ':' + mins + '' + format + ")";
   var obj = new Object();
   obj.title = discussion_title.value;
-  obj.details = discussion_details.value;
+  obj.description = discussion_description.value;
   obj.tag = tagEditor.value;
   obj.communityName = "<%=data2.name%>";
   obj.createdBy = "<%= data.name %>";
@@ -275,7 +274,7 @@ function addtoDiscussionDOM(obj)
                     +'<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-head"> posted by <a href="/discussion/discussionOwner/'+obj.ownerId+'">'+obj.createdBy +'</a> at '+obj.createdDate +'</div>'
                   +'</div>'
                   +'<div class="panel-body" style="padding:0;padding-top:10px;">'
-                    +'<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-content" style="font-size:16px">'+obj.details +'</div>'
+                    +'<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-content" style="font-size:16px">'+obj.description +'</div>'
                   +'</div>'
                 +'</div>'
               +'</div>';
@@ -292,7 +291,7 @@ function addtoDiscussionDOM(obj)
                     +'<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-head"> posted by <a href="/discussion/discussionOwner/'+obj.ownerId+'">'+obj.createdBy +'</a> at '+obj.createdDate +'</div>'
                   +'</div>'
                   +'<div class="panel-body" style="padding:0;padding-top:10px;">'
-                    +'<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-content" style="font-size:16px">'+obj.details +'</div>'
+                    +'<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-content" style="font-size:16px">'+obj.description +'</div>'
                   +'</div>'
                 +'</div>'
               +'</div>';

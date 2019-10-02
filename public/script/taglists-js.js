@@ -14,7 +14,6 @@ function initaliseTable()
       "ajax": {
         "url": "/tagTable/getTagTable",
         "type": "POST", 
-
         "data": function ( d )
               {
                 d.customsearch=$('div.dataTables_filter input').val();
@@ -38,13 +37,12 @@ function initaliseTable()
                 "targets": -1,
 
                 "render": function (data, type, row, meta) {
-                    console.log(row);
                    data = '<button class=btn btn-sm" style="margin-top:0; margin-right:5px; background-color:#2D312C; color:#fff;" id="delete" onclick="deletetag()"><span class="fa fa-trash"></span></button><button class=btn btn-sm" style="margin-top:0; background-color:#2D312C; color:#fff;" id="editbtn" data-toggle="modal" data-target="#editModal" onclick=editTagModel()><span class="fa fa-edit"></span></button>';
                    return data;
                 }
             }],
     });
-      $('#refresh').on('click',function(){
+    $('#refresh').on('click',function(){
       table.ajax.reload(null,false);
     });
     $('#tagdiv').on('click',function(){
@@ -56,7 +54,6 @@ function deletetag()
 {
     $(document).on("click", "#delete", function() {
     d = $(this).parent().parent()[0].children;
-    console.log(d[0]);
     var u=d[0];
     var obj=new Object();
     obj.tagname=d[0].innerHTML;
@@ -70,12 +67,23 @@ function deletetag()
                     btnClass: 'btn-success',
                     action: function () 
                     {
-                        console.log(obj);
                         var request = new XMLHttpRequest();
                         request.open('POST','/tagTable/deletetag');
                         request.setRequestHeader("Content-Type","application/json");
+                        request.addEventListener("load",function()
+                        {
+                          var d=request.responseText;
+                          if(d=="true") {
+                            $("#errorMsg").text("Tag "+obj.tagname+" Deleted");
+                            $('#errorModal').modal('show');
+                          }
+                          else {
+                            $("#errorMsg").text("Tag "+obj.tagname+" Not Deleted");
+                            $('#errorModal').modal('show');
+                          }
+                          table.ajax.reload(null,false);
+                        })
                         request.send(JSON.stringify(obj));
-                        table.ajax.reload(null,false);
                     }
                     },
                 'No': {btnClass: 'btn-danger',}
@@ -91,10 +99,19 @@ document.getElementById('btntagupdate').addEventListener("click",function(){
   obj.newtagname=document.getElementById('tag').value;
   request.open('POST','/tagTable/edittag');
   request.setRequestHeader("Content-Type","application/json");
-  request.onload=function()
-  {
-    table.ajax.reload(null,false);
-  }
+  request.addEventListener("load",function()
+                        {
+                          var d=request.responseText;
+                          if(d=="true") {
+                            $("#errorMsg").text("Tag "+obj.oldtagname+" Edited");
+                            $('#errorModal').modal('show');
+                          }
+                          else {
+                            $("#errorMsg").text("Tag "+obj.oldtagname+" Not Edited");
+                            $('#errorModal').modal('show');
+                          }
+                          table.ajax.reload(null,false);
+                        })
   request.send(JSON.stringify(obj));
 })
 

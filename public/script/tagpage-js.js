@@ -8,16 +8,11 @@ function formatAMPM(date) {
   var strTime = hours + ':' + minutes + ' ' + ampm;
   return strTime;
 }
-var go;
+
+var go=false;
 function addTag()
 {
             var v=document.getElementById('tagname').value;
-            if(v=="")
-            {
-                alert('First Enter some Input');
-            }
-            else
-            {
               if(go==false)
                 return;
                 var dat= new Date();
@@ -26,12 +21,24 @@ function addTag()
                 datestr=datestr+"-"+dat.getMonth();
                 datestr=datestr+"-"+dat.getFullYear();
                 datestr=datestr+" ("+formatAMPM(dat)+")";
-                console.log(datestr);
                 var xml=new XMLHttpRequest();
                 xml.open("POST","/tagTable/addTag");
                 xml.setRequestHeader("Content-Type","application/json");
+                xml.addEventListener("load",function()
+                {
+                  var d=xml.responseText;
+                  if(d=="true") {
+                    $("#errorMsg").text("Tag Added");
+                    $('#errorModal').modal('show');
+                    go=false
+                    document.getElementById('tagname').value="";
+                  }
+                  else {
+                    $("#errorMsg").text("Tag Not added");
+                    $('#errorModal').modal('show');
+                  }
+                })
                 xml.send(JSON.stringify({value :v,datestr:datestr}));
-            }
         }
         
 function taglists()
@@ -40,6 +47,13 @@ function taglists()
 }
 
 function checkDuplicate() {
+  var v=document.getElementById('tagname').value;
+            if(v=="")
+            {
+                $("#errorMsg").text("First Enter some Input");
+                $('#errorModal').modal('show');
+                return ;
+            }
     var xml=new XMLHttpRequest();
     xml.open("POST","/tagTable/checkDuplicate");
     xml.setRequestHeader("Content-Type", "application/json");
@@ -51,12 +65,13 @@ function checkDuplicate() {
       var d=xml.responseText;
       if(d=="true")
       {
-        alert('Tag Already Exists');
-        go="false";
+        $("#errorMsg").text("Tag Already Exists");
+        $('#errorModal').modal('show');
+        go=false;
       }
       else
       {
-        go="true";
+        go=true;
         addTag();
       }
     })

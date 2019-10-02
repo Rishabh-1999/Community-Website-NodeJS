@@ -1,26 +1,27 @@
-document.getElementById('gender').value="<%= data.gender %>"
+$("#up").on('change',function(){
+  document.getElementById("profilepicform1").submit();
+})
 
-   $("#up").on('change',function(){
-        document.getElementById("profilepicform1").submit();
-      })
-
-  document.getElementById('update').addEventListener("click",function(event)
+document.getElementById('update').addEventListener("click",function(event)
   {
     if(document.getElementById('name').value=="" ||
       document.getElementById('phoneno').value=="" ||
       document.getElementById('city').value==""
       ) {
-      alert("Enter required field");
+        $("#errorMsg").text("Name, Phone No. and city are required to be filled");
+        $('#errorModal').modal('show');
     return;
   }
     if(document.getElementById('gender').value=="")
     {
-      alert("Enter Gender");
+      $("#errorMsg").text("Gender Required");
+      $('#errorModal').modal('show');
       return;
     }
     if(document.getElementById('DOB').value=="")
     {
-      alert("Enter DOB");
+      $("#errorMsg").text("DOB Required");
+      $('#errorModal').modal('show');
       return;
     }
     var obj=new Object();

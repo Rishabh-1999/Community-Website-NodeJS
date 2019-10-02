@@ -2,9 +2,8 @@ var mongoose = require('mongoose');
 
 var discussionSchema = new mongoose.Schema({
     title: String,
-    details: String,
-    tag: String,
-    communityName: String,
+    description : String,
+    communityid: String,
     createdBy: String,
     createdDate: String,
     ownerId: String,

@@ -31,19 +31,31 @@
 <div class="containertag" style="padding-top:100px;">
     <div class="col-sm-6">
         <h3 class="page-header" style="color:#707070;border-bottom: 1px solid #eee;">Create Tag</h3>
-        <form id="createTagForm">
         <div class="form-group" style="padding: 7px;">
             <input class="form-control" type="text" name="tagName" placeholder="Tag Name" id="tagname">
         </div>
         <div class="form-group">
             <input class="form-control btn btn-primary" type="submit" value="Submit" id="tagSubmitBtn" onclick="checkDuplicate()" autocomplete="off">
         </div>
-        </form>
     </div>
     <a id="tags" class="btn btn-warning btn-m" style="margin-top:10px;font-size:110%;" onclick="taglists()">Tag Lists</a>
 </div>
 </center>
-
+<div class="modal" id="errorModal" role="dialog" style="z-index: 9999; display: none;">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2><b>Attention !!!</b></h2>
+            </div>
+            <div class="modal-body">
+                <p id="errorMsg"></b></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+        </div>
 <script type="text/javascript" src="/script/tagpage-js.js"></script>
 </body>
 </html>

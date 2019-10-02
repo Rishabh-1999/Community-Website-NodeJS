@@ -32,7 +32,7 @@ var middleware = require('./middlewares/middleware');
 app.use('/tagTable' , require('./routes/tagtable'))
 app.use('/userTable' , require('./routes/usertable'))
 app.use('/communityTable' , require('./routes/community'))
-app.use('/dicussion' , require('./routes/dicussion'))
+app.use('/discussion' , require('./routes/discussion'))
 
 //Bodyparser
 app.use(express.urlencoded({extended: true})); 
@@ -47,6 +47,7 @@ mongoose.connection.on('connected', (err) => {
 });
 
 mongoose.connect(mongoDB,{ useNewUrlParser: true });
+
 app.get('/' ,middleware.isAllowed, (req,res)=>{
     res.redirect('/');
 })

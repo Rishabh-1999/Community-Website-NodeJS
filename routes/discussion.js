@@ -3,6 +3,9 @@ const path = require('path');
 var bodyParser = require('body-parser')
 const app = express.Router();
 
+var http = require("http").Server(app);
+var io = require("socket.io")(http);
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -10,23 +13,16 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 var discussion = require('../models/discussion');
+var comment = require('../models/comment');
 
-var mongoose = require('mongoose');
-var mongoDB = 'mongodb://localhost/myDB';
+io.on('connection',function(socket){
+  socket.on('comment',function(data){
+      var commentData = new comment(data);
+      commentData.save();
+      socket.broadcast.emit('comment',data);  
+  });
+});
 
-var checkSession = function (req, res, next) {
-    if(req.session.isLogin)
-      next();
-    else
-      res.redirect('/');
-}
-
-var checkSuperAdmin = function (req, res, next) {
-  if(req.session.data.role=="SuperAdmin")
-    next();
-  else
-    res.redirect('/');
-}
 
 /* create new discussion */
 app.post('/addnewDiscussion',function (req, res) {
@@ -42,7 +38,6 @@ app.post('/addnewDiscussion',function (req, res) {
 
 // fetch all community discussions
 app.post('/getDiscussion',function(req,res) {
-
   discussion.find({ "communityName" : req.body.communityName}).exec(function (err, result) {
    if (err) 
     return err;
@@ -64,7 +59,6 @@ app.get('/discussionOwner/:pros',function(req,res) {
         {
             res.render('discussionOwnerInfo', {data: req.session.data,newdata:reses});
             //res.send("data deleted SUCCESFULLY")
-
         }
     });
 })
@@ -82,7 +76,5 @@ app.delete('/deleteDiscussion/:pros',function(req,res) {
         }
     });
 })
-
-var dicussion = mongoose.model('discussiones');
 
 module.exports = app;

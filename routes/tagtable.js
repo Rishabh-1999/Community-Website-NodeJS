@@ -68,10 +68,10 @@ app.post('/addTag',middleware.checkSession,middleware.checkSuperAdmin,function(r
   newTag.save()
   .then(data => {
     console.log('Tag Added ->/addTag');
-    res.render('tagpage',{data: req.session.data});
+    res.send("true")
   })
   .catch(err => {
-    res.send(error)
+    res.send("false");
   })
 })
 
@@ -79,10 +79,10 @@ app.post('/deletetag',middleware.checkSession,middleware.checkSuperAdmin,functio
   tagmodel.updateOne({tagname: req.body.tagname,createdby:req.body.createdby,createddate:req.body.createddate},
     {$set:{"deleted":"1"}})
   .then(data => {
-    res.send(data)
+    res.send("true")
   })
   .catch(err => {
-        res.send(error)
+        res.send("false")
   })
   console.log('Tag deleted /deletetag');
 })
@@ -111,13 +111,12 @@ app.post('/checkDuplicate' ,middleware.checkSession,middleware.checkSuperAdmin, 
 app.post('/edittag' ,middleware.checkSession,middleware.checkSuperAdmin, (req,res)=>{
   tagmodel.updateOne({"tagname":req.body.oldtagname},{$set:{"tagname":req.body.newtagname}},function(error,result){
   if(error) {
-    console.log(error);
-    throw error;
+    res.send("false")
   }
   else
   {
     console.log("Updated tag ->edittag");
-    res.send("updated");
+    res.send("true");
   }
   })
 })
