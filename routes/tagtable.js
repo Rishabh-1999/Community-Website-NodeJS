@@ -3,16 +3,19 @@ const path = require('path');
 var bodyParser = require('body-parser')
 const app = express.Router();
 
-// parse application/x-www-form-urlencoded
+/* parse application/x-www-form-urlencoded */
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// parse application/json
+/* parse application/json */
 app.use(bodyParser.json())
 
+/* Middleware */
 var middleware = require('../middlewares/middleware');
 
+/* Required Model */
 var tagmodel = require('../models/tag');
 
+/*  GET for Tag Table */
 app.post('/getTagTable',middleware.checkSession,middleware.checkSuperAdmin,function(req,res) {
   let query = {deleted:'0'};
     let params = {};
@@ -21,7 +24,6 @@ app.post('/getTagTable',middleware.checkSession,middleware.checkSuperAdmin,funct
     {
         query.name = {"$regex" : req.body.customsearch , "$options" : "i"};
     }
-
     let sortingType;
     if(req.body.order[0].dir === 'asc')
         sortingType = 1;
@@ -58,6 +60,7 @@ app.post('/getTagTable',middleware.checkSession,middleware.checkSuperAdmin,funct
   console.log('Tag Table Successfully fetched ->/getTagTable');
 })
 
+/* POST add Tag to DB */
 app.post('/addTag',middleware.checkSession,middleware.checkSuperAdmin,function(req,res){
   let newTag = new tagmodel({
     tagname: req.body.value,
@@ -75,6 +78,7 @@ app.post('/addTag',middleware.checkSession,middleware.checkSuperAdmin,function(r
   })
 })
 
+/* POST delete tag fom db */
 app.post('/deletetag',middleware.checkSession,middleware.checkSuperAdmin,function(req,res) {
   tagmodel.updateOne({tagname: req.body.tagname,createdby:req.body.createdby,createddate:req.body.createddate},
     {$set:{"deleted":"1"}})
@@ -87,32 +91,30 @@ app.post('/deletetag',middleware.checkSession,middleware.checkSuperAdmin,functio
   console.log('Tag deleted /deletetag');
 })
 
+/* POST check duplicate of tag from DB */
 app.post('/checkDuplicate' ,middleware.checkSession,middleware.checkSuperAdmin, (req,res)=>{
   tagmodel.find({deleted:'0'}).exec(function(error,result) {
-  if(error) {
-    console.log(error);
+  if(error)
     throw error;
-  }
   else
   {
     var temp=[];
     var returnflag="false";
     temp=result;
-    for(i in result) {
+    for(i in result)
       if(req.body.tagname==temp[i].tagname)
         returnflag="true";
-    }
     console.log('Tag duplication ->/checkDuplicate ');
     res.send(returnflag);
   }
   })
 })
 
+/* POST edit Tag */
 app.post('/edittag' ,middleware.checkSession,middleware.checkSuperAdmin, (req,res)=>{
   tagmodel.updateOne({"tagname":req.body.oldtagname},{$set:{"tagname":req.body.newtagname}},function(error,result){
-  if(error) {
+  if(error)
     res.send("false")
-  }
   else
   {
     console.log("Updated tag ->edittag");

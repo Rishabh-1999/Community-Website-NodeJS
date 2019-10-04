@@ -185,10 +185,12 @@ function readTextFile()
             for(var i=1;i<arr.length;++i)
             {
                 var obj=arr[i].split(',');
+                console.log(obj[pos]);
                 if(!ul.includes(obj[pos]))
                 {
                     continue;
                 }
+                console.log(obj[pos]);
                 // var xhttp=new XMLHttpRequest();
                 // xhttp.open("PUT","/CSVInvite/"+document.getElementById('CinName').value+"/"+obj[pos]);
                 // xhttp.setRequestHeader("Content-Type","application/json");
