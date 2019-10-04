@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var discussionSchema = new mongoose.Schema({
+var repliesSchema = new mongoose.Schema({
     title: String,
     description : String,
     communityId: String,
@@ -9,5 +9,5 @@ var discussionSchema = new mongoose.Schema({
     createdBy:String,
 })
 
-var discussion = mongoose.model('discussiones', discussionSchema);
-module.exports = discussion;
+var relpies = mongoose.model('replies', repliesSchema);
+module.exports = relpies;

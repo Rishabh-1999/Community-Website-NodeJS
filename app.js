@@ -7,6 +7,9 @@ var mongoStore = require('connect-mongo')(session);
 var favicon = require('serve-favicon');
 require('dotenv').config()
 
+var http = require("http").Server(app);
+var io = require("socket.io")(http);
+
 //Acces static files
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
@@ -34,7 +37,12 @@ app.use('/userTable' , require('./routes/usertable'))
 app.use('/communityTable' , require('./routes/community'))
 app.use('/discussion' , require('./routes/discussion'))
 
+var discussion = require('./models/discussion');
+var comment = require('./models/comment');
+
 //Bodyparser
+
+
 app.use(express.urlencoded({extended: true})); 
 app.use(express.json()); 
 
@@ -128,5 +136,15 @@ app.post('/logout',middleware.checkSession,function (req, res) {
   console.log('logouted');
 })
 
+io.on('connection',function(socket){
+    socket.on('comment',function(data){
+        console.log(data);
+        var commentData = new comment(data);
+        commentData.save();
+        socket.broadcast.emit('comment',data);  
+    });
+  });
+  
+
 console.log("Running on port 3000");
-app.listen(3000)
+http.listen(3000)

@@ -3,8 +3,7 @@ const path = require('path');
 var bodyParser = require('body-parser')
 const app = express.Router();
 
-var http = require("http").Server(app);
-var io = require("socket.io")(http);
+
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -14,14 +13,6 @@ app.use(bodyParser.json())
 
 var discussion = require('../models/discussion');
 var comment = require('../models/comment');
-
-io.on('connection',function(socket){
-  socket.on('comment',function(data){
-      var commentData = new comment(data);
-      commentData.save();
-      socket.broadcast.emit('comment',data);  
-  });
-});
 
 
 /* create new discussion */
@@ -48,6 +39,18 @@ app.post('/getDiscussion',function(req,res) {
   })
 })
 
+app.post('/getReply',function(req,res) {
+  comment.find({"discussionId": req.body.discussionId,reply:"1" },function(err,reses)
+  {
+      if(err)
+      throw err;
+      else
+      {
+          res.send(reses)
+      }
+  });
+})
+
 // discussion owner //
 app.get('/discussionOwner/:pros',function(req,res) {
     var id = req.params.pros.toString();
@@ -61,6 +64,18 @@ app.get('/discussionOwner/:pros',function(req,res) {
             //res.send("data deleted SUCCESFULLY")
         }
     });
+})
+
+app.post('/getComments',function(req,res) {
+  comment.find({ "discussionId": req.body.discussionId },function(err,reses)
+  {
+      if(err)
+      throw err;
+      else
+      {
+          res.send(reses)
+      }
+  });
 })
 
 // delete discussions //

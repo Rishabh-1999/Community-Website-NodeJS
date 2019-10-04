@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CQ - <%= data.name %></title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+
+<link rel="stylesheet" type="text/css" href="/css/navBar.css">
+<link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+<link rel="stylesheet" type="text/css" href="/css/trumbowyg.css">
+<link rel="stylesheet" type="text/css" href="/css/communitystyle.css">
+<link rel="stylesheet" type="text/css" href="/css/sirstyle.css">
+
+<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
+<script src="/script/trumbowyg.min.js"></script>
+</head>
+<body>
+
+<% include paritials/topbar.ejs %>
+<% if(data.isActive == "true"){ %>
+  <% include paritials/sidebar.ejs %>
+<% } %>
+
+<style>
+.communitymembers-head-btn {
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 4px;
+    margin-top: 2px;
+}
+.active-link-btn{
+  color:rgb(73, 73, 73) !important;
+}
+dropdown-menu>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+</style>
+
+<div id="page-content-wrapper" style="position: relative;top: 70px;"> <!--Margin Top is new-->
+  <div class="container-fluid page-content-div" style="padding:0">
+    <div class="row">
+      <div class="col-lg-12 scoll-possible" style="padding:0">
+        <div class="col-lg-12 scoll-possible" style="padding:0">
+			<div class="community-header-top communityheader-profile-mobile" style="padding-top:6px;position:relative;">
+			    <div class="container pc">
+				</div>
+				<center>
+				    <div class="communityprofile-name-mobile" style="max-height:40px;">
+				        <a href="/communityTable/profile/<%= data2._id %>" style="color:white">
+				            <%= data2.name %>
+				        </a>
+				    </div>
+				</center>
+			    <center>
+			      <a href="/communityTable/profile/<%= data2._id %>">
+			        <img src="<%= data2.photoloc %>" class="mobile img-communityprofile-pic allSides" style="background:#fff">
+			      </a>
+			    </center>
+			</div>
+			<div class="container community-profile-conatiner" style="display:flex;">
+				<div class="col-sm-2 col-xs-12 center-mobile pc">
+				<a href="/communityTable/profile/<%= data2._id %>">
+				  <img src="<%= data2.photoloc %>" class="img-communityprofile-pic allSides" style="background:#fff">
+				</a>
+			</div>
+			<div class="col-sm-8 communityprofile-name-pc communityprofile-system">
+			  <a href="/communityTable/userprofile/<%= data2._id %>" class="communityprofile-name-pc">
+			    <%= data2.name %>
+			  </a>
+			</div>
+<div class="col-sm-2 col-xs-12 center-mobile" style="padding-top:10px;float:right">
+<div class="dropdown open">
+  <button class="btn btn-default dropdown-toggle commuity-profile-menu-btn" type="button" data-toggle="dropdown" aria-expanded="true">
+    <i class="fa fa-bars"></i>
+  </button>
+  <ul class="dropdown-menu custom-commuity-dropdown dropdown-menu-right">
+      <li>
+          <a href="#" class="community-profile-option-btn">
+            Discussions
+          </a>
+      </li>
+      <li>
+          <a href="/communityTable/<%= data2._id %>" class="community-profile-option-btn">
+            Manage Community
+          </a>
+      </li>
+      <li>
+          <a href="/communityTable/profile/<%= data2._id %>" class="community-profile-option-btn">
+            Community Profile
+          </a>
+      </li>
+      <li>
+          <a href="/communityTable/communitymembers/<%= data2._id %>" class="community-profile-option-btn">
+            Community Members
+          </a>
+      </li>
+
+    </ul>
+</div>
+</div>
+
+</div>
+<center>
+    <hr style="border-top:2px solid #E6E6E6;width:85%;margin-top:0">
+</center>
+
+<div class="container center-all">
+  <div style="margin-top:20px;margin-bottom:50px;">
+    <div class="col-sm-5 col-md-5 col-xs-5 col-lg-5" style="display: flex">
+      <div style="display: flex;">
+        InviteUsers Using CSV
+    </div>
+    <br>
+    </div>
+    <div class="col-sm-3 col-md-3 col-xs-4 col-lg-2" style="display: flex">
+      <!-- <form method="post" action="/userTable/addUsersUsingCSV" id="csvform1" enctype="multipart/form-data"> -->
+      <input type="file" value="file" id="csvfile">
+      <button class="btn btn-sucess">Click to Invitee Users</button>
+    <!-- //  </form> -->
+    </div>
+    </div>
+<div style="margin-top:20px;margin-bottom:50px;">
+  <div class="col-sm-3 col-md-3 col-xs-4 col-lg-2" style="display: flex">
+  	<div style="display: flex;">
+    <a class="communitymembers-head-btn active-link-btn" onclick="initalise()" id="admins-list-btn">
+      InviteUsers
+    </a>
+  </div>
+  </div>
+  <div class="col-sm-12 scrollable" id="colum">
+      <div id="cont">
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+<script type="text/javascript">
+    var commid="<%= data2._id %>";
+    var ul=[];
+	$(document).ready(function() {
+  initalise();
+})
+
+document.getElementById('csvfile').onchange=()=>{
+    readTextFile();
+}
+function readTextFile()
+{
+    var reader = new FileReader();
+    reader.onload=()=>{
+        document.getElementById('csvfile').value="";
+        console.log(reader.result);
+        var arr=reader.result.split("\n");
+        arr.pop();
+        var head=arr[0].split(',');
+        var pos=-1;
+        for(var i=0;i<head.length;++i)
+        {
+            if(head[i].toLowerCase()=="email")
+            {
+                pos=i;
+                break;
+            }
+        }
+        if(pos!=-1)
+        {
+            console.log(ul);
+            for(var i=1;i<arr.length;++i)
+            {
+                var obj=arr[i].split(',');
+                if(!ul.includes(obj[pos]))
+                {
+                    continue;
+                }
+                // var xhttp=new XMLHttpRequest();
+                // xhttp.open("PUT","/CSVInvite/"+document.getElementById('CinName').value+"/"+obj[pos]);
+                // xhttp.setRequestHeader("Content-Type","application/json");
+                // xhttp.send();
+                // xhttp.onload=()=>{
+                //     ul.push(obj[pos]);
+                //     caller();
+                // }
+            }
+        }
+    }
+    reader.readAsBinaryString(document.getElementById('csvfile').files[0]);
+}
+
+function initalise()
+{
+	 document.getElementById('colum').innerHTML="";
+	var xml=new XMLHttpRequest();
+  xml.open("POST","/communityTable/getUsersOtherThanInCommunity");
+  xml.setRequestHeader("Content-Type","application/json");
+  xml.addEventListener("load",function()
+  {
+      var data=JSON.parse(xml.responseText);
+      console.log(data);
+      if(data.length==0)
+        noMangers();
+      else
+      {
+        for(i in data)
+        {
+            addToDom(data[i])
+        }
+    }
+  })
+  xml.send(JSON.stringify({"commid":commid}));
+}
+
+function addToDom(obj)
+{
+  var div1=document.createElement('div')
+  div1.setAttribute("id","div"+obj._id);
+  div1.setAttribute("class","col-sm-6 col-xs-6 allcoms community-user-div")
+  div1.setAttribute("style","margin-top:5px;display:flex;")
+  var div2=document.createElement('div')
+  div2.setAttribute("class","col-sm-2 col-xs-3")
+  div2.setAttribute("style","padding:5px;")
+  var a1=document.createElement('a')
+  a1.setAttribute("href","/communityTable/userprofile/"+obj._id)
+  var img1=document.createElement('img')
+  img1.setAttribute("src",obj.photoloc)
+  img1.setAttribute("class","community-member-pic")
+  a1.appendChild(img1)
+  div2.appendChild(a1)
+  div1.appendChild(div2)
+  var div3=document.createElement('div')
+  div3.setAttribute("class","col-sm-8 col-xs-6")
+  var a2=document.createElement('a')
+  a2.setAttribute("class","comusername")
+  a2.innerHTML=obj.name
+  a2.setAttribute("href","/communityTable/userprofile/"+obj._id)
+  div3.appendChild(a2)
+  div1.appendChild(div3)
+  var div4=document.createElement('div')
+  div4.setAttribute("class","col-sm-2 col-xs-3")
+  var a3=document.createElement('a')
+  a3.setAttribute("class","community-user-short-btn")
+  a3.setAttribute("style","float:left")
+  var btn1=document.createElement('button');
+  btn1.setAttribute("class","btn btn-success")
+  btn1.innerHTML="Invite"
+  a3.appendChild(btn1)
+  a3.setAttribute("id","inviteuserbtn")
+  a3.setAttribute("onclick","inviteuser('"+obj._id+"')");
+  div4.appendChild(a3)
+
+  div1.appendChild(div4)
+  document.getElementById('colum').appendChild(div1)
+}
+
+function inviteuser(id)
+{
+    var xml=new XMLHttpRequest();
+                  xml.open("POST","/communityTable/sendInvite");
+                  xml.setRequestHeader("Content-Type","application/json");
+                  xml.addEventListener("load",function()
+                  {
+                      var data=JSON.parse(xml.responseText);
+                      if(data=="true")
+                        alert("User Accepted");
+                        $('#div'+id).fadeOut(600, function(){
+                        $(this).remove();
+             });
+                  })
+                  xml.send(JSON.stringify({"invitedid":id,"commid":commid}));
+}
+
+</script>
+</body>
+</html>

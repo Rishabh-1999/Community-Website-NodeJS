@@ -1,6 +1,8 @@
 var mongoose = require('mongoose')
 
 var UsersNames = require('./usernames');
+var Schema = mongoose.Schema,
+    ObjectId = Schema.ObjectId;
 
 var communitys = new mongoose.Schema({
     "photoloc":String,

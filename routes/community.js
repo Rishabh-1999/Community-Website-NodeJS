@@ -7,6 +7,7 @@ var mongojs = require('mongojs')
 
 var UsersNames = require('../models/usernames');
 
+var mongoose = require('mongoose');
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -388,11 +389,46 @@ app.post('/leaveCommunity',middleware.checkSession,(req,res)=>{
   })
 })
 
+var Schema = mongoose.Schema,
+    ObjectId = Schema.ObjectId;
+
+app.post('/getUsersOtherThanInCommunity',middleware.checkSession,(req,res)=>{
+  communitys.findOne({"_id" :req.body.commid},function(error,communitydata)
+  {
+      if(error)
+      throw error;
+      else {
+      console.log(communitydata)
+      communitydata.managers.push(mongoose.mongo.ObjectId(communitydata.ownerid))
+        UsersNames.find({"$and": [{"$and": [{"$and": [{"$and": [{"_id":{"$nin" : communitydata.managers},"_id":{"$nin": communitydata.users}}],"_id":{"$nin": communitydata.invited}}],"_id":{"$nin": communitydata.request}}],"_id":{"$nin": communitydata.ownerid}}]},function(error,result)
+        {
+          if(error)
+          console.log(error)
+         res.send(result)   
+        
+        });
+      }
+    }
+  );
+})
+
+
 app.post('/promoteusers',middleware.checkSession,(req,res)=>{
   communitys.updateOne({"_id" :req.body.commid},{ $pull : {"users" : req.body._id},$push:{"managers":req.body._id}},function(error,result)
   {
       if(error)
       throw error;
+      else {
+          res.send("true");
+      }
+  })
+})
+
+app.post('/sendInvite',middleware.checkSession,(req,res)=>{
+  communitys.updateOne({"_id" :req.body.commid},{ $push:{"invited":req.body.invitedid}},function(error,result)
+  {
+      if(error)
+        res.send("false");
       else {
           res.send("true");
       }
@@ -432,6 +468,19 @@ app.get('/communitymembers/:pro',middleware.checkSession,(req,res)=>{
         res.render('communitymembers',{data:req.session.data,data2:result});
       }
     }) 
+})
+
+app.get('/inviteusers/:pro',middleware.checkSession,(req,res)=>{
+  var id=req.params.pro.toString();
+  communitys.findOne({"_id":id},function(err,result)
+  {
+    if(err)
+      throw err;
+    else {
+      console.log("inviteusers");
+      res.render('inviteusers',{data:req.session.data,data2:result});
+    }
+  }) 
 })
 
 app.get('/profile/:pro',middleware.checkSession,(req,res)=>{
