@@ -65,3 +65,7 @@ npm install dotenv
 ```
 npm install bcrpty  / npm i bcrpty
 ```
+- Socket
+```
+npm install socket
+```
