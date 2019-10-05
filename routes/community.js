@@ -60,6 +60,20 @@ communitys.findOne({ "_id" : req.body._id }).populate('invited').
   })
 })
 
+
+app.post('/getUsersInvited',middleware.checkSession,function(req,res) {
+  communitys.find({ "invited" : {"$in" : req.session._id} }).exec(function (err, result) {
+      if (err) 
+        return err;
+      else
+      {
+        console.log("Got Users for community table /getinveted")
+        console.log()
+        res.send(result)
+      }
+    })
+  })
+
 // get request users in communityes
 app.post('/getrequest',middleware.checkSession,function(req,res) {
 communitys.findOne({ "_id" : req.body._id }).populate('request').
@@ -128,7 +142,6 @@ app.post('/getCommunityLists',middleware.checkSession,function(req, res) {
               });
         }
     });
-
   });
 
 //Join Community
@@ -457,6 +470,16 @@ app.post('/rejectrequest',middleware.checkSession,(req,res)=>{
   })
 })
 
+app.post('/acceptinvites',middleware.checkSession,(req,res)=>{
+  communitys.updateOne({"_id" :req.body._id},{ $pull : {"invited" : req.session._id},$push:{"users":req.session._id}},function(error,result)
+  {
+      if(error)
+        throw error;
+      else
+        res.send("true");
+  })
+})
+
 app.get('/communitymembers/:pro',middleware.checkSession,(req,res)=>{
     var id=req.params.pro.toString();
     communitys.findOne({"_id":id},function(err,result)
@@ -479,6 +502,32 @@ app.get('/inviteusers/:pro',middleware.checkSession,(req,res)=>{
     else {
       console.log("inviteusers");
       res.render('inviteusers',{data:req.session.data,data2:result});
+    }
+  }) 
+})
+
+app.post('/inviteusersbyname',middleware.checkSession,(req,res)=>{
+  UsersNames.findOne({"email":req.body.email},function(err,result) {
+  communitys.updateOne({"_id":req.body.commid},{$push:{"invited":result._id}},function(err,result1)
+  {
+    if(err)
+      throw err;
+    else {
+      console.log("inviteusersbyname");
+      res.render('inviteusers',{data:req.session.data,data2:result});
+    }
+  }) 
+})
+})
+
+app.post('/deleteinvited',middleware.checkSession,(req,res)=>{
+  communitys.updateOne({"_id":req.body.commid},{$pull:{"invited":req.body.id}},function(err,result)
+  {
+    if(err)
+      throw err;
+    else {
+      console.log("inviteusers");
+      res.send("true");
     }
   }) 
 })

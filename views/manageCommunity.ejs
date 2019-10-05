@@ -230,7 +230,7 @@ function initaliseinvited()
       else
       {
         for(i in data)
-          //addToInvited(data[i])
+          addToInvited(data[i])
         document.getElementById('invitedUserShowBtn').innerHTML="Invited Members("+data.length+")";
     }
   })
@@ -283,6 +283,60 @@ function addToRequestDOM(obj)
   div4.appendChild(a4)
   div1.appendChild(div4)
   document.getElementById('comlist').appendChild(div1)
+}
+
+function addToInvited(obj)
+{
+  var div1=document.createElement('div')
+  div1.setAttribute("class","col-sm-12 col-xs-12 allcoms community-user-div")
+  div1.setAttribute("style","margin-top:5px;display:flex;")
+  var div2=document.createElement('div')
+  div2.setAttribute("class","col-sm-2 col-xs-3")
+  div2.setAttribute("style","padding:5px;")
+  var a1=document.createElement('a')
+  a1.setAttribute("href","/communityTable/userprofile/"+obj._id)
+  var img1=document.createElement('img')
+  img1.setAttribute("src",obj.photoloc)
+  img1.setAttribute("class","community-member-pic")
+  a1.appendChild(img1)
+  div2.appendChild(a1)
+  div1.appendChild(div2)
+  var div3=document.createElement('div')
+  div3.setAttribute("class","col-sm-8 col-xs-6")
+  var a2=document.createElement('a')
+  a2.setAttribute("class","comusername")
+  a2.innerHTML=obj.name
+  a2.setAttribute("href","/communityTable/userprofile/"+obj._id)
+  div3.appendChild(a2)
+  div1.appendChild(div3)
+  var div4=document.createElement('div')
+  div4.setAttribute("class","col-sm-2 col-xs-3")
+  var a4=document.createElement('a')
+  a4.setAttribute("class","community-user-short-btn")
+  a4.setAttribute("style","float:right")
+  a4.setAttribute("id","requestrejectbtn")
+  a4.setAttribute("onclick","deleteinvited('"+obj._id+"')")
+  var i2=document.createElement('i')
+  i2.setAttribute("class","fa fa-times")
+  a4.appendChild(i2)
+  div4.appendChild(a4)
+  div1.appendChild(div4)
+  document.getElementById('comlist').appendChild(div1)
+}
+
+function deleteinvited(id)
+{
+  var xml=new XMLHttpRequest();
+  xml.open("POST","/communityTable/deleteinvited");
+  var ob = new Object();
+          ob.commid = commid;
+          ob.id = id;
+  xml.setRequestHeader("Content-Type","application/json");
+  xml.addEventListener("load",function()
+  {
+    location.reload();
+  })
+  xml.send(JSON.stringify(ob));
 }
 
 function initalisemangers()

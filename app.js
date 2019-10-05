@@ -96,6 +96,11 @@ app.get('/taglists' ,middleware.checkSession, (req,res)=>{
 })
 
 /* Add Community Page */
+app.get('/invitedbycommunity' ,middleware.checkSession, (req,res)=>{
+    res.render('invitedbycommunity',{data: req.session.data}); 
+})
+
+/* Add Community Page */
 app.get('/addCommunity' ,middleware.checkSession,middleware.checkSuperAdminOrCommunityManagers, (req,res)=>{
     res.render('addCommunity',{data: req.session.data}); 
 })

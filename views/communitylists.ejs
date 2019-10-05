@@ -39,12 +39,13 @@
         <div class="container">
           <div class="col-sm-12">
             <div class="panel panel-default allSidesSoft community-panel-main-div">
-              <% if(data.role == "SuperAdmin" || data.role == "CommunityManagers"){ %>
               <div class="panel-heading community-panel-heading" style="color:white;font-weight:bold;display:flex; ">
                 <p style="flex:1;float: left; margin: 10px;">My Communities</p>
+                <a href="/invitedbycommunity" class="btn btn-info community-panel-btn" style="float:right;margin: 10px;">Invited Community</a>
+                <% if(data.role == "SuperAdmin" || data.role == "CommunityManagers"){ %>
                 <a href="/addCommunity" class="btn btn-info community-panel-btn" style="float:right;margin: 10px;">Create</a>
+                <% } %>
               </div>
-              <% } %>
               <div class="panel-body" style="padding-bottom:0">
                 <div id="can-create-community">
                 </div>

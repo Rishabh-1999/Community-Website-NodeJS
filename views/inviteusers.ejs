@@ -108,7 +108,6 @@ dropdown-menu>li>a {
             Community Members
           </a>
       </li>
-
     </ul>
 </div>
 </div>
@@ -163,46 +162,30 @@ document.getElementById('csvfile').onchange=()=>{
 }
 function readTextFile()
 {
-    var reader = new FileReader();
-    reader.onload=()=>{
-        document.getElementById('csvfile').value="";
-        console.log(reader.result);
-        var arr=reader.result.split("\n");
-        arr.pop();
-        var head=arr[0].split(',');
-        var pos=-1;
-        for(var i=0;i<head.length;++i)
-        {
-            if(head[i].toLowerCase()=="email")
-            {
-                pos=i;
-                break;
-            }
-        }
-        if(pos!=-1)
-        {
-            console.log(ul);
-            for(var i=1;i<arr.length;++i)
-            {
-                var obj=arr[i].split(',');
-                console.log(obj[pos]);
-                if(!ul.includes(obj[pos]))
-                {
-                    continue;
-                }
-                console.log(obj[pos]);
-                // var xhttp=new XMLHttpRequest();
-                // xhttp.open("PUT","/CSVInvite/"+document.getElementById('CinName').value+"/"+obj[pos]);
-                // xhttp.setRequestHeader("Content-Type","application/json");
-                // xhttp.send();
-                // xhttp.onload=()=>{
-                //     ul.push(obj[pos]);
-                //     caller();
-                // }
-            }
-        }
+  var reader = new FileReader();
+  reader.onload=()=>{
+    document.getElementById('csvfile').value="";
+    var arr=reader.result.split("\n");
+    arr.pop();
+    var head=arr[0].split(',');
+    for(var i=0;i<head.length;i++)
+    {
+          console.log(head[i])
+          var ob = new Object();
+          ob.commid = commid;
+          ob.email = head[i];
+          var request = new XMLHttpRequest();
+          request.open('POST','/communityTable/inviteusersbyname');
+          request.setRequestHeader("content-Type","application/JSON");
+          request.send(JSON.stringify(ob));
+          request.onload = function()
+          {
+          }
     }
-    reader.readAsBinaryString(document.getElementById('csvfile').files[0]);
+    alert("Invitation Sent to All Users")
+   // location.reload();
+  }
+  reader.readAsBinaryString(document.getElementById('csvfile').files[0]);
 }
 
 function initalise()
@@ -216,13 +199,11 @@ function initalise()
       var data=JSON.parse(xml.responseText);
       console.log(data);
       if(data.length==0)
-        noMangers();
+        noInvited();
       else
       {
         for(i in data)
-        {
-            addToDom(data[i])
-        }
+            addToDom(data[i]);
     }
   })
   xml.send(JSON.stringify({"commid":commid}));
@@ -265,7 +246,6 @@ function addToDom(obj)
   a3.setAttribute("id","inviteuserbtn")
   a3.setAttribute("onclick","inviteuser('"+obj._id+"')");
   div4.appendChild(a3)
-
   div1.appendChild(div4)
   document.getElementById('colum').appendChild(div1)
 }
