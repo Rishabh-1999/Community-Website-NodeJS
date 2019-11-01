@@ -17,12 +17,24 @@ var tagmodel = require('../models/tag');
 
 /*  GET for Tag Table */
 app.post('/getTagTable',middleware.checkSession,middleware.checkSuperAdmin,function(req,res) {
-  let query = {deleted:'0'};
+  let query = {};
     let params = {};
-
-    if(req.body.customsearch)
+    console.log(req.body.search.value)
+    if(req.body.search.value)
     {
-        query.name = {"$regex" : req.body.customsearch , "$options" : "i"};
+      query["$or"]=[{
+        "tagname" : {"$regex" : req.body.search.value , "$options" : "i"}
+      },
+      {
+        "createdby" : {"$regex" : req.body.search.value , "$options" : "i"}
+      },
+      {
+        "createddate" : {"$regex" : req.body.search.value , "$options" : "i"}
+      }]
+      query["$and"]=[{
+        "deleted" : "1"}]
+        // query.tagname = {"$regex" : req.body.customsearch , "$options" : "i"};
+        // query.createdby = {"$regex" : req.body.customsearch , "$options" : "i"};
     }
     let sortingType;
     if(req.body.order[0].dir === 'asc')

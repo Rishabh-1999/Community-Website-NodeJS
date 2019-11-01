@@ -315,17 +315,34 @@ app.post('/checkDuplicate',middleware.checkSession, (req,res)=>{
 
 app.post('/usersTable' ,middleware.checkSession,middleware.checkSuperAdmin, function(req, res) {
   let query = {};
-let params = {};
-if(req.body.role === 'All' && req.body.status !== 'All')
-    query = {status: req.body.status};
-else if(req.body.role !== 'All' && req.body.status === 'All')
-    query = {role: req.body.role};
-else if(req.body.role !== 'All' && req.body.status !== 'All')
-    query = {role: req.body.role , status: req.body.status};
+  let params = {};
+  if(req.body.role === 'All' && req.body.status !== 'All')
+      query = {status: req.body.status};
+  else if(req.body.role !== 'All' && req.body.status === 'All')
+      query = {role: req.body.role};
+  else if(req.body.role !== 'All' && req.body.status !== 'All')
+      query = {role: req.body.role , status: req.body.status};
 
     if(req.body.customsearch)
     {
-        query.name = {"$regex" : req.body.customsearch , "$options" : "i"};
+        query["$or"]=[{
+        "name" : {"$regex" : req.body.search.value , "$options" : "i"}
+      },
+      {
+        "communityloc" : {"$regex" : req.body.search.value , "$options" : "i"}
+      },
+      {
+        "createdate" : {"$regex" : req.body.search.value , "$options" : "i"}
+      },
+      {
+        "description" : {"$regex" : req.body.search.value , "$options" : "i"}
+      },
+      {
+        "owner" : {"$regex" : req.body.search.value , "$options" : "i"}
+      },
+      {
+        "status" : {"$regex" : req.body.search.value , "$options" : "i"}
+      }]
     }
 
 let sortingType;

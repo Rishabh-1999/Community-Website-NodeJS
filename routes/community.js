@@ -100,7 +100,24 @@ app.post('/getCommunityLists',middleware.checkSession,function(req, res) {
 
     if(req.body.search.value)
     {
-        query.name = {"$regex" : req.body.customsearch , "$options" : "i"};
+        query["$or"]=[{
+        "email" : {"$regex" : req.body.search.value , "$options" : "i"}
+      },
+      {
+        "name" : {"$regex" : req.body.search.value , "$options" : "i"}
+      },
+      {
+        "DOB" : {"$regex" : req.body.search.value , "$options" : "i"}
+      },
+      {
+        "phoneno" : {"$regex" : req.body.search.value , "$options" : "i"}
+      },
+      {
+        "gender" : {"$regex" : req.body.search.value , "$options" : "i"}
+      },
+      {
+        "city" : {"$regex" : req.body.search.value , "$options" : "i"}
+      }]
     }
 
     let sortingType;
