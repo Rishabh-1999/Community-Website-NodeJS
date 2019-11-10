@@ -1,229 +1,221 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CQ</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>CQ</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
 
-<link rel="stylesheet" type="text/css" href="/css/navBar.css">
-<link rel="stylesheet" type="text/css" href="/css/sidebar.css">
-<link rel="stylesheet" type="text/css" href="css/communitystyle.css">
-<link rel="stylesheet" type="text/css" href="css/sirstyle.css">
+	<link rel="stylesheet" type="text/css" href="/css/navBar.css">
+	<link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+	<link rel="stylesheet" type="text/css" href="css/communitystyle.css">
+	<link rel="stylesheet" type="text/css" href="css/sirstyle.css">
 
-<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 </head>
+
 <body>
-<% include paritials/topbar.ejs %>
-<% if(data.isActive == "true"){ %>
-  <% include paritials/sidebar.ejs %>
-<% } %>
-<div id="page-content-wrapper" style="margin-bottom: 100px;">
-	<div class="container-fluid page-content-div" style="padding:0;">
-	  	<div class="row">
-			<div class="col-lg-12 scoll-possible" style="padding:0">
-				<div class="community-header-top" style="height:50px;padding-top:6px;">
-					<div class="col-sm-12 community-sub-head" style="display:flex;">
-						<div class="col-sm-4" style="padding: 0 50px 0 0;flex: 1;display: flex;">
-							<a class="btn community-head-btn active" onclick="initaliseTable()">
-							  <i class="fa fa-users"></i>
-							</a>
-							<a class="btn community-head-btn" style="margin-left:10px" href="/communityalllists">
-							  <i class="fa fa-search"></i>
-							</a>
-						</div>
-						<div class="col-sm-4" style="padding: 0 50px 0 0;flex: 1;display: flex;">
-							<input class="form-control searchCommunityDiscover" type="text" placeholder="Search Community..." id="searchinput">
+	<% include paritials/topbar.ejs %>
+	<% if(data.isActive == "true"){ %>
+	<% include paritials/sidebar.ejs %>
+	<% } %>
+	<div id="page-content-wrapper" style="margin-bottom: 100px;">
+		<div class="container-fluid page-content-div" style="padding:0;">
+			<div class="row">
+				<div class="col-lg-12 scoll-possible" style="padding:0">
+					<div class="community-header-top" style="height:50px;padding-top:6px;">
+						<div class="col-sm-12 community-sub-head" style="display:flex;">
+							<div class="col-sm-4" style="padding: 0 50px 0 0;flex: 1;display: flex;">
+								<a class="btn community-head-btn active" onclick="initaliseTable()">
+									<i class="fa fa-users"></i>
+								</a>
+								<a class="btn community-head-btn" style="margin-left:10px" href="/communityalllists">
+									<i class="fa fa-search"></i>
+								</a>
+							</div>
+							<div class="col-sm-4" style="padding: 0 50px 0 0;flex: 1;display: flex;">
+								<input class="form-control searchCommunityDiscover" type="text"
+									placeholder="Search Community..." id="searchinput">
+							</div>
 						</div>
 					</div>
-				</div>
-    			<div class="col-sm-12"><br>
-					<div class="container">
-						<div class="search" id="search" style="top: 40px;position: relative;">
-									<!--Community List-->
+					<div class="col-sm-12"><br>
+						<div class="container">
+							<div class="search" id="search" style="top: 40px;position: relative;">
+								<!--Community List-->
+							</div>
 						</div>
-  					</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<script type="text/javascript">
-var start=0;
-var end=4;
-var tempdata=[];
+	<script type="text/javascript">
+		var start = 0;
+		var end = 4;
+		var tempdata = [];
 
-var totaldata;
-	$(document).ready(function() {
-  initalise();
-})
+		var totaldata;
+		$(document).ready(function () {
+			initalise();
+		})
 
-function initalise()
-{
-	let obj={
-        start:start,
-        end:end,
-	}
-	console.log(obj);
-	document.getElementById('search').innerHTML="";
-	var xml=new XMLHttpRequest()
-	xml.open("POST","/communityTable/getAllActive")
-	xml.onload=function()
-    {
-		document.getElementById('search').innerHTML="";
-		var d=JSON.parse(xml.responseText);
-		tempdata=tempdata.concat(d);
-        for(var i=0;i<tempdata.length;i++)
-        {
-        	addToDOM(tempdata[i])
+		function initalise() {
+			let obj = {
+				start: start,
+				end: end,
+			}
+			console.log(obj);
+			document.getElementById('search').innerHTML = "";
+			var xml = new XMLHttpRequest()
+			xml.open("POST", "/communityTable/getAllActive")
+			xml.onload = function () {
+				document.getElementById('search').innerHTML = "";
+				var d = JSON.parse(xml.responseText);
+				tempdata = tempdata.concat(d);
+				for (var i = 0; i < tempdata.length; i++) {
+					addToDOM(tempdata[i])
+				}
+				console.log(tempdata);
+			}
+			xml.setRequestHeader("Content-Type", "application/json");
+			xml.send(JSON.stringify(obj));
 		}
-		console.log(tempdata);
-    }
-    xml.setRequestHeader("Content-Type","application/json");
-    xml.send(JSON.stringify(obj));
-}
 
-function getDocumentHeight() {
-	console.log("getDocumentHeight");
-	const body = document.body;
-	const html = document.documentElement;
-	
-	return Math.max(
-		body.scrollHeight, body.offsetHeight,html.clientHeight, html.scrollHeight, html.offsetHeight
-	);
-}
+		function getDocumentHeight() {
+			console.log("getDocumentHeight");
+			const body = document.body;
+			const html = document.documentElement;
 
- function getScrollTop() {
-	console.log("getScrollTop");
-	return (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
-}
-
-    window.onscroll = function() {
-		console.log("onscroll");
-	if (getScrollTop()== getDocumentHeight() - window.innerHeight)
-        {
-	         start+=4;
-             end=4;
-             initalise();
-        }
-        else
-            return;
-}
-
-	function addToDOM(obj)
-	{
-		var div1=document.createElement('div');
-		div1.setAttribute("class","container mainDivDiscover-container")
-		div1.setAttribute("id","divid"+obj._id);
-		div1.setAttribute("style","margin:20px;");
-		var div2=document.createElement('div')
-		div2.setAttribute("class","panel community-show-item panel-default allSidesSoft")
-		div2.setAttribute("style"," padding:0;background:white;")
-		var div3=document.createElement('div')
-		div3.setAttribute("class","panel-body")
-		div3.setAttribute("style","padding:0;padding-top:20px")
-		var div4=document.createElement('div')
-		div4.setAttribute("class","col-sm-2 col-xs-3 col-lg-1 col-md-2")
-		var a1=document.createElement('a')
-		a1.setAttribute("href","/communityTable/profile/"+obj._id)
-		var img1=document.createElement('img')
-		img1.setAttribute("src",obj.photoloc)
-		img1.setAttribute("class","allSides")
-		img1.setAttribute("style","height:70px;width:70px;border:3px solid rgb(235, 235, 235)")
-		a1.appendChild(img1)
-		div4.appendChild(a1)
-		div3.appendChild(div4)
-		var div5=document.createElement('div')
-		div5.setAttribute("class","col-sm-8 col-xs-6 col-lg-8 col-md-8 community-name")
-		var a2=document.createElement('a')
-		a2.setAttribute("href","/communityTable/profile/"+obj._id)
-		a2.setAttribute("class","community-name")
-		a2.innerHTML=obj.name
-		div5.appendChild(a2)
-		div3.appendChild(div5)
-		var div6=document.createElement('div')
-		div6.setAttribute("style","padding-right:15px;")
-		var div7=document.createElement('div')
-		var btn1=document.createElement('button')
-		btn1.setAttribute("class","btn btn-primary pull-right")
-		if(obj.rule=="Direct")
-    	{
-      btn1.innerHTML="Join"
-     btn1.setAttribute("onclick","btnjoin(0,"+"'"+obj._id+"'"+")")
-    	}
-		else
-    	{
-      btn1.innerHTML="Ask To Join"
-      btn1.setAttribute("onclick","btnjoin(1,"+"'"+obj._id+"'"+")")
-    	}
-		
-		div7.appendChild(btn1)
-		div6.appendChild(div7)
-		div3.appendChild(div6)
-		div2.appendChild(div3)
-
-		var div8=document.createElement('div')
-		div8.setAttribute("class","panel-body")
-		div8.setAttribute("style","padding:10px 0 10px 0;")
-		var div9=document.createElement('div')
-		div9.setAttribute("class","col-sm-12 col-xs-12 col-lg-12 col-md-12")
-		var p1=document.createElement('p')
-		p1.setAttribute("class","totalUsers")
-		p1.innerHTML="1 Members"
-		div9.appendChild(p1)
-		div8.appendChild(div9)
-		var div10=document.createElement('div')
-		div10.setAttribute("class","col-sm-12 col-xs-12 col-lg-12 col-md-12 community-description")
-		div10.setAttribute("style","font-size:16px")
-
-		var div11=document.createElement('div')
-		div11.setAttribute("class","community-description")
-		div11.innerHTML=obj.description;
-		div10.appendChild(div11)
-		div8.appendChild(div10)
-		div2.appendChild(div8)
-		div1.appendChild(div2)
-		document.getElementById('search').appendChild(div1)
-	}
-
-	function closeDragElement() {
-		/* stop moving when mouse button is released:*/
-		document.onmouseup = null;
-		document.onmousemove = null;
-	  }
-
-function btnjoin(r,_id)
-{
-  var xml=new XMLHttpRequest()
-  var obj=new Object()
-  obj.r=r;
-  obj._id=_id;
-  xml.open("POST","/communityTable/joinandrequestcommunity")
-  xml.onload=function()
-    {
-      $('#divid'+_id).fadeOut(600, function(){
-               $(this).remove();
-             });
-    }
-    xml.setRequestHeader("Content-Type","application/json");
-    xml.send( JSON.stringify(obj));
-}
-
-	document.getElementById('searchinput').onkeyup=function()
-	{
-		document.getElementById('search').innerHTML=""
-		var val=document.getElementById('searchinput').value;
-		for(i in tempdata)
-		{
-			console.log(tempdata[i])
-			if((tempdata[i].name).includes(val) || (tempdata[i].description).includes(val))
-				addToDOM(tempdata[i])
+			return Math.max(
+				body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight
+			);
 		}
-	}
-</script>
+
+		function getScrollTop() {
+			console.log("getScrollTop");
+			return (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body
+				.parentNode || document.body).scrollTop;
+		}
+
+		window.onscroll = function () {
+			console.log("onscroll");
+			if (getScrollTop() == getDocumentHeight() - window.innerHeight) {
+				start += 4;
+				end = 4;
+				initalise();
+			} else
+				return;
+		}
+
+		function addToDOM(obj) {
+			var div1 = document.createElement('div');
+			div1.setAttribute("class", "container mainDivDiscover-container")
+			div1.setAttribute("id", "divid" + obj._id);
+			div1.setAttribute("style", "margin:20px;");
+			var div2 = document.createElement('div')
+			div2.setAttribute("class", "panel community-show-item panel-default allSidesSoft")
+			div2.setAttribute("style", " padding:0;background:white;")
+			var div3 = document.createElement('div')
+			div3.setAttribute("class", "panel-body")
+			div3.setAttribute("style", "padding:0;padding-top:20px")
+			var div4 = document.createElement('div')
+			div4.setAttribute("class", "col-sm-2 col-xs-3 col-lg-1 col-md-2")
+			var a1 = document.createElement('a')
+			a1.setAttribute("href", "/communityTable/profile/" + obj._id)
+			var img1 = document.createElement('img')
+			img1.setAttribute("src", obj.photoloc)
+			img1.setAttribute("class", "allSides")
+			img1.setAttribute("style", "height:70px;width:70px;border:3px solid rgb(235, 235, 235)")
+			a1.appendChild(img1)
+			div4.appendChild(a1)
+			div3.appendChild(div4)
+			var div5 = document.createElement('div')
+			div5.setAttribute("class", "col-sm-8 col-xs-6 col-lg-8 col-md-8 community-name")
+			var a2 = document.createElement('a')
+			a2.setAttribute("href", "/communityTable/profile/" + obj._id)
+			a2.setAttribute("class", "community-name")
+			a2.innerHTML = obj.name
+			div5.appendChild(a2)
+			div3.appendChild(div5)
+			var div6 = document.createElement('div')
+			div6.setAttribute("style", "padding-right:15px;")
+			var div7 = document.createElement('div')
+			var btn1 = document.createElement('button')
+			btn1.setAttribute("class", "btn btn-primary pull-right")
+			if (obj.rule == "Direct") {
+				btn1.innerHTML = "Join"
+				btn1.setAttribute("onclick", "btnjoin(0," + "'" + obj._id + "'" + ")")
+			} else {
+				btn1.innerHTML = "Ask To Join"
+				btn1.setAttribute("onclick", "btnjoin(1," + "'" + obj._id + "'" + ")")
+			}
+
+			div7.appendChild(btn1)
+			div6.appendChild(div7)
+			div3.appendChild(div6)
+			div2.appendChild(div3)
+
+			var div8 = document.createElement('div')
+			div8.setAttribute("class", "panel-body")
+			div8.setAttribute("style", "padding:10px 0 10px 0;")
+			var div9 = document.createElement('div')
+			div9.setAttribute("class", "col-sm-12 col-xs-12 col-lg-12 col-md-12")
+			var p1 = document.createElement('p')
+			p1.setAttribute("class", "totalUsers")
+			p1.innerHTML = "1 Members"
+			div9.appendChild(p1)
+			div8.appendChild(div9)
+			var div10 = document.createElement('div')
+			div10.setAttribute("class", "col-sm-12 col-xs-12 col-lg-12 col-md-12 community-description")
+			div10.setAttribute("style", "font-size:16px")
+
+			var div11 = document.createElement('div')
+			div11.setAttribute("class", "community-description")
+			div11.innerHTML = obj.description;
+			div10.appendChild(div11)
+			div8.appendChild(div10)
+			div2.appendChild(div8)
+			div1.appendChild(div2)
+			document.getElementById('search').appendChild(div1)
+		}
+
+		function closeDragElement() {
+			/* stop moving when mouse button is released:*/
+			document.onmouseup = null;
+			document.onmousemove = null;
+		}
+
+		function btnjoin(r, _id) {
+			var xml = new XMLHttpRequest()
+			var obj = new Object()
+			obj.r = r;
+			obj._id = _id;
+			xml.open("POST", "/communityTable/joinandrequestcommunity")
+			xml.onload = function () {
+				$('#divid' + _id).fadeOut(600, function () {
+					$(this).remove();
+				});
+			}
+			xml.setRequestHeader("Content-Type", "application/json");
+			xml.send(JSON.stringify(obj));
+		}
+
+		document.getElementById('searchinput').onkeyup = function () {
+			document.getElementById('search').innerHTML = ""
+			var val = document.getElementById('searchinput').value;
+			for (i in tempdata) {
+				console.log(tempdata[i])
+				if ((tempdata[i].name).includes(val) || (tempdata[i].description).includes(val))
+					addToDOM(tempdata[i])
+			}
+		}
+	</script>
 </body>
+
 </html>

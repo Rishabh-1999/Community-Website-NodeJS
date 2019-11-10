@@ -1,6 +1,6 @@
-.header{
+.header {
 	padding: 10px;
-	background-color: rgba(34,45,60,1);
+	background-color: rgba(34, 45, 60, 1);
 	display: flex;
 	justify-content: space-between;
 	color: white;
@@ -9,63 +9,82 @@
 	z-index: 1000;
 }
 
-.left,.right{
+.left,
+.right {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
-.left{
+
+.left {
 	width: 100px;
 }
-.right{
+
+.right {
 	width: 250px;
 }
-.cq{
+
+.cq {
 	font-size: 25px;
 	font-weight: bold;
 }
-.icon{
+
+.icon {
 	cursor: pointer;
 }
-.icon2{
+
+.icon2 {
 	display: none;
 }
-.userImg{
+
+.userImg {
 	width: 50px;
 	height: 50px;
 }
-.userRole,.userName{
+
+.userRole,
+.userName {
 	font-size: small;
 	padding: 3px 5px;
 	border-radius: 3px;
 }
-.userRole{
-	background-color: rgb(240,173,78);
+
+.userRole {
+	background-color: rgb(240, 173, 78);
 }
-.userName{
-	background-color: rgb(87,191,87);
+
+.userName {
+	background-color: rgb(87, 191, 87);
 }
+
 @media screen and (max-width: 950px) {
-	.userRole,.userName{
+
+	.userRole,
+	.userName {
 		display: none;
 	}
-	.icon2{
+
+	.icon2 {
 		display: block;
 	}
-	.right{
+
+	.right {
 		width: 100px;
 	}
-	.left > i{
+
+	.left>i {
 		display: none;
 	}
-	.tabBar > .bar{
+
+	.tabBar>.bar {
 		display: none;
 	}
-	.userImg{
+
+	.userImg {
 		display: none;
 	}
-	.glyphicon
-	{
+
+	.glyphicon {
 		float: right;
 	}
 }

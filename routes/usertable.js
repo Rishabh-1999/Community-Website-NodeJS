@@ -122,6 +122,10 @@ app.post('/activatesuperadmin',middleware.checkSession,middleware.checkSuperAdmi
 app.post('/checkLogin',function(req,res) {
     console.log('login data recieved');
     UsersNames.findOne({"email": req.body.email,restrict:"false"}, function(err, result) {
+      console.log(result)
+		if(result==null)
+			res.send("wrong details");
+    else {
       bcrypt.compare(req.body.password, result.password, function (err, password) {
         if (password) {
             req.session.isLogin=1;
@@ -154,6 +158,7 @@ app.post('/checkLogin',function(req,res) {
           else
             res.send("wrong details");
         });  
+    }
       })
       .catch(err => {
         console.error(err)

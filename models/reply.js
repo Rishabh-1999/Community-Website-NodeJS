@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var repliesSchema = new mongoose.Schema({
     reply: String,
-    commentId : String,
+    commentId: String,
     repliedBy: String,
     ownerId: String,
     discussionId: String

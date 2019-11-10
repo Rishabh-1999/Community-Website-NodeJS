@@ -1,97 +1,108 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CQ - <%= data.name %></title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CQ - <%= data.name %></title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css">
 
-<link rel="stylesheet" type="text/css" href="/css/navBar.css">
-<link rel="stylesheet" type="text/css" href="/css/sidebar.css">
-<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/navBar.css">
+  <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 
-<link rel="stylesheet" type="text/css" href="/css/editprofile.css">
+  <link rel="stylesheet" type="text/css" href="/css/editprofile.css">
 
-<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-<script type="text/javascript" src="/script/select2.js"></script>
-<style>
-  .panel-body {
-    padding: 15px;
-}
-  .form-group {
-    margin-bottom: 15px;
-}
-.form-control {
-    display: block;
-    width: 100%;
-    height: 34px;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-}
-</style>
+  <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+  <script type="text/javascript" src="/script/select2.js"></script>
+  <style>
+    .panel-body {
+      padding: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-control {
+      display: block;
+      width: 100%;
+      height: 34px;
+      padding: 6px 12px;
+      font-size: 14px;
+      line-height: 1.42857143;
+      color: #555;
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+      -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+      -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+      transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+  </style>
 </head>
-<body>
-<% include paritials/topbar.ejs %>
-<% if(data.status == "Confirmed"){ %>
-  <% include paritials/sidebar.ejs %>
-<% } %>
 
-<div id="page-content-wrapper" style="position: relative;top: 70px;">
-  <div class="container-fluid page-content-div" style="padding:0">
-    <div class="row">
-      <div class="col-lg-12 scoll-possible" style="padding:0">
-        <div class="col-lg-12 scoll-possible">
-          <div class="container">
-            <div style="margin-top:30px;">
-              <div class="col-12">
-                <div class="card allSidesSoft">
-                  <div class="card-body">
-                    <div class="d-flex">
-                      <div class="image-container"  id="profilepicform">
-                        <img src="<%= data.photoloc %>" id="user-profile-image" style="width: 150px; height: 150px" class="img-thumbnail allSidesSoft">
-                        <div class="middle">
-                          <div class="upload-btn-wrapper">
-                            <form method="post" action="/userTable/uploadphoto" id="profilepicform1" enctype="multipart/form-data">
-                              <button id="uploadfiletodatabase" class="btn">Upload a file</button>
-                              <input type="file" id="up" name="file"/>
-                            </form>
+<body>
+  <% include paritials/topbar.ejs %>
+  <% if(data.status == "Confirmed"){ %>
+  <% include paritials/sidebar.ejs %>
+  <% } %>
+
+  <div id="page-content-wrapper" style="position: relative;top: 70px;">
+    <div class="container-fluid page-content-div" style="padding:0">
+      <div class="row">
+        <div class="col-lg-12 scoll-possible" style="padding:0">
+          <div class="col-lg-12 scoll-possible">
+            <div class="container">
+              <div style="margin-top:30px;">
+                <div class="col-12">
+                  <div class="card allSidesSoft">
+                    <div class="card-body">
+                      <div class="d-flex">
+                        <div class="image-container" id="profilepicform">
+                          <img src="<%= data.photoloc %>" id="user-profile-image" style="width: 150px; height: 150px"
+                            class="img-thumbnail allSidesSoft">
+                          <div class="middle">
+                            <div class="upload-btn-wrapper">
+                              <form method="post" action="/userTable/uploadphoto" id="profilepicform1"
+                                enctype="multipart/form-data">
+                                <button id="uploadfiletodatabase" class="btn">Upload a file</button>
+                                <input type="file" id="up" name="file" />
+                              </form>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <br>
-                    <div class="panel-group">
-                      <div class="panel panel-default editUserPanel">
-                        <div class="panel-heading">Basic Info</div>
+                      <br>
+                      <div class="panel-group">
+                        <div class="panel panel-default editUserPanel">
+                          <div class="panel-heading">Basic Info</div>
                           <div class="panel-body">
                             <div class="form-group marginbox">
                               <label>Email :</label>
-                              <input type="text" value="<%= data.email %>" class="form-control" name="username" id="email" disabled="true">
+                              <input type="text" value="<%= data.email %>" class="form-control" name="username"
+                                id="email" disabled="true">
                             </div>
                             <div class="form-group marginbox">
                               <label>Name :</label>
-                              <input type="text" class="form-control" name="fullname" autocomplete="off" required="" placeholder="Name" id="name" value="<%= data.name %>">
+                              <input type="text" class="form-control" name="fullname" autocomplete="off" required=""
+                                placeholder="Name" id="name" value="<%= data.name %>">
                             </div>
                             <div class="form-group col-sm-5" style="display: inline-block;">
                               <label>DOB :</label>
-                              <input class="form-control dobDate" name="dob" placeholder="MM/DD/YYYY" id="DOB" type="date" autocomplete="off" required="" value="<%= data.DOB %>">
+                              <input class="form-control dobDate" name="dob" placeholder="MM/DD/YYYY" id="DOB"
+                                type="date" autocomplete="off" required="" value="<%= data.DOB %>">
                             </div>
                             <div class="form-group col-sm-5" style="display: inline-block;">
                               <label>Gender :</label>
@@ -102,50 +113,56 @@
                                   <option value="Transgender" id="Transgender">Transgender</option>
                                 </optgroup>
                               </select>
-                              </div>
                             </div>
                           </div>
-                          <div class="panel panel-default editUserPanel">
-                            <div class="panel-heading">Contact Info</div>
-                              <div class="panel-body">
-                                <div class="form-group marginbox">
-                                  <label>Phone :</label>
-                                  <input type="text" value="<%= data.phoneno %>"  class="form-control" name="phone" maxlength="10" required="" id="phoneno">
-                                </div>
-                                <div class="form-group marginbox">
-                                  <label>City :</label>
-                                <input type="text" class="form-control" name="city" required="" id="city" value="<%= data.city %>"> 
-                              </div>
+                        </div>
+                        <div class="panel panel-default editUserPanel">
+                          <div class="panel-heading">Contact Info</div>
+                          <div class="panel-body">
+                            <div class="form-group marginbox">
+                              <label>Phone :</label>
+                              <input type="text" value="<%= data.phoneno %>" class="form-control" name="phone"
+                                maxlength="10" required="" id="phoneno">
+                            </div>
+                            <div class="form-group marginbox">
+                              <label>City :</label>
+                              <input type="text" class="form-control" name="city" required="" id="city"
+                                value="<%= data.city %>">
                             </div>
                           </div>
-                          <div class="panel panel-default editUserPanel">
-                            <div class="panel-heading">Personal Info</div>
-                              <div class="panel-body">
-                                <div class="form-group">
-                                  <label>Interests :</label>
-                                  <div class="tag-conatiner-custom-div">
-                                    <input class="select2-search__field" type="search" tabindex="0" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="textbox" aria-autocomplete="list" placeholder="Enter interests..." style="width: 100%;" id="interests" value="<%= userdata.interests %>">
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label>Tell us a bit more about your journey:</label>
-                                  <textarea type="text" class="form-control" name="aboutjourney" id="aboutyou"><%= userdata.aboutyou %></textarea>
-                                </div>
-                                <div class="form-group">
-                                  <label>What are your expectations from the communities?</label>
-                                  <textarea type="text" class="form-control" name="comExpectations" id="expectations"><%= userdata.expectations %></textarea>
-                                </div>
-                              </div>
-                            </div>
-                            <br>
+                        </div>
+                        <div class="panel panel-default editUserPanel">
+                          <div class="panel-heading">Personal Info</div>
+                          <div class="panel-body">
                             <div class="form-group">
-                            <% if(data.isActive == "true"){ %>
-                              <a href="/changePassPage" class="btn btn-warning pull-left btnEditForm">Change Password</a>
-                            <% } %>  
-                            <a href="/userTable/editprofile" class="btn btn-danger pull-right btnEditForm"  >Cancel</a>
-                              <input type="submit" class="btn btn-primary pull-right btnEditForm" style="margin-right:5px;" id="update" value="Update">
+                              <label>Interests :</label>
+                              <div class="tag-conatiner-custom-div">
+                                <input class="select2-search__field" type="search" tabindex="0" autocomplete="off"
+                                  autocorrect="off" autocapitalize="off" spellcheck="false" role="textbox"
+                                  aria-autocomplete="list" placeholder="Enter interests..." style="width: 100%;"
+                                  id="interests" value="<%= userdata.interests %>">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label>Tell us a bit more about your journey:</label>
+                              <textarea type="text" class="form-control" name="aboutjourney"
+                                id="aboutyou"><%= userdata.aboutyou %></textarea>
+                            </div>
+                            <div class="form-group">
+                              <label>What are your expectations from the communities?</label>
+                              <textarea type="text" class="form-control" name="comExpectations"
+                                id="expectations"><%= userdata.expectations %></textarea>
                             </div>
                           </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                          <% if(data.isActive == "true"){ %>
+                          <a href="/changePassPage" class="btn btn-warning pull-left btnEditForm">Change Password</a>
+                          <% } %>
+                          <a href="/userTable/editprofile" class="btn btn-danger pull-right btnEditForm">Cancel</a>
+                          <input type="submit" class="btn btn-primary pull-right btnEditForm" style="margin-right:5px;"
+                            id="update" value="Update">
                         </div>
                       </div>
                     </div>
@@ -156,24 +173,27 @@
           </div>
         </div>
       </div>
-      <div class="modal" id="errorModal" role="dialog" style="z-index: 9999; display: none;">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h2><b>Required!!!</b></h2>
-            </div>
-            <div class="modal-body">
-                <p id="errorMsg"></b></p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-          </div>
+    </div>
+  </div>
+  <div class="modal" id="errorModal" role="dialog" style="z-index: 9999; display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2><b>Required!!!</b></h2>
         </div>
+        <div class="modal-body">
+          <p id="errorMsg"></b></p>
         </div>
-<script type="text/javascript" src="/script/editprofile-js.js"></script>
-<script type="text/javascript">
-  document.getElementById('gender').value="<%= data.gender %>"
-</script>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="/script/editprofile-js.js"></script>
+  <script type="text/javascript">
+    document.getElementById('gender').value = "<%= data.gender %>"
+  </script>
 </body>
+
 </html>

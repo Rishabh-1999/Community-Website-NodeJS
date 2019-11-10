@@ -1,175 +1,183 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CQ</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CQ</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
 
-<link rel="stylesheet" type="text/css" href="/css/navBar.css">
-<link rel="stylesheet" type="text/css" href="/css/sidebar.css">
-<link rel="stylesheet" type="text/css" href="/css/communitystyle.css">
+  <link rel="stylesheet" type="text/css" href="/css/navBar.css">
+  <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
+  <link rel="stylesheet" type="text/css" href="/css/communitystyle.css">
 
-<link rel="stylesheet" type="text/css" href="/css/discussion.css">
-<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/discussion.css">
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 
-<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+  <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+    integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous">
+  </script>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
 
-<script src="/script/trumbowyg.min.js"></script>
+  <script src="/script/trumbowyg.min.js"></script>
 
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-<style>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+  <style>
+    #commHeader {
+      background-image: linear-gradient(to bottom, #4ba2b7, #42a6be, #38aac6, #29adcd, #0fb1d5);
 
-  #commHeader
-{
-  background-image: linear-gradient(to bottom, #4ba2b7, #42a6be, #38aac6, #29adcd, #0fb1d5);
+    }
 
-}
-#first-btn
-{
-  border: 1px solid #fff !important;
-  color: #fff !important;
-  border-bottom: 4px solid #fff !important;
-  background-color: rgba(255,255,255,0.1) !important;
-  margin-left: 100px;
-}
-#search-btn
-{
-  background-color: rgba(255,255,255,0.1);
-  color: #fff;
-  border: 1px solid #fff;
-}
+    #first-btn {
+      border: 1px solid #fff !important;
+      color: #fff !important;
+      border-bottom: 4px solid #fff !important;
+      background-color: rgba(255, 255, 255, 0.1) !important;
+      margin-left: 100px;
+    }
 
-#dpimage
-{
-  cursor: pointer !important;
-  width: 40px;
-  margin-left: 30px;
-  margin-top: 10px;
-  margin-right: 10px;
-  float: right;
-  border-radius: 50%;
-  vertical-align: middle;
-  border: 0;
-}
+    #search-btn {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid #fff;
+    }
 
-</style>
+    #dpimage {
+      cursor: pointer !important;
+      width: 40px;
+      margin-left: 30px;
+      margin-top: 10px;
+      margin-right: 10px;
+      float: right;
+      border-radius: 50%;
+      vertical-align: middle;
+      border: 0;
+    }
+  </style>
 </head>
-<body>
-<% include paritials/topbar.ejs %>
-<% if(data.isActive == "true"){ %>
-  <% include paritials/sidebar.ejs %>
-<% } %>
-<div id="page-content-wrapper" style="position: relative;top: 70px;"> <!--Margin Top is new-->
-  <div class="container-fluid page-content-div" style="padding:0">
-    <div class="row">
-      <div class="col-lg-12 scoll-possible" style="padding:0">
-        <div class="community-header-top communityheader-profile-mobile" style="padding-top:6px;position:relative;">
-          <center>
-          <div class="communityprofile-name-mobile" style="max-height:40px;overflow:scroll">
-            <a href="" style="color:white"></a>
-          </div>
-          </center>
-        </div>
-        <div class="container community-profile-conatiner">
-        <div class="col-sm-2 col-xs-12 center-mobile pc">
-          <a href="">
-          <img src="<%=data2.photoloc%>" class="img-communityprofile-pic allSides" style="background:#fff">
-          </a>
-        </div>
-        <div class="col-sm-8 communityprofile-name-pc communityprofile-system">
-          <a href="" class="communityprofile-name-pc">
-          <p><%=data2.name%></p>
-          </a>
-        </div>
-        <div class="col-sm-2 col-xs-12 center-mobile" style="padding-top:10px;float:right">
-          <div class="dropdown">
-            <button class="btn btn-default dropdown-toggle commuity-profile-menu-btn" type="button" data-toggle="dropdown">
-            <i class="fa fa-bars"></i>
-            </button>
-            <ul class="dropdown-menu custom-commuity-dropdown dropdown-menu-right" style="margin-top:40px">
-            <li>
-            <a href="" class="community-profile-option-btn">
-            Discussions
-            </a>
-            </li>
-            <li id="hideManage">
-            <a href="/community/setting/<%=data2._id%>" class="community-profile-option-btn">
-            Manage Community
-            </a>
-            </li>
-            <li>
-            <a href="/community/info/<%=data2._id%>" class="community-profile-option-btn">
-            Community Profile
-            </a>
-            </li>
-            <li>
-            <a href="/community/showCommunityMembers/<%=data2._id%>" class="community-profile-option-btn">
-            Community Members
-            </a>
-            </li>
-          </ul>
-          </div>
-        </div>
-      </div>
 
-      <center>
-      <hr style="border-top:2px solid #E6E6E6;width:85%;margin-top:0">
-      </center>
-      <style>
-        .child-reply-input{
-          display: none !important;
-        }
-      </style>
-      
-      <!--  for -->
-      
-      
-      <div class="container" style="width:90% !important">
-        
-      </div>
-      <div class="container discussion-input discussion-container">
-        <div class="panel panel-default allSidesSoft" style="border-radius:0;border:1px solid rgb(182, 182, 182) !important;">
-          <div class="panel-body" style="padding:5px;background:#f9f9f9;">
-            <div class="col-sm-1 col-xs-3">
+<body>
+  <% include paritials/topbar.ejs %>
+  <% if(data.isActive == "true"){ %>
+  <% include paritials/sidebar.ejs %>
+  <% } %>
+  <div id="page-content-wrapper" style="position: relative;top: 70px;">
+    <!--Margin Top is new-->
+    <div class="container-fluid page-content-div" style="padding:0">
+      <div class="row">
+        <div class="col-lg-12 scoll-possible" style="padding:0">
+          <div class="community-header-top communityheader-profile-mobile" style="padding-top:6px;position:relative;">
+            <center>
+              <div class="communityprofile-name-mobile" style="max-height:40px;overflow:scroll">
+                <a href="" style="color:white"></a>
+              </div>
+            </center>
+          </div>
+          <div class="container community-profile-conatiner">
+            <div class="col-sm-2 col-xs-12 center-mobile pc">
               <a href="">
-                <img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage" style="border:2px solid #fff;width: 50px;height: 50px;">
+                <img src="<%=data2.photoloc%>" class="img-communityprofile-pic allSides" style="background:#fff">
               </a>
             </div>
-            <p class="col-sm-11 col-xs-9 discussion-heading" style="margin-top: 20px;font-size: 20px;">
-              Start a discussion
-            </p>
-          </div>
-      
-      
-          <div class="panel-body discussion-panel-body">
-            <div class="col-sm-12 col-xs-12" style="padding:0;border-top: 1px solid white;">
-              <input type="text" style="width:100%" class="discussion-input-title" name="title" placeholder="Enter a discussion title....." id="discussion_title" autocomplete="off" required="">
+            <div class="col-sm-8 communityprofile-name-pc communityprofile-system">
+              <a href="" class="communityprofile-name-pc">
+                <p><%=data2.name%></p>
+              </a>
+            </div>
+            <div class="col-sm-2 col-xs-12 center-mobile" style="padding-top:10px;float:right">
+              <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle commuity-profile-menu-btn" type="button"
+                  data-toggle="dropdown">
+                  <i class="fa fa-bars"></i>
+                </button>
+                <ul class="dropdown-menu custom-commuity-dropdown dropdown-menu-right" style="margin-top:40px">
+                  <li>
+                    <a href="" class="community-profile-option-btn">
+                      Discussions
+                    </a>
+                  </li>
+                  <li id="hideManage">
+                    <a href="/community/setting/<%=data2._id%>" class="community-profile-option-btn">
+                      Manage Community
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/community/info/<%=data2._id%>" class="community-profile-option-btn">
+                      Community Profile
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/community/showCommunityMembers/<%=data2._id%>" class="community-profile-option-btn">
+                      Community Members
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-      
-          <div class="panel-body discussion-body" style="display: block;width: 100%;">
-              <div class="col-sm-12 col-xs-12" style="padding:0;border-top: 1px solid white;">
-                <!--Textarea-->
-                  <textarea class="discussion-body-textarea" name="description" placeholder="Enter discussion description" id="discussion_description" autocomplete="off" required=""></textarea>
-                <!------------>
+
+          <center>
+            <hr style="border-top:2px solid #E6E6E6;width:85%;margin-top:0">
+          </center>
+          <style>
+            .child-reply-input {
+              display: none !important;
+            }
+          </style>
+
+          <!--  for -->
+
+
+          <div class="container" style="width:90% !important">
+
+          </div>
+          <div class="container discussion-input discussion-container">
+            <div class="panel panel-default allSidesSoft"
+              style="border-radius:0;border:1px solid rgb(182, 182, 182) !important;">
+              <div class="panel-body" style="padding:5px;background:#f9f9f9;">
+                <div class="col-sm-1 col-xs-3">
+                  <a href="">
+                    <img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"
+                      style="border:2px solid #fff;width: 50px;height: 50px;">
+                  </a>
+                </div>
+                <p class="col-sm-11 col-xs-9 discussion-heading" style="margin-top: 20px;font-size: 20px;">
+                  Start a discussion
+                </p>
               </div>
-      
-              <div class="link-preview-main col-sm-12 col-xs-12">
-                <!-- preview here -->
+
+
+              <div class="panel-body discussion-panel-body">
+                <div class="col-sm-12 col-xs-12" style="padding:0;border-top: 1px solid white;">
+                  <input type="text" style="width:100%" class="discussion-input-title" name="title"
+                    placeholder="Enter a discussion title....." id="discussion_title" autocomplete="off" required="">
+                </div>
               </div>
-              <div class="tag-conatiner-custom-div">
-                <select id="tagEditor" name="tags" class="form-control input-sm select2-multiple select2-hidden-accessible" style="width:100%"  >
-                  <!--Tags option appended here-->
+
+              <div class="panel-body discussion-body" style="display: block;width: 100%;">
+                <div class="col-sm-12 col-xs-12" style="padding:0;border-top: 1px solid white;">
+                  <!--Textarea-->
+                  <textarea class="discussion-body-textarea" name="description"
+                    placeholder="Enter discussion description" id="discussion_description" autocomplete="off"
+                    required=""></textarea>
+                  <!------------>
+                </div>
+
+                <div class="link-preview-main col-sm-12 col-xs-12">
+                  <!-- preview here -->
+                </div>
+                <div class="tag-conatiner-custom-div">
+                  <select id="tagEditor" name="tags"
+                    class="form-control input-sm select2-multiple select2-hidden-accessible" style="width:100%">
+                    <!--Tags option appended here-->
                     <option class="tagSuggestInput">Hello</option>
                     <option class="tagSuggestInput">Hey</option>
                     <option class="tagSuggestInput">Rid</option>
@@ -180,540 +188,555 @@
                     <option class="tagSuggestInput">Bye</option>
                     <option class="tagSuggestInput">Bro</option>
                     <option class="tagSuggestInput">Li</option>
-                </select>
+                  </select>
+                </div>
+
+
+                <div class="col-sm-12 col-xs-12" style="padding:0; ">
+
+                  <button class="btn btn-primary" type="submit" style="float:right" id="discussion_post">
+                    <p class="discussion-post-btn-txt">Post</p>
+
+                  </button>
+                </div>
               </div>
-      
-      
-              <div class="col-sm-12 col-xs-12" style="padding:0; ">
-                
-                <button class="btn btn-primary" type="submit" style="float:right" id="discussion_post">
-                  <p class="discussion-post-btn-txt">Post</p>
-                
-                </button>
-              </div>
+
+              <div class="panel-footer"></div>
+            </div>
           </div>
-        
-        <div class="panel-footer"></div>
+          <!--Header-->
+
+          <div id="discussionsList">
+
+          </div>
+
         </div>
-      </div> <!--Header-->  
-      
-        <div id="discussionsList">
-      
-                          </div>
-      
-      </div></div></div>
-      
-      
-                          <div>
-                            
-                       </div>
-                          </div>
-                      </div>
-      
-                  </div>
-              </div>
-<script type="text/javascript">
+      </div>
+    </div>
 
-var socket = io();
 
-var hideManage = document.getElementById('hideManage');
-var commid ="<%= data2._id %>";
-var email_id ="<%= data.email %>";
-var currentUser = "<%= data.name %>"
-var currentId = "<%= data._id %>"
-//console.log(currentId)
+    <div>
 
-$(document).ready(function() {
-  initaliseusers();   
-  initaliseDiscussions();
-  initaliseManagersWithOutDom();
-})
+    </div>
+  </div>
+  </div>
 
-function initaliseusers()
-{
-var xml=new XMLHttpRequest();
-xml.open("POST","/communityTable/getUsers");
-xml.setRequestHeader("Content-Type","application/json");
-xml.addEventListener("load",function()
-{
-    var data=JSON.parse(xml.responseText);
-   
-    for(i in data)
-    {
-      addtoUserDOM(data[i])
+  </div>
+  </div>
+  <script type="text/javascript">
+    var socket = io();
+
+    var hideManage = document.getElementById('hideManage');
+    var commid = "<%= data2._id %>";
+    var email_id = "<%= data.email %>";
+    var currentUser = "<%= data.name %>"
+    var currentId = "<%= data._id %>"
+    //console.log(currentId)
+
+    $(document).ready(function () {
+      initaliseusers();
+      initaliseDiscussions();
+      initaliseManagersWithOutDom();
+    })
+
+    function initaliseusers() {
+      var xml = new XMLHttpRequest();
+      xml.open("POST", "/communityTable/getUsers");
+      xml.setRequestHeader("Content-Type", "application/json");
+      xml.addEventListener("load", function () {
+        var data = JSON.parse(xml.responseText);
+
+        for (i in data) {
+          addtoUserDOM(data[i])
+        }
+      })
+      xml.send(JSON.stringify({
+        "_id": commid
+      }));
     }
-})
-xml.send(JSON.stringify({"_id":commid}));
-}
 
-function initaliseDiscussions()
-{
-  var n = "<%=data.name%>";
-  var ob = new Object();
-  ob.communityId = "<%=data2._id%>";
+    function initaliseDiscussions() {
+      var n = "<%=data.name%>";
+      var ob = new Object();
+      ob.communityId = "<%=data2._id%>";
 
-   var xml=new XMLHttpRequest();
-xml.open("POST","/discussion/getDiscussion");
-xml.setRequestHeader("Content-Type","application/json");
-xml.addEventListener("load",function()
-{
-    var data=JSON.parse(xml.responseText);
-   console.log(data)
-    for(j in data)
-    {
-      if(data[j].createdBy == n)
-      {
-        addtoDiscussionDOM(data[j])
-      }
-      else
-      {
-        addtoDiscussionDOMwithOutOptions(data[j])
+      var xml = new XMLHttpRequest();
+      xml.open("POST", "/discussion/getDiscussion");
+      xml.setRequestHeader("Content-Type", "application/json");
+      xml.addEventListener("load", function () {
+        var data = JSON.parse(xml.responseText);
+        console.log(data)
+        for (j in data) {
+          if (data[j].createdBy == n) {
+            addtoDiscussionDOM(data[j])
+          } else {
+            addtoDiscussionDOMwithOutOptions(data[j])
+          }
+        }
+      })
+      xml.send(JSON.stringify(ob));
+    }
+
+
+    function addtoUserDOM(obj) {
+      if (obj.email == email_id) {
+        hideManage.setAttribute("style", "display:none");
       }
     }
-})
-xml.send(JSON.stringify(ob));
-}
 
-
-function addtoUserDOM(obj)
-{
-if(obj.email == email_id)
-{
-   hideManage.setAttribute("style", "display:none");
-}
-}
-
-function initaliseManagersWithOutDom()
-{
-var xml=new XMLHttpRequest();
-xml.open("POST","/communityTable/getManagers");
-xml.setRequestHeader("Content-Type","application/json");
-xml.addEventListener("load",function()
-{
-    var data=JSON.parse(xml.responseText);
-    for(i in data)
-    {
-      if(email_id == data[i].email)
-         document.getElementById('hideProfile').setAttribute("style", "display:none");
+    function initaliseManagersWithOutDom() {
+      var xml = new XMLHttpRequest();
+      xml.open("POST", "/communityTable/getManagers");
+      xml.setRequestHeader("Content-Type", "application/json");
+      xml.addEventListener("load", function () {
+        var data = JSON.parse(xml.responseText);
+        for (i in data) {
+          if (email_id == data[i].email)
+            document.getElementById('hideProfile').setAttribute("style", "display:none");
+        }
+      })
+      xml.send(JSON.stringify({
+        "_id": commid
+      }));
     }
-})
-xml.send(JSON.stringify({"_id":commid}));
-}
 
-var discussion_title = document.getElementById('discussion_title');
-var discussion_description = document.getElementById('discussion_description');
-var tagEditor = document.getElementById('tagEditor');
-var discussion_post = document.getElementById('discussion_post');
+    var discussion_title = document.getElementById('discussion_title');
+    var discussion_description = document.getElementById('discussion_description');
+    var tagEditor = document.getElementById('tagEditor');
+    var discussion_post = document.getElementById('discussion_post');
 
-discussion_post.addEventListener("click",function() {
+    discussion_post.addEventListener("click", function () {
 
-if(discussion_title.value == '' || discussion_description.value  == '')
-{
-  alert("Field can't be Empty");
-}
+      if (discussion_title.value == '' || discussion_description.value == '') {
+        alert("Field can't be Empty");
+      }
 
-  var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth()+1;
-  var yyyy = today.getFullYear();
-  var hrs = today.getHours();
-  var mins = today.getMinutes();
-  var format = "AM";
-  if(hrs>12)
-  {
-      hrs=hrs-12;
-      format="PM";
-  }
-  today = + dd + '-' + getMonths(mm) + '-' + yyyy;
-  today = today + " ";
-  today = today + "(" + hrs + ':' + mins + '' + format + ")";
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      var hrs = today.getHours();
+      var mins = today.getMinutes();
+      var format = "AM";
+      if (hrs > 12) {
+        hrs = hrs - 12;
+        format = "PM";
+      }
+      today = +dd + '-' + getMonths(mm) + '-' + yyyy;
+      today = today + " ";
+      today = today + "(" + hrs + ':' + mins + '' + format + ")";
 
-var obj = new Object();
-obj.title = discussion_title.value;
-obj.description = discussion_description.value;
-obj.tag = tagEditor.value;
-obj.communityName = "<%=data2.name%>";
-obj.createdBy = "<%= data.name %>";
-obj.createdDate = today;
-obj.ownerId = "<%= data._id %>";
-obj.communityId = commid;
-console.log(obj);
+      var obj = new Object();
+      obj.title = discussion_title.value;
+      obj.description = discussion_description.value;
+      obj.tag = tagEditor.value;
+      obj.communityName = "<%=data2.name%>";
+      obj.createdBy = "<%= data.name %>";
+      obj.createdDate = today;
+      obj.ownerId = "<%= data._id %>";
+      obj.communityId = commid;
+      console.log(obj);
 
-var request = new XMLHttpRequest();
-  request.open('POST',"/discussion/addnewDiscussion");
-  request.setRequestHeader("Content-Type","application/json");
-  request.send(JSON.stringify(obj))
-  request.addEventListener("load",function() {
-      console.log("Data Posted Successfully");
-      alert("New Discussion Is Registred");
-});  
-  location.reload();
-})
+      var request = new XMLHttpRequest();
+      request.open('POST', "/discussion/addnewDiscussion");
+      request.setRequestHeader("Content-Type", "application/json");
+      request.send(JSON.stringify(obj))
+      request.addEventListener("load", function () {
+        console.log("Data Posted Successfully");
+        alert("New Discussion Is Registred");
+      });
+      location.reload();
+    })
 
-function addtoDiscussionDOM(obj)
-{
-//console.log(obj)
-   var div = '<div class="container discussion-container">'
-              +'<div class="panel panel-default allSidesSoft" style="background:white;">'
-                +'<div class="dropup" style="margin-right: 10px;">'
-                  +'<a class="discussion-dropdown-menu" data-toggle="dropdown" style="float:right !important" aria-expanded="false"><i class="fa fa-ellipsis-h"></i></a>'
-                  +'<ul class="dropdown-menu dropdown-menu-right dropdown-menu-discussion">'
-                    +'<li><a class="request-dropdown-options" onclick=deleteDiscussion("'+obj._id+'")>Delete</a></li>'
-                    +'<li id=""><a class="request-dropdown-options" onclick="" id="">Feature</a></li>'
-                    +'<li id=""><a class="request-dropdown-options" onclick="" id="">Publish to CQ</a></li>'
-                  +'</ul>'
-                +'</div>'
-                +'<div class="panel-body" style="padding:0; padding-top:10px;">'
-                  +'<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-title">'
-                    +'<p id="discussionTitle" style="color:#0000A0">'+obj.title+'</p>'
-                  +'</div>'
-                  +'<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-head"> posted by <a href="/discussion/discussionOwner/'+obj.ownerId+'">'+obj.createdBy +'</a> at '+obj.createdDate +'</div>'
-                +'</div>'
-                +'<div class="panel-body" style="padding:0;padding-top:10px;">'
-                  +'<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-content" style="font-size:16px">'+obj.description +'</div>'
-                  +'<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-content" style="font-size:16px">'
-                  +'<span onclick=displayComments("'+obj._id+'")><b>Comments&nbsp</b></span>'
-                  +'<span onclick=hideComments("'+obj._id+'")><b> Hide</b></span>'
-                  +'</div>'
-                  +'<div class="col-sm-6 col-xs-6 col-lg-6 col-md-6 discussion-content" id="enterComments'+obj._id+'" style="visibility: hidden" ><input type="email" class="form-control" id="comment'+obj._id+'" placeholder="Enter Comment" required><br>'
-                  +'</div>'
-                  +'<button type="submit" class="btn btn-success" id="send'+obj._id+'" onclick=doComment("'+obj._id+'","'+obj.createdBy+'","'+obj.communityId+'") style="visibility: hidden">Submit</button></div>'
-                  +'<div class="comments'+obj._id+'"></div>' 
-              +'</div>'
-            +'</div>';
-    $('#discussionsList').append(div);
-}
-
-function addtoDiscussionDOMwithOutOptions(obj)
-{
-  var div = '<div class="container discussion-container">'
-              +'<div class="panel panel-default allSidesSoft" style="background:white;">'
-                +'<div class="panel-body" style="padding:0; padding-top:10px;">'
-                  +'<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-title">'
-                    +'<a class="discussion-title" href="#" target="">'+obj.title+'</a>'
-                  +'</div>'
-                  +'<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-head"> posted by <a href="/discussion/discussionOwner/'+obj.ownerId+'">'+obj.createdBy +'</a> at '+obj.createdDate +'</div>'
-                +'</div>'
-                +'<div class="panel-body" style="padding:0;padding-top:10px;">'
-                  +'<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-content" style="font-size:16px">'+obj.description +'</div>'
-                   +'<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-content" style="font-size:16px">'
-                  +'<span onclick=displayComments("'+obj._id+'")><b>Comments&nbsp</b></span>'
-                  +'<span onclick=hideComments("'+obj._id+'")><b> Hide</b></span>'
-                  +'</div>'
-                  +'<div class="col-sm-6 col-xs-6 col-lg-6 col-md-6 discussion-content" id="enterComments'+obj._id+'" style="visibility: hidden" ><input type="email" class="form-control" id="comment'+obj._id+'" placeholder="Enter Comment" required><br>'
-                  +'</div>'
-                  +'<button type="submit" class="btn btn-success" id="send'+obj._id+'" onclick=doComment("'+obj._id+'","'+obj.createdBy+'","'+obj.communityId+'") style="visibility: hidden">Submit</button></div>'
-                  +'<div class="comments'+obj._id+'"></div>'  
-              +'</div>'
-            +'</div>';
-    $('#discussionsList').append(div);
-}
-
-function displayComments(disId) {
-  //console.log(disId)
-  var inp = document.getElementById('enterComments'+ disId)
-  inp.setAttribute("style","visibility:visible");
-  var subButton = document.getElementById('send'+ disId)
-  subButton.setAttribute("style","visibility:visible");
-
-  var ob = new Object();
-  ob.discussionId = disId;
-
-  $('.comments'+disId).empty();
-
-  var xml=new XMLHttpRequest();
-  xml.open("POST","/discussion/getComments");
-  xml.setRequestHeader("Content-Type","application/json");
-  xml.addEventListener("load",function()
-  {
-    var data=JSON.parse(xml.responseText);
-    console.log(data)
-    for(j in data)
-    {
-        $('.comments'+ data[j].discussionId).append('<div class="panel-body" style="padding:5px;background:#f9f9f9;">'
-        +'<div class="col-sm-1 col-xs-3"><a href="">'
-        +'<img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"'
-        + 'style="border:2px solid #fff;width: 50px;height: 50px;"></a></div>'
-        +'<div class="comment-container">'
-        +'<p class="col-sm-11 col-xs-9 discussion-heading" style="margin-top: 10px;font-size: 18px;">'
-      +data[j].commentedBy+' '+'<span style="font-size: 17px;">&nbsp<b>'+getDays(data[j].createdDate)+'</b></span><span style="font-size: 18px;" onclick=deleteComment("'+data[j]._id+'")>&nbsp<i class="fa fa-trash"></i></span></p>'
-      +'<p class="col-sm-11 col-xs-9 discussion-heading" id="comment-div" style="font-size: 15px;">'
-      +data[j].comment+'</p>'
-      +'</div>'
-      +'<div class="col-sm-1"></div>'
-      +'<div class="col-sm-11 mainDiv">'
-      +'<span onclick=displayReplies("'+data[j]._id+'")><b>Replies&nbsp</b></span>'
-      +'<span onclick=hideReplies("'+data[j]._id+'")><b>&nbspHide</b></span>'
-      +'</div>'
-      +'<div class="col-sm-4 mainDiv"></div>'
-      +'<div class="col-sm-6 col-xs-6 col-lg-6 col-md-6 discussion-content"><input type="email" class="form-control" placeholder="Enter Reply" id="enterReply'+data[j]._id+'" style="visibility: hidden" required>'
-        +'</div>'
-        +'<button type="submit" class="btn btn-success" id="sendReply'+data[j]._id+'" onclick=doReply("'+data[j]._id+'","'+currentUser+'","'+currentId+'","'+data[j].discussionId+'") style="visibility: hidden">Submit</button><div class="replies'+data[j]._id+'"></div></div>');
+    function addtoDiscussionDOM(obj) {
+      //console.log(obj)
+      var div = '<div class="container discussion-container">' +
+        '<div class="panel panel-default allSidesSoft" style="background:white;">' +
+        '<div class="dropup" style="margin-right: 10px;">' +
+        '<a class="discussion-dropdown-menu" data-toggle="dropdown" style="float:right !important" aria-expanded="false"><i class="fa fa-ellipsis-h"></i></a>' +
+        '<ul class="dropdown-menu dropdown-menu-right dropdown-menu-discussion">' +
+        '<li><a class="request-dropdown-options" onclick=deleteDiscussion("' + obj._id + '")>Delete</a></li>' +
+        '<li id=""><a class="request-dropdown-options" onclick="" id="">Feature</a></li>' +
+        '<li id=""><a class="request-dropdown-options" onclick="" id="">Publish to CQ</a></li>' +
+        '</ul>' +
+        '</div>' +
+        '<div class="panel-body" style="padding:0; padding-top:10px;">' +
+        '<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-title">' +
+        '<p id="discussionTitle" style="color:#0000A0">' + obj.title + '</p>' +
+        '</div>' +
+        '<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-head"> posted by <a href="/discussion/discussionOwner/' +
+        obj.ownerId + '">' + obj.createdBy + '</a> at ' + obj.createdDate + '</div>' +
+        '</div>' +
+        '<div class="panel-body" style="padding:0;padding-top:10px;">' +
+        '<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-content" style="font-size:16px">' + obj
+        .description + '</div>' +
+        '<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-content" style="font-size:16px">' +
+        '<span onclick=displayComments("' + obj._id + '")><b>Comments&nbsp</b></span>' +
+        '<span onclick=hideComments("' + obj._id + '")><b> Hide</b></span>' +
+        '</div>' +
+        '<div class="col-sm-6 col-xs-6 col-lg-6 col-md-6 discussion-content" id="enterComments' + obj._id +
+        '" style="visibility: hidden" ><input type="email" class="form-control" id="comment' + obj._id +
+        '" placeholder="Enter Comment" required><br>' +
+        '</div>' +
+        '<button type="submit" class="btn btn-success" id="send' + obj._id + '" onclick=doComment("' + obj._id + '","' +
+        obj.createdBy + '","' + obj.communityId + '") style="visibility: hidden">Submit</button></div>' +
+        '<div class="comments' + obj._id + '"></div>' +
+        '</div>' +
+        '</div>';
+      $('#discussionsList').append(div);
     }
-  })
-xml.send(JSON.stringify(ob));
-}
 
-function hideComments(disId) {
-console.log('d')
-  document.getElementById('enterComments'+ disId).setAttribute("style","visibility:hidden");
-  document.getElementById('send'+ disId).setAttribute("style","visibility:hidden");
-  $('.comments'+disId).empty();
-}
+    function addtoDiscussionDOMwithOutOptions(obj) {
+      var div = '<div class="container discussion-container">' +
+        '<div class="panel panel-default allSidesSoft" style="background:white;">' +
+        '<div class="panel-body" style="padding:0; padding-top:10px;">' +
+        '<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-title">' +
+        '<a class="discussion-title" href="#" target="">' + obj.title + '</a>' +
+        '</div>' +
+        '<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-head"> posted by <a href="/discussion/discussionOwner/' +
+        obj.ownerId + '">' + obj.createdBy + '</a> at ' + obj.createdDate + '</div>' +
+        '</div>' +
+        '<div class="panel-body" style="padding:0;padding-top:10px;">' +
+        '<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-content" style="font-size:16px">' + obj
+        .description + '</div>' +
+        '<div class="col-sm-12 col-xs-12 col-lg-12 col-md-12 discussion-content" style="font-size:16px">' +
+        '<span onclick=displayComments("' + obj._id + '")><b>Comments&nbsp</b></span>' +
+        '<span onclick=hideComments("' + obj._id + '")><b> Hide</b></span>' +
+        '</div>' +
+        '<div class="col-sm-6 col-xs-6 col-lg-6 col-md-6 discussion-content" id="enterComments' + obj._id +
+        '" style="visibility: hidden" ><input type="email" class="form-control" id="comment' + obj._id +
+        '" placeholder="Enter Comment" required><br>' +
+        '</div>' +
+        '<button type="submit" class="btn btn-success" id="send' + obj._id + '" onclick=doComment("' + obj._id + '","' +
+        obj.createdBy + '","' + obj.communityId + '") style="visibility: hidden">Submit</button></div>' +
+        '<div class="comments' + obj._id + '"></div>' +
+        '</div>' +
+        '</div>';
+      $('#discussionsList').append(div);
+    }
 
-function doComment(oa,createBy,commId) {
+    function displayComments(disId) {
+      //console.log(disId)
+      var inp = document.getElementById('enterComments' + disId)
+      inp.setAttribute("style", "visibility:visible");
+      var subButton = document.getElementById('send' + disId)
+      subButton.setAttribute("style", "visibility:visible");
 
-  var comment = $('#comment'+ oa).val();
-  if(comment == '')
-  {
-    alert("Comment is Empty");
-    return;
-  }
-  var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth()+1;
-  var yyyy = today.getFullYear();
-  today = + dd + '-' + getMonths(mm) + '-' + yyyy;
+      var ob = new Object();
+      ob.discussionId = disId;
 
-  var data1;
-  var commentId;
+      $('.comments' + disId).empty();
 
-  var data = {'comment': comment,'discussionId': oa,'commentedBy' : currentUser,'communityId' : commId,'createdDate' : today};
-    socket.emit('comment',data);
-    var ob = new Object();
-    ob.discussionId = oa;
-    var xml=new XMLHttpRequest();
-    xml.open("POST","/discussion/getComments");
-    xml.setRequestHeader("Content-Type","application/json");
-    xml.addEventListener("load",function()
-    {
-      data1=JSON.parse(xml.responseText);
-      for(j in data1)
-      {
-        if(data1[j].comment == comment)
-        {
+      var xml = new XMLHttpRequest();
+      xml.open("POST", "/discussion/getComments");
+      xml.setRequestHeader("Content-Type", "application/json");
+      xml.addEventListener("load", function () {
+        var data = JSON.parse(xml.responseText);
+        console.log(data)
+        for (j in data) {
+          $('.comments' + data[j].discussionId).append(
+            '<div class="panel-body" style="padding:5px;background:#f9f9f9;">' +
+            '<div class="col-sm-1 col-xs-3"><a href="">' +
+            '<img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"' +
+            'style="border:2px solid #fff;width: 50px;height: 50px;"></a></div>' +
+            '<div class="comment-container">' +
+            '<p class="col-sm-11 col-xs-9 discussion-heading" style="margin-top: 10px;font-size: 18px;">' +
+            data[j].commentedBy + ' ' + '<span style="font-size: 17px;">&nbsp<b>' + getDays(data[j].createdDate) +
+            '</b></span><span style="font-size: 18px;" onclick=deleteComment("' + data[j]._id +
+            '")>&nbsp<i class="fa fa-trash"></i></span></p>' +
+            '<p class="col-sm-11 col-xs-9 discussion-heading" id="comment-div" style="font-size: 15px;">' +
+            data[j].comment + '</p>' +
+            '</div>' +
+            '<div class="col-sm-1"></div>' +
+            '<div class="col-sm-11 mainDiv">' +
+            '<span onclick=displayReplies("' + data[j]._id + '")><b>Replies&nbsp</b></span>' +
+            '<span onclick=hideReplies("' + data[j]._id + '")><b>&nbspHide</b></span>' +
+            '</div>' +
+            '<div class="col-sm-4 mainDiv"></div>' +
+            '<div class="col-sm-6 col-xs-6 col-lg-6 col-md-6 discussion-content"><input type="email" class="form-control" placeholder="Enter Reply" id="enterReply' +
+            data[j]._id + '" style="visibility: hidden" required>' +
+            '</div>' +
+            '<button type="submit" class="btn btn-success" id="sendReply' + data[j]._id + '" onclick=doReply("' +
+            data[j]._id + '","' + currentUser + '","' + currentId + '","' + data[j].discussionId +
+            '") style="visibility: hidden">Submit</button><div class="replies' + data[j]._id + '"></div></div>');
+        }
+      })
+      xml.send(JSON.stringify(ob));
+    }
+
+    function hideComments(disId) {
+      console.log('d')
+      document.getElementById('enterComments' + disId).setAttribute("style", "visibility:hidden");
+      document.getElementById('send' + disId).setAttribute("style", "visibility:hidden");
+      $('.comments' + disId).empty();
+    }
+
+    function doComment(oa, createBy, commId) {
+
+      var comment = $('#comment' + oa).val();
+      if (comment == '') {
+        alert("Comment is Empty");
+        return;
+      }
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      today = +dd + '-' + getMonths(mm) + '-' + yyyy;
+
+      var data1;
+      var commentId;
+
+      var data = {
+        'comment': comment,
+        'discussionId': oa,
+        'commentedBy': currentUser,
+        'communityId': commId,
+        'createdDate': today
+      };
+      socket.emit('comment', data);
+      var ob = new Object();
+      ob.discussionId = oa;
+      var xml = new XMLHttpRequest();
+      xml.open("POST", "/discussion/getComments");
+      xml.setRequestHeader("Content-Type", "application/json");
+      xml.addEventListener("load", function () {
+        data1 = JSON.parse(xml.responseText);
+        for (j in data1) {
+          if (data1[j].comment == comment) {
             commentId = data1[j]._id;
             console.log(commentId)
-          $('.comments'+ oa).append('<div class="panel-body" style="padding:5px;background:#f9f9f9;">'
-          +'<div class="col-sm-1 col-xs-3"><a href="">'
-          +'<img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"'
-          + 'style="border:2px solid #fff;width: 50px;height: 50px;"></a></div>'
-          +'<p class="col-sm-11 col-xs-9 discussion-heading" style="margin-top: 10px;font-size: 18px;">'
-          +currentUser+' '+'<span style="font-size: 17px;">&nbsp<b>'+getDays(data1[j].createdDate)+'</b></span><span style="font-size: 18px;" onclick=deleteComment("'+data1[j]._id+'")>&nbsp<i class="fa fa-trash"></i></span></p>'
-          +'<p class="col-sm-11 col-xs-9 discussion-heading" id="comment-div" style="font-size: 15px;">'
-          +comment+'</p>'
-          +'<div class="col-sm-1"></div>'
-          +'<div class="col-sm-11 mainDiv">'
-          +'<span onclick=displayReplies("'+data1[j]._id+'")><b>Replies&nbsp</b></span>'
-          +'<span onclick=hideReplies("'+data1[j]._id+'")><b>&nbspHide</b></span>'
-          +'</div>'
-          +'<div class="col-sm-4 mainDiv"></div>'
-          +'<div class="col-sm-6 col-xs-6 col-lg-6 col-md-6 discussion-content"><input type="email" class="form-control" placeholder="Enter Reply" id="enterReply'+data1[j]._id+'" style="visibility: hidden" required>'
-          +'</div>'
-          +'<button type="submit" class="btn btn-success" id="sendReply'+data1[j]._id+'" onclick=doReply("'+data1[j]._id+'","'+currentUser+'","'+currentId+'","'+oa+'") style="visibility: hidden">Submit</button><div class="replies'+data1[j]._id+'"></div></div>');
-          $('#comment'+ oa).val('');
+            $('.comments' + oa).append('<div class="panel-body" style="padding:5px;background:#f9f9f9;">' +
+              '<div class="col-sm-1 col-xs-3"><a href="">' +
+              '<img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"' +
+              'style="border:2px solid #fff;width: 50px;height: 50px;"></a></div>' +
+              '<p class="col-sm-11 col-xs-9 discussion-heading" style="margin-top: 10px;font-size: 18px;">' +
+              currentUser + ' ' + '<span style="font-size: 17px;">&nbsp<b>' + getDays(data1[j].createdDate) +
+              '</b></span><span style="font-size: 18px;" onclick=deleteComment("' + data1[j]._id +
+              '")>&nbsp<i class="fa fa-trash"></i></span></p>' +
+              '<p class="col-sm-11 col-xs-9 discussion-heading" id="comment-div" style="font-size: 15px;">' +
+              comment + '</p>' +
+              '<div class="col-sm-1"></div>' +
+              '<div class="col-sm-11 mainDiv">' +
+              '<span onclick=displayReplies("' + data1[j]._id + '")><b>Replies&nbsp</b></span>' +
+              '<span onclick=hideReplies("' + data1[j]._id + '")><b>&nbspHide</b></span>' +
+              '</div>' +
+              '<div class="col-sm-4 mainDiv"></div>' +
+              '<div class="col-sm-6 col-xs-6 col-lg-6 col-md-6 discussion-content"><input type="email" class="form-control" placeholder="Enter Reply" id="enterReply' +
+              data1[j]._id + '" style="visibility: hidden" required>' +
+              '</div>' +
+              '<button type="submit" class="btn btn-success" id="sendReply' + data1[j]._id +
+              '" onclick=doReply("' + data1[j]._id + '","' + currentUser + '","' + currentId + '","' + oa +
+              '") style="visibility: hidden">Submit</button><div class="replies' + data1[j]._id + '"></div></div>'
+            );
+            $('#comment' + oa).val('');
+          }
         }
-      }
-    })
-    xml.send(JSON.stringify(ob));   
-}
+      })
+      xml.send(JSON.stringify(ob));
+    }
 
-socket.on('comment',function(data){
+    socket.on('comment', function (data) {
       //console.log(data)
       var data1;
-  var commentId;
-    var comment = $('#comment'+ data.discussionId).val();
-    var ob = new Object();
-    ob.discussionId = data.discussionId;
-    var xml=new XMLHttpRequest();
-    xml.open("POST","/discussion/getComments");
-    xml.setRequestHeader("Content-Type","application/json");
-    xml.addEventListener("load",function()
-    {
-      data1=JSON.parse(xml.responseText);
-      for(j in data1)
-      {
-        if(data1[j].comment == data.comment)
-        {
+      var commentId;
+      var comment = $('#comment' + data.discussionId).val();
+      var ob = new Object();
+      ob.discussionId = data.discussionId;
+      var xml = new XMLHttpRequest();
+      xml.open("POST", "/discussion/getComments");
+      xml.setRequestHeader("Content-Type", "application/json");
+      xml.addEventListener("load", function () {
+        data1 = JSON.parse(xml.responseText);
+        for (j in data1) {
+          if (data1[j].comment == data.comment) {
             commentId = data1[j]._id;
-          $('.comments'+ data.discussionId).append('<div class="panel-body" style="padding:5px;background:#f9f9f9;">'
-          +'<div class="col-sm-1 col-xs-3"><a href="">'
-          +'<img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"'
-          + 'style="border:2px solid #fff;width: 50px;height: 50px;"></a></div>'
-          +'<p class="col-sm-11 col-xs-9 discussion-heading" style="margin-top: 10px;font-size: 18px;">'
-          +data.commentedBy+' '+'<span style="font-size: 17px;">&nbsp<b>'+getDays(data1[j].createdDate)+'</b></span><span style="font-size: 18px;" onclick=deleteComment("'+data1[j]._id+'")>&nbsp<i class="fa fa-trash"></i></span></p>'
-          +'<p class="col-sm-11 col-xs-9 discussion-heading" id="comment-div" style="font-size: 15px;">'
-          +data.comment+'</p>'
-          +'<div class="col-sm-1"></div>'
-          +'<div class="col-sm-11 mainDiv">'
-          +'<span onclick=displayReplies("'+data1[j]._id+'")><b>Replies&nbsp</b></span>'
-          +'<span onclick=hideReplies("'+data1[j]._id+'")><b>&nbspHide</b></span>'
-          +'</div>'
-          +'<div class="col-sm-4 mainDiv"></div>'
-          +'<div class="col-sm-6 col-xs-6 col-lg-6 col-md-6 discussion-content"><input type="email" class="form-control" placeholder="Enter Reply" id="enterReply'+data1[j]._id+'" style="visibility: hidden" required>'
-          +'</div>'
-          +'<button type="submit" class="btn btn-success" id="sendReply'+data1[j]._id+'" onclick=doReply("'+data1[j]._id+'","'+currentUser+'","'+currentId+'") style="visibility: hidden">Submit</button><div class="replies'+data1[j]._id+'"></div></div>');
-        }
-      }
-    })
-    xml.send(JSON.stringify(ob));  
-});
-
-function displayReplies(disId)
-{
-document.getElementById('enterReply'+ disId).setAttribute("style","visibility:visible");
-document.getElementById('sendReply'+ disId).setAttribute("style","visibility:visible");
-
-var ob = new Object();
-ob.commentId = disId;
-console.log(disId)
-
-$('.replies'+disId).empty();
-
-var xml=new XMLHttpRequest();
-  xml.open("POST","/discussion/getReply");
-  xml.setRequestHeader("Content-Type","application/json");
-  xml.addEventListener("load",function()
-  {
-    var data=JSON.parse(xml.responseText);
-    for(j in data)
-    {
-      $('.replies'+ disId).append('<div class="col-sm-4"></div>'
-        +'<div class="col-sm-1 col-xs-3"><a href="">'
-        +'<img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"'
-        + 'style="border:2px solid #fff;width: 50px;height: 50px;"></a></div>'
-        +'<p class="col-sm-6 col-xs-9 discussion-heading" style="margin-top: 10px;font-size: 18px;">'
-        +data[j].repliedBy+' '+'<span style="font-size: 17px;">&nbsp<b>'+getDays(data[j].createdDate)+'</b></span></p>'
-        +'<p class="col-sm-6 col-xs-9 discussion-heading" id="comment-div" style="font-size: 15px;">'
-        +data[j].reply+'</p></div>');
-    }
-  })
-xml.send(JSON.stringify(ob));
-}
-
-function hideReplies(disId) {
-  document.getElementById('enterReply'+ disId).setAttribute("style","visibility:hidden");
-  document.getElementById('sendReply'+ disId).setAttribute("style","visibility:hidden");
-  $('.replies'+disId).empty();
-}
-
-function doReply(commentId,repliedBy,ownerId,discussionId) {
-
-  var reply = $('#enterReply'+ commentId).val();
-  if(reply == '')
-  {
-      alert("Reply is Empty");
-      return;
-  }
-
-  var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth()+1;
-  var yyyy = today.getFullYear();
-  today = + dd + '-' + getMonths(mm) + '-' + yyyy;
-
-    if(reply != ''){
-          var data = {'reply': reply,'commentId': commentId,'repliedBy' : repliedBy,'ownerId' : ownerId,'discussionId' : discussionId,'createdDate' : today};
-          console.log(data)
-      $('.replies'+ commentId).append('<div class="col-sm-4"></div>'
-        +'<div class="col-sm-1 col-xs-3"><a href="">'
-        +'<img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"'
-        + 'style="border:2px solid #fff;width: 50px;height: 50px;"></a></div>'
-        +'<p class="col-sm-6 col-xs-9 discussion-heading" style="margin-top: 10px;font-size: 18px;">'
-      +repliedBy+' '+'<span style="font-size: 17px;">&nbsp<b>0d</b></span></p>'
-      +'<p class="col-sm-6 col-xs-9 discussion-heading"  id="comment-div" style="font-size: 15px;">'
-      +reply+'</p></div>');
-       $('#enterReply'+ commentId).val('');
-      }
-      
-  socket.emit('reply',data);
-}
-
-socket.on('reply',function(data){
-  //  console.log(data)
-
-      $('.replies'+ data.commentId).append('<div class="col-sm-4"></div>'
-        +'<div class="col-sm-1 col-xs-3"><a href="">'
-        +'<img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"'
-        + 'style="border:2px solid #fff;width: 50px;height: 50px;"></a></div>'
-        +'<p class="col-sm-6 col-xs-9 discussion-heading" style="margin-top: 10px;font-size: 18px;">'
-      +data.repliedBy+' '+'<span style="font-size: 17px;">&nbsp<b>'+getDays(data.createdDate)+'</b></span></p>'
-      +'<p class="col-sm-6 col-xs-9 discussion-heading"  id="comment-div" style="font-size: 15px;">'
-      +data.reply+'</p></div>');
-});
-
-function deleteDiscussion(ides) {
-  var request = new XMLHttpRequest();
-  request.open('DELETE',"/discussion/deleteDiscussion/" + ides);
-  request.send()
-  request.addEventListener("load",function(event)
-  {
-    alert("Discussion Deleted")
-    location.reload();        
-     //console.log(request.responseText);
-  }); 
-}
-
-function deleteComment(ides) {
-    $.confirm({
-    title: 'Delete Comment ?',
-    content: "Are you sure to Delete the comment",
-    draggable: true,
-    buttons: {
-      Yes: {
-           btnClass: 'btn-success any-other-class',
-            action: function () {
-             btnClass: 'btn-red any-other-class'
-            var request = new XMLHttpRequest();
-            request.open('DELETE',"/discussion/deleteComment/" + ides);
-            request.send()
-            request.addEventListener("load",function(event)
-            {
-              alert("Comment Deleted")
-              location.reload();        
-            });       
+            $('.comments' + data.discussionId).append(
+              '<div class="panel-body" style="padding:5px;background:#f9f9f9;">' +
+              '<div class="col-sm-1 col-xs-3"><a href="">' +
+              '<img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"' +
+              'style="border:2px solid #fff;width: 50px;height: 50px;"></a></div>' +
+              '<p class="col-sm-11 col-xs-9 discussion-heading" style="margin-top: 10px;font-size: 18px;">' +
+              data.commentedBy + ' ' + '<span style="font-size: 17px;">&nbsp<b>' + getDays(data1[j]
+                .createdDate) + '</b></span><span style="font-size: 18px;" onclick=deleteComment("' + data1[j]
+              ._id + '")>&nbsp<i class="fa fa-trash"></i></span></p>' +
+              '<p class="col-sm-11 col-xs-9 discussion-heading" id="comment-div" style="font-size: 15px;">' +
+              data.comment + '</p>' +
+              '<div class="col-sm-1"></div>' +
+              '<div class="col-sm-11 mainDiv">' +
+              '<span onclick=displayReplies("' + data1[j]._id + '")><b>Replies&nbsp</b></span>' +
+              '<span onclick=hideReplies("' + data1[j]._id + '")><b>&nbspHide</b></span>' +
+              '</div>' +
+              '<div class="col-sm-4 mainDiv"></div>' +
+              '<div class="col-sm-6 col-xs-6 col-lg-6 col-md-6 discussion-content"><input type="email" class="form-control" placeholder="Enter Reply" id="enterReply' +
+              data1[j]._id + '" style="visibility: hidden" required>' +
+              '</div>' +
+              '<button type="submit" class="btn btn-success" id="sendReply' + data1[j]._id +
+              '" onclick=doReply("' + data1[j]._id + '","' + currentUser + '","' + currentId +
+              '") style="visibility: hidden">Submit</button><div class="replies' + data1[j]._id +
+              '"></div></div>');
           }
-    },
-      No: {
-          btnClass: 'btn-danger any-other-class',
-           action: function () {      
         }
-    },
+      })
+      xml.send(JSON.stringify(ob));
+    });
+
+    function displayReplies(disId) {
+      document.getElementById('enterReply' + disId).setAttribute("style", "visibility:visible");
+      document.getElementById('sendReply' + disId).setAttribute("style", "visibility:visible");
+
+      var ob = new Object();
+      ob.commentId = disId;
+      console.log(disId)
+
+      $('.replies' + disId).empty();
+
+      var xml = new XMLHttpRequest();
+      xml.open("POST", "/discussion/getReply");
+      xml.setRequestHeader("Content-Type", "application/json");
+      xml.addEventListener("load", function () {
+        var data = JSON.parse(xml.responseText);
+        for (j in data) {
+          $('.replies' + disId).append('<div class="col-sm-4"></div>' +
+            '<div class="col-sm-1 col-xs-3"><a href="">' +
+            '<img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"' +
+            'style="border:2px solid #fff;width: 50px;height: 50px;"></a></div>' +
+            '<p class="col-sm-6 col-xs-9 discussion-heading" style="margin-top: 10px;font-size: 18px;">' +
+            data[j].repliedBy + ' ' + '<span style="font-size: 17px;">&nbsp<b>' + getDays(data[j].createdDate) +
+            '</b></span></p>' +
+            '<p class="col-sm-6 col-xs-9 discussion-heading" id="comment-div" style="font-size: 15px;">' +
+            data[j].reply + '</p></div>');
+        }
+      })
+      xml.send(JSON.stringify(ob));
     }
-  });
-}
 
-function getMonths(mno) {
-  var month = ["Jan","Feb","March","April","May","June","July","Aug","Sep","Oct","Nov","Dec"];
-  return month[mno-1];
-}
+    function hideReplies(disId) {
+      document.getElementById('enterReply' + disId).setAttribute("style", "visibility:hidden");
+      document.getElementById('sendReply' + disId).setAttribute("style", "visibility:hidden");
+      $('.replies' + disId).empty();
+    }
 
-function getDays(x) {
-  var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth()+1;
-  var yyyy = today.getFullYear();
-  today = + dd + '/' + getMonths(mm) + '/' + yyyy;
+    function doReply(commentId, repliedBy, ownerId, discussionId) {
 
-  var date1 = new Date(x);
-  var date2 = new Date(today);
+      var reply = $('#enterReply' + commentId).val();
+      if (reply == '') {
+        alert("Reply is Empty");
+        return;
+      }
 
-  var Difference_In_Time = date2.getTime() - date1.getTime();
-  var Difference_In_Days = Difference_In_Time / (1000*3600*24);
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      today = +dd + '-' + getMonths(mm) + '-' + yyyy;
 
-  //console.log(Difference_In_Days)
+      if (reply != '') {
+        var data = {
+          'reply': reply,
+          'commentId': commentId,
+          'repliedBy': repliedBy,
+          'ownerId': ownerId,
+          'discussionId': discussionId,
+          'createdDate': today
+        };
+        console.log(data)
+        $('.replies' + commentId).append('<div class="col-sm-4"></div>' +
+          '<div class="col-sm-1 col-xs-3"><a href="">' +
+          '<img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"' +
+          'style="border:2px solid #fff;width: 50px;height: 50px;"></a></div>' +
+          '<p class="col-sm-6 col-xs-9 discussion-heading" style="margin-top: 10px;font-size: 18px;">' +
+          repliedBy + ' ' + '<span style="font-size: 17px;">&nbsp<b>0d</b></span></p>' +
+          '<p class="col-sm-6 col-xs-9 discussion-heading"  id="comment-div" style="font-size: 15px;">' +
+          reply + '</p></div>');
+        $('#enterReply' + commentId).val('');
+      }
 
-  if(Difference_In_Days > 31)
-  {
-    Difference_In_Days = Math.round(Difference_In_Days/30);
-    Difference_In_Days = Difference_In_Days + "m";
-    return Difference_In_Days;
-  }
+      socket.emit('reply', data);
+    }
 
-  Difference_In_Days = Difference_In_Days + "d";
-  return Difference_In_Days;
-}
-</script>
+    socket.on('reply', function (data) {
+      //  console.log(data)
+
+      $('.replies' + data.commentId).append('<div class="col-sm-4"></div>' +
+        '<div class="col-sm-1 col-xs-3"><a href="">' +
+        '<img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"' +
+        'style="border:2px solid #fff;width: 50px;height: 50px;"></a></div>' +
+        '<p class="col-sm-6 col-xs-9 discussion-heading" style="margin-top: 10px;font-size: 18px;">' +
+        data.repliedBy + ' ' + '<span style="font-size: 17px;">&nbsp<b>' + getDays(data.createdDate) +
+        '</b></span></p>' +
+        '<p class="col-sm-6 col-xs-9 discussion-heading"  id="comment-div" style="font-size: 15px;">' +
+        data.reply + '</p></div>');
+    });
+
+    function deleteDiscussion(ides) {
+      var request = new XMLHttpRequest();
+      request.open('DELETE', "/discussion/deleteDiscussion/" + ides);
+      request.send()
+      request.addEventListener("load", function (event) {
+        alert("Discussion Deleted")
+        location.reload();
+        //console.log(request.responseText);
+      });
+    }
+
+    function deleteComment(ides) {
+      $.confirm({
+        title: 'Delete Comment ?',
+        content: "Are you sure to Delete the comment",
+        draggable: true,
+        buttons: {
+          Yes: {
+            btnClass: 'btn-success any-other-class',
+            action: function () {
+              btnClass: 'btn-red any-other-class'
+              var request = new XMLHttpRequest();
+              request.open('DELETE', "/discussion/deleteComment/" + ides);
+              request.send()
+              request.addEventListener("load", function (event) {
+                alert("Comment Deleted")
+                location.reload();
+              });
+            }
+          },
+          No: {
+            btnClass: 'btn-danger any-other-class',
+            action: function () {}
+          },
+        }
+      });
+    }
+
+    function getMonths(mno) {
+      var month = ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      return month[mno - 1];
+    }
+
+    function getDays(x) {
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      today = +dd + '/' + getMonths(mm) + '/' + yyyy;
+
+      var date1 = new Date(x);
+      var date2 = new Date(today);
+
+      var Difference_In_Time = date2.getTime() - date1.getTime();
+      var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+      //console.log(Difference_In_Days)
+
+      if (Difference_In_Days > 31) {
+        Difference_In_Days = Math.round(Difference_In_Days / 30);
+        Difference_In_Days = Difference_In_Days + "m";
+        return Difference_In_Days;
+      }
+
+      Difference_In_Days = Difference_In_Days + "d";
+      return Difference_In_Days;
+    }
+  </script>
 </body>
-</html>
 
+</html>

@@ -3,153 +3,158 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 	body {
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #333;
-    background-color: #fff;
-}
-html {
-    font-size: 10px;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
+		font-size: 14px;
+		line-height: 1.42857143;
+		color: #333;
+		background-color: #fff;
+	}
 
-* {
-    box-sizing: border-box;
-}
+	html {
+		font-size: 10px;
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	}
 
-.navbar-default-bar {
-    background-color: #222D3C;
-    color: #fff;
-    border-radius: 0;
-    border: 0;
-    height: 60px;
-}
+	* {
+		box-sizing: border-box;
+	}
 
-.navbar-collapse {
-    padding-right: 15px;
-    padding-left: 15px;
-}
+	.navbar-default-bar {
+		background-color: #222D3C;
+		color: #fff;
+		border-radius: 0;
+		border: 0;
+		height: 60px;
+	}
 
-.navbar-brand {
-    float: left;
-    height: 50px;
-    padding: 15px 15px;
-    font-size: 18px;
-    line-height: 20px;
-}
+	.navbar-collapse {
+		padding-right: 15px;
+		padding-left: 15px;
+	}
+
+	.navbar-brand {
+		float: left;
+		height: 50px;
+		padding: 15px 15px;
+		font-size: 18px;
+		line-height: 20px;
+	}
 
 
-.none-mobile-view-dp {
-	float: right;
-	margin-right: 10px;
-}
+	.none-mobile-view-dp {
+		float: right;
+		margin-right: 10px;
+	}
 
-.profilePic {
-    width: 40px;
-    height: 40px;
-    margin-left: 30px;
-    margin-top: 4px;
-    margin-right: 10px;
-    float: right;
-    border-radius: 50%;
-}
+	.profilePic {
+		width: 40px;
+		height: 40px;
+		margin-left: 30px;
+		margin-top: 4px;
+		margin-right: 10px;
+		float: right;
+		border-radius: 50%;
+	}
 
-.label {
-    display: inline;
-    padding: .2em .6em .3em;
-    font-size: 75%;
-    font-weight: 700;
-    line-height: 1;
-    color: #fff;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: .25em;
-}
+	.label {
+		display: inline;
+		padding: .2em .6em .3em;
+		font-size: 75%;
+		font-weight: 700;
+		line-height: 1;
+		color: #fff;
+		text-align: center;
+		white-space: nowrap;
+		vertical-align: baseline;
+		border-radius: .25em;
+	}
 
-.mobile .label-success {
-    background-color: #5cb85c;
-}
+	.mobile .label-success {
+		background-color: #5cb85c;
+	}
 
-#menu {
-float:left;
-	height: 92vh;
-	background-color: #222D3C;
-	width: 50px;
-	transition-property: width;
-	transition-duration: 0.7s;
-	box-sizing: border-box;
-	display: inline-block;
-}
+	#menu {
+		float: left;
+		height: 92vh;
+		background-color: #222D3C;
+		width: 50px;
+		transition-property: width;
+		transition-duration: 0.7s;
+		box-sizing: border-box;
+		display: inline-block;
+	}
 
-.fa {
-	color: #fff;
-	font-size: 25px;
-	width: 30px;
-	margin: 6px 15px;
-	margin-left: 11px;
-	box-sizing: border-box;
-}
+	.fa {
+		color: #fff;
+		font-size: 25px;
+		width: 30px;
+		margin: 6px 15px;
+		margin-left: 11px;
+		box-sizing: border-box;
+	}
 
-#menu span {
-	display: none;
-}
+	#menu span {
+		display: none;
+	}
 
-.menu-item {
-	cursor: pointer;
-	opacity: 0.8;
-	color: #fff;
-	font-family: sans-serif;
-	font-size: 14px;
-}
+	.menu-item {
+		cursor: pointer;
+		opacity: 0.8;
+		color: #fff;
+		font-family: sans-serif;
+		font-size: 14px;
+	}
 
-.raj {
-	display: inline-block;
-}
-.menu-item:hover {
-	opacity: 1;
-	background-color: #4d5866;
-}
+	.raj {
+		display: inline-block;
+	}
 
-.active {
-	background-color: #51a1e2 !important;
-}
+	.menu-item:hover {
+		opacity: 1;
+		background-color: #4d5866;
+	}
 
-@media (max-width: 768px) {
+	.active {
+		background-color: #51a1e2 !important;
+	}
 
-.none-mobile-view-dp {
-	visibility: hidden;
-    
-}
+	@media (max-width: 768px) {
 
-.mobile {
-	visibility: visible;
-}
+		.none-mobile-view-dp {
+			visibility: hidden;
 
-}
+		}
+
+		.mobile {
+			visibility: visible;
+		}
+
+	}
 </style>
+
 <body>
 
-	 <nav class="navbar navbar-default-bar no-margin navbar-bar-head-fixed bg-dark"  id="nav-header">
+	<nav class="navbar navbar-default-bar no-margin navbar-bar-head-fixed bg-dark" id="nav-header">
 
-	 	<div class="navbar-header fixed-brand">
-      
-            <span class="label label-success mobile" style="margin-top:20px;float:right;visibility: hidden; color: white; "id="admin_display">Admin</span>
+		<div class="navbar-header fixed-brand">
 
-            <i class="fa fa-bars" class="menu-item" id="sideBtn" style="margin-top: 12px;"></i>
-        
-            <a class="navbar-brand" href="#" style="color: white;font-weight: bold;">cq</a>
-     	</div>
+			<span class="label label-success mobile"
+				style="margin-top:20px;float:right;visibility: hidden; color: white; " id="admin_display">Admin</span>
 
-     	<div class="label-success mobile">
-     		
-     		<img src="images/logo.png" class="profilePic">
-     		<span class="label label-success" style="float:right;margin-top:17px;margin-left:5px;color: white;">Admin</span>
-     	</div>
+			<i class="fa fa-bars" class="menu-item" id="sideBtn" style="margin-top: 12px;"></i>
 
-	 </nav>
+			<a class="navbar-brand" href="#" style="color: white;font-weight: bold;">cq</a>
+		</div>
 
-	 <div id="menu">
+		<div class="label-success mobile">
+
+			<img src="images/logo.png" class="profilePic">
+			<span class="label label-success"
+				style="float:right;margin-top:17px;margin-left:5px;color: white;">Admin</span>
+		</div>
+
+	</nav>
+
+	<div id="menu">
 		<div class="menu-item" id="sideBtn"><i class="fa fa-bars"></i><span>cq</span></div>
 		<div class="menu-item active" id=""><i class="fa fa-home"></i><span>Home</span></div>
 		<div class="menu-item"><i class="fa fa-plus-square"></i><span>Add User</span></div>
@@ -161,26 +166,26 @@ float:left;
 		<div class="menu-item"><i class="fa fa-sign-out"></i><span>Logout</span></div>
 	</div>
 
-	
 
-<script type="text/javascript">
-	var menu = document.getElementById("menu");
-	var sideBtn = document.getElementById("sideBtn");
-	var span = menu.getElementsByTagName("span");
-	sideBtn.addEventListener("click", function () {
-		if(menu.style.width == '300px') {
-			menu.style.width = '50px';
-			for(var i = 0;i<span.length;i++) {
-				span[i].style.display = 'none';
-			}
-		} else {
-			menu.style.width = '300px';
-			setTimeout(function () {
-				for(var i = 0;i<span.length;i++) {
-					span[i].style.display = 'inline';
+
+	<script type="text/javascript">
+		var menu = document.getElementById("menu");
+		var sideBtn = document.getElementById("sideBtn");
+		var span = menu.getElementsByTagName("span");
+		sideBtn.addEventListener("click", function () {
+			if (menu.style.width == '300px') {
+				menu.style.width = '50px';
+				for (var i = 0; i < span.length; i++) {
+					span[i].style.display = 'none';
 				}
-			}, 210);
+			} else {
+				menu.style.width = '300px';
+				setTimeout(function () {
+					for (var i = 0; i < span.length; i++) {
+						span[i].style.display = 'inline';
+					}
+				}, 210);
 
-		}
-	})
-</script>
+			}
+		})
+	</script>
