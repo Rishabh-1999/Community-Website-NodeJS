@@ -582,7 +582,6 @@ app.post('/getUsersOtherThanInCommunity', middleware.checkSession, (req, res) =>
     if (error)
       throw error;
     else {
-      console.log(communitydata)
       communitydata.managers.push(mongoose.mongo.ObjectId(communitydata.ownerid))
       UsersNames.find({
         "$and": [{
@@ -612,7 +611,6 @@ app.post('/getUsersOtherThanInCommunity', middleware.checkSession, (req, res) =>
         if (error)
           console.log(error)
         res.send(result)
-
       });
     }
   });
@@ -715,7 +713,6 @@ app.get('/communitymembers/:pro', middleware.checkSession, (req, res) => {
     if (err)
       throw err;
     else {
-      console.log("Community Members");
       res.render('communitymembers', {
         data: req.session.data,
         data2: result
@@ -732,7 +729,6 @@ app.get('/inviteusers/:pro', middleware.checkSession, (req, res) => {
     if (err)
       throw err;
     else {
-      console.log("inviteusers");
       res.render('inviteusers', {
         data: req.session.data,
         data2: result
@@ -755,7 +751,6 @@ app.post('/inviteusersbyname', middleware.checkSession, (req, res) => {
       if (err)
         throw err;
       else {
-        console.log("inviteusersbyname");
         res.render('inviteusers', {
           data: req.session.data,
           data2: result
@@ -776,7 +771,6 @@ app.post('/deleteinvited', middleware.checkSession, (req, res) => {
     if (err)
       throw err;
     else {
-      console.log("inviteusers");
       res.send("true");
     }
   })
@@ -790,7 +784,6 @@ app.get('/profile/:pro', middleware.checkSession, (req, res) => {
     if (err)
       throw err;
     else {
-      console.log("Community Profile");
       res.render('communityprofile', {
         data: req.session.data,
         data2: result

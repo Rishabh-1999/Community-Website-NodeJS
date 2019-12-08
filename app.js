@@ -5,7 +5,10 @@ var session = require('express-session');
 var nodemailer = require('nodemailer');
 var mongoStore = require('connect-mongo')(session);
 var favicon = require('serve-favicon');
+var morgan = require("morgan");
 require('dotenv').config();
+
+app.use(morgan("dev"));
 
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
@@ -180,7 +183,6 @@ app.post('/sendMail', middleware.checkSession, function (req, res) {
         if (error)
             res.send("false");
         else {
-            console.log('success');
             res.send("true");
         }
     });
@@ -196,7 +198,6 @@ app.post('/logout', middleware.checkSession, function (req, res) {
 /* Socket for comment */
 io.on('connection', function (socket) {
     socket.on('comment', function (data) {
-        console.log(data);
         var commentData = new comment(data);
         commentData.save();
         socket.broadcast.emit('comment', data);
@@ -206,7 +207,6 @@ io.on('connection', function (socket) {
 /* Socket for replies */
 io.on('connection', function (socket) {
     socket.on('reply', function (data) {
-        console.log(data);
         var replyData = new reply(data);
         replyData.save();
         socket.broadcast.emit('reply', data);
