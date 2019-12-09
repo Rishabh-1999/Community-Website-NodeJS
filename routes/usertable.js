@@ -1,435 +1,240 @@
-const express = require('express');
-const path = require('path');
-var bodyParser = require ('body-parser')
+const express = require("express");
+const path = require("path");
+const bodyParser = require("body-parser");
 const app = express.Router();
-const multer = require('multer');
-var passport=require('passport');
-var GitHubStrategy = require('passport-github').Strategy;
-var mongojs = require('mongojs')
-var bcrypt = require('bcrypt');
-const saltRounds = 10;
-
-var UsersNames = require('../models/usernames');
-var middleware = require('../middlewares/middleware');
+const multer = require("multer");
+const passport = require("passport");
+const GitHubStrategy = require("passport-github").Strategy;
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
-
-// parse application/json
-app.use(bodyParser.json())
-
-passport.serializeUser(function(user,done) {
-    done(null,user);
-});
-
-passport.deserializeUser(function(user,done) {
-    done(null,user);
-});
-
-passport.use(new GitHubStrategy({
-    clientID: '8ede64fb43d1cbae067d',
-    clientSecret: '03f3b259e25e48efe13fdb8ca7701daa219f8e3e',
-    callbackURL: "http://127.0.0.1:3000/userTable/auth/github/callback"
-  },
-  function(accessToken, refreshToken, profile, cb) {
-      return cb(null, profile);
-    })
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
 );
 
-app.get('/auth/github',passport.authenticate('github'));
+// parse application/json
+app.use(bodyParser.json());
 
-app.get('/auth/github/callback',passport.authenticate('github', { failureRedirect: 'index.html' }), function (req, res) {
-UsersNames.findOne({"githubid" :req.session.passport.user._json.id},function(err, result) {
-console.log("githubsignin succesful");
-if(result!=null)
-{
-  console.log("result not null");
-        req.session.isLogin=1;
-        req.session._id=result._id;
-        req.session.name=result.name;
-        req.session.password=req.body.password;
-        var ob=new Object()
-        ob.name=result.name;
-        ob._id=result._id;
-        ob.email=result.email;
-        ob.photoloc=result.photoloc;
-        ob.gender=result.gender;
-        ob.city=result.city;
-        ob.DOB=result.DOB;
-        ob.phoneno=result.phoneno
-        ob.role=result.role
-        ob.status=result.status
-        ob.restrict=result.restrict
-        ob.isActive=result.isActive
-        ob.githubid=result.githubid
-        ob.temprole=result.role;
-        req.session.name=result.name;
-        req.session.data=ob;
-        res.redirect('/home');
-}
-else
-{
-  var obj = {
-  name : req.session.passport.user._json.name,
-  email : req.session.passport.user._json.email,
-  city : req.session.passport.user._json.location,
-  status : "Pending",
-  role : "User",
-  githubid : req.session.passport.user._json.id,
-  photoloc : "/images/logo.png",
-  isActive:"true",
-  email: req.body.email,
-  gender: "",
-  DOB: "",
-  phoneno: req.body.phoneno,
-  restrict: "false",
-  interests:"",
-  boutyou:"",
-  expectations:"",
-  email: req.body.email,
-}
-UsersNames.create(obj,function(error,result) {
-if(error)
-  throw error;
-else {
-  req.session.data = obj;
-  UsersNames.find({githubid : req.session.passport.user._json.id})
-  .then(data => {
-    req.session.data._id = data[0]._id;
-  })
-  .catch(err => {
-    throw err;
-  })
-  res.render('home',{data: req.session.data});
-  }
-  })
-  }
-  })
-  .catch(err =>
-  {
-  res.send(err)
-  })
-})
+// Models
+var UsersNames = require("../models/usernames");
 
-app.post('/activatesuperadmin',middleware.checkSession,middleware.checkSuperAdmin,function(req,res){
-  console.log('Activated issuperadmin /activatesuperadmin');
-  req.session.data.issuperadmin="true";
-})
+// Middleware
+var middleware = require("../middlewares/middleware");
 
-app.post('/checkLogin',function(req,res) {
-    console.log('login data recieved');
-    UsersNames.findOne({"email": req.body.email,restrict:"false"}, function(err, result) {
-      console.log(result)
-		if(result==null)
-			res.send("wrong details");
-    else {
-      bcrypt.compare(req.body.password, result.password, function (err, password) {
-        if (password) {
-            req.session.isLogin=1;
-            req.session._id=result._id;
-            req.session.name=result.name;
-            
-            req.session.password=req.body.password;
-            var ob=new Object()
-            ob.name=result.name;
-            ob._id=result._id;
-            ob.email=result.email;
-            ob.photoloc=result.photoloc;
-            ob.gender=result.gender;
-            ob.city=result.city;
-            ob.DOB=result.DOB;
-            ob.phoneno=result.phoneno
-            ob.role=result.role
-            ob.status=result.status
-            ob.restrict=result.restrict
-            ob.isActive=result.isActive
-            ob.githubid=result.githubid
-            ob.temprole=result.role;
-            req.session.name=result.name;
-            req.session.data=ob;
-            if(result.status=="Pending")
-              res.send("not");
-            else
-              res.send("Logined");
-          }
-          else
-            res.send("wrong details");
-        });  
+// Controllers
+var controllers = require("../controllers");
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.use(
+  new GitHubStrategy({
+      clientID: "8ede64fb43d1cbae067d",
+      clientSecret: "03f3b259e25e48efe13fdb8ca7701daa219f8e3e",
+      callbackURL: "http://127.0.0.1:3000/userTable/auth/github/callback"
+    },
+    function (accessToken, refreshToken, profile, cb) {
+      return cb(null, profile);
     }
-      })
-      .catch(err => {
-        console.error(err)
-        res.send(error)
-      })
-})
+  )
+);
 
-app.post('/addUserToDataBase',middleware.checkSession,middleware.checkSuperAdmin,function (req, res) {
-  bcrypt.hash(req.body.password, saltRounds, function (err,   hash) {
-    let newProduct = new UsersNames({
-      email: req.body.email,
-      password: hash,
-      gender: "",
-      DOB: "",
-      phoneno: req.body.phoneno,
-      city: req.body.city,
-      name: req.body.name,
-      role: req.body.role,
-      restrict: "false",
-      status:  "Pending",
-      isActive:"true",
-      interests:"",
-      aboutyou:"",
-      expectations:"",
-      photoloc:"/images/logo.png",
-    })
-    newProduct.save()
-     .then(data => {
-       console.log("New User created");
-       res.send(data)
-     })
-     .catch(err => {
-      res.send(err)
-     })
+app.get("/auth/github", passport.authenticate("github"));
+
+app.get(
+  "/auth/github/callback",
+  passport.authenticate("github", {
+    failureRedirect: "index.html"
+  }),
+  function (req, res) {
+    UsersNames.findOne({
+        githubid: req.session.passport.user._json.id
+      },
+      function (err, result) {
+        console.log("githubsignin succesful");
+        if (result != null) {
+          console.log("result not null");
+          req.session.isLogin = 1;
+          req.session._id = result._id;
+          req.session.name = result.name;
+          req.session.password = req.body.password;
+          var ob = new Object();
+          ob.name = result.name;
+          ob._id = result._id;
+          ob.email = result.email;
+          ob.photoloc = result.photoloc;
+          ob.gender = result.gender;
+          ob.city = result.city;
+          ob.DOB = result.DOB;
+          ob.phoneno = result.phoneno;
+          ob.role = result.role;
+          ob.status = result.status;
+          ob.restrict = result.restrict;
+          ob.isActive = result.isActive;
+          ob.githubid = result.githubid;
+          ob.temprole = result.role;
+          req.session.name = result.name;
+          req.session.data = ob;
+          res.redirect("/home");
+        } else {
+          var obj = {
+            name: req.session.passport.user._json.name,
+            email: req.session.passport.user._json.email,
+            city: req.session.passport.user._json.location,
+            status: "Pending",
+            role: "User",
+            githubid: req.session.passport.user._json.id,
+            photoloc: "/images/logo.png",
+            isActive: "true",
+            email: req.body.email,
+            gender: "",
+            DOB: "",
+            phoneno: req.body.phoneno,
+            restrict: "false",
+            interests: "",
+            boutyou: "",
+            expectations: "",
+            email: req.body.email
+          };
+          UsersNames.create(obj, function (error, result) {
+            if (error) throw error;
+            else {
+              req.session.data = obj;
+              UsersNames.find({
+                  githubid: req.session.passport.user._json.id
+                })
+                .then(data => {
+                  req.session.data._id = data[0]._id;
+                })
+                .catch(err => {
+                  throw err;
+                });
+              res.render("home", {
+                data: req.session.data
+              });
+            }
+          });
+        }
+      }
+    ).catch(err => {
+      res.send(err);
     });
-})
-
-app.post('/updatetodatabase',middleware.checkSession,function(req,res) {
-  UsersNames.updateOne({"email":req.body.email},{$set:{"isActive":"true","email":req.body.email,"phoneno":req.body.phoneno,"city":req.body.city,"status":req.body.status,"role":req.body.role}},function(error,result){       
-    if(error)
-      throw error;
-    else {
-    if(req.session.emailid!=req.body.email)
-      req.session.emailid=req.body.email;
-    }
-    res.send("1");
-  })
-})
-
-app.post('/activateUser',middleware.checkSession,middleware.checkSuperAdmin,function(req,res) {
-  UsersNames.updateOne({"_id":req.body._id},{$set:{"restrict":"true"}},function(error,result){
-  if(error)
-    throw error;
-  else
-  {
-    if(req.session.emailid==req.body.old)
-      req.session.emailid=req.body.emailid;
-    console.log("Activated Requested User /activateUser");
-    res.send("true");
   }
-  })
-})
-// deactivate User
-app.post('/deactivateUser',middleware.checkSession,middleware.checkSuperAdmin,function(req,res) {
-  UsersNames.updateOne({"_id":req.body._id},{$set:{"restrict":"false"}},function(error,result){
-  if(error)
-    throw error;
-  else
-  {
-    if(req.session.emailid==req.body.old)
-      req.session.emailid=req.body.emailid;
-    console.log("Deactivated Requested User /deactivateUser");
-     res.send("true");
-  }
-  })
-})
+);
+
+app.post(
+  "/activatesuperadmin",
+  middleware.checkSession,
+  middleware.checkSuperAdmin,
+  controllers.user.activatesuperadmin
+);
+
+app.post("/checkLogin", controllers.user.checkLogin);
+
+app.post(
+  "/addUserToDataBase",
+  middleware.checkSession,
+  middleware.checkSuperAdmin,
+  controllers.user.addUserToDataBase);
+
+app.post(
+  "/updatetodatabase",
+  middleware.checkSession,
+  controllers.user.updatetodatabase
+);
+
+app.post(
+  "/activateUser",
+  middleware.checkSession,
+  middleware.checkSuperAdmin,
+  controllers.user.activateUser
+);
+
+app.post(
+  "/deactivateUser",
+  middleware.checkSession,
+  middleware.checkSuperAdmin,
+  controllers.user.deactivateUser
+);
 
 // Change Temp role
-app.post('/changetemprole',middleware.checkSession,middleware.checkSuperAdmin,function(req,res) {
-  if(req.session.data.temprole=="SuperAdmin")
-  {
-    req.session.data.temprole="User"
-    res.send("changed")
-  }
-  else
-  {
-    req.session.data.temprole="SuperAdmin"
-    res.send("changed")
-  }
-})
+app.post(
+  "/changetemprole",
+  middleware.checkSession,
+  middleware.checkSuperAdmin,
+  controllers.user.changetemprole
+);
 
 //Update Profile of Users
-app.post('/updateprofile',middleware.checkSession,function(req,res){
-  UsersNames.updateOne({"_id":req.session._id},{$set:{"status":"Confirmed","isActive":"true","name":req.body.name,"DOB":req.body.DOB,"city":req.body.city,"gender":req.body.gender,"phoneno":req.body.phoneno,"interests":req.body.interests,
-  "aboutyou":req.body.aboutyou,"expectations":req.body.expectations}},function(error,result){
-  if(error)
-    throw error;
-  else
-  req.session.data.isActive="true";
-  console.log("Updated from /updateprofile");
-  res.send("true");
-  })
-})
+app.post(
+  "/updateprofile",
+  middleware.checkSession,
+  controllers.user.updateprofile
+);
 
-app.post('/changePassword',middleware.checkSession, (req,res)=>{
-  UsersNames.findOne({"_id":req.session._id},function(error,result){
-        if(error)
-          throw error;
-        else
-        {
-          if(result==null)
-            res.send("false");
-          else {
-            bcrypt.compare(req.body.oldpass,result.password, function (err, boolans) {
-              if(boolans==true) {
-              bcrypt.hash(req.body.newpass, saltRounds, function(err, newpass) {
-              UsersNames.updateOne({"_id":req.session._id,},{$set:{"password":newpass}},function(error,result){
-                          if(error)
-                            throw error;
-                          else
-                          {
-                            if(result==null)
-                              res.send("false");
-                            else {   
-                              res.send("true");
-                            }
-                          }
-                        });
-            });
+app.post(
+  "/changePassword",
+  middleware.checkSession,
+  controllers.user.changePassword
+);
+
+//check duplicate for creating user emailid
+app.post(
+  "/checkDuplicate",
+  middleware.checkSession,
+  controllers.user.checkDuplicate
+);
+
+app.post(
+  "/usersTable",
+  middleware.checkSession,
+  middleware.checkSuperAdmin,
+  controllers.user.usersTable
+);
+
+var storage = multer.diskStorage({
+  destination: "./public/uploads/",
+  filename: function (req, file, callback) {
+    photoname = req.session._id + path.extname(file.originalname);
+    req.session.data.photoloc = "/uploads/" + photoname;
+    callback(null, photoname);
+  }
+});
+var upload = multer({
+  storage: storage
+}).single("file");
+
+app.post("/uploadphoto", middleware.checkSession, (req, res) => {
+  upload(req, res, err => {
+    if (err) {
+      throw err;
+    } else {
+      UsersNames.updateOne({
+          _id: req.session._id
+        }, {
+          $set: {
+            photoloc: "/uploads/" + photoname
           }
-            res.send("false");
-        });
-      }
+        },
+        function (error, result) {
+          console.log("photo updated to database" + result);
+          req.session.data.photoloc = "uploads/" + photoname;
+          res.redirect("/homewithedit");
+        }
+      );
     }
   });
 });
 
-//check duplicate for creating user emailid
-app.post('/checkDuplicate',middleware.checkSession, (req,res)=>{
-  var data=UsersNames.find({}).exec(function(error,result)    {
-  if(error)
-    throw error;
-  else
-  {
-    var da=[];
-    var rew="false";
-    da=result;
-    for(i in result)
-    {
-      if(req.body.email==da[i].email)
-      {
-        rew="true";
-      }
-    }
-      res.send(rew);
-  }
-})
-})
+app.get("/editprofile", middleware.checkSession, controllers.user.editprofile);
 
-app.post('/usersTable' ,middleware.checkSession,middleware.checkSuperAdmin, function(req, res) {
-  let query = {};
-  let params = {};
-  if(req.body.role === 'All' && req.body.status !== 'All')
-      query = {status: req.body.status};
-  else if(req.body.role !== 'All' && req.body.status === 'All')
-      query = {role: req.body.role};
-  else if(req.body.role !== 'All' && req.body.status !== 'All')
-      query = {role: req.body.role , status: req.body.status};
-
-    if(req.body.customsearch)
-    {
-        query["$or"]=[{
-        "name" : {"$regex" : req.body.search.value , "$options" : "i"}
-      },
-      {
-        "communityloc" : {"$regex" : req.body.search.value , "$options" : "i"}
-      },
-      {
-        "createdate" : {"$regex" : req.body.search.value , "$options" : "i"}
-      },
-      {
-        "description" : {"$regex" : req.body.search.value , "$options" : "i"}
-      },
-      {
-        "owner" : {"$regex" : req.body.search.value , "$options" : "i"}
-      },
-      {
-        "status" : {"$regex" : req.body.search.value , "$options" : "i"}
-      }]
-    }
-
-let sortingType;
-if(req.body.order[0].dir === 'asc')
-    sortingType = 1;
-else
-    sortingType = -1;
-
-if(req.body.order[0].column === '0')
-    params = {skip : parseInt(req.body.start) , limit : parseInt(req.body.length), sort : {email : sortingType}};
-else if(req.body.order[0].column === '2')
-    params = {skip : parseInt(req.body.start) , limit : parseInt(req.body.length), sort : {city : sortingType}};
-else if(req.body.order[0].column === '3')
-    params = {skip : parseInt(req.body.start) , limit : parseInt(req.body.length), sort : {status : sortingType}};
-else if(req.body.order[0].column === '4')
-    params = {skip : parseInt(req.body.start) , limit : parseInt(req.body.length), sort : {role : sortingType}};
-
-
-    UsersNames.find(query , {} , params , function (err , data)
-    {
-        if(err)
-            console.log(err);
-        else
-        {
-            UsersNames.countDocuments(query, function(err , filteredCount)
-            {
-                if(err)
-                    console.log(err);
-                else
-                {
-                
-                    UsersNames.countDocuments(function (err, totalCount)
-                    {
-                        if(err)
-                            console.log(err);
-                        else
-                            res.send({"recordsTotal": totalCount,
-                                "recordsFiltered": filteredCount, data});
-                    })
-                }
-            });
-        }
-    })
-});
-
-  var storage = multer.diskStorage({
-  destination : './public/uploads/',
-      filename : function(req, file, callback)
-      {
-        photoname=req.session._id +path.extname(file.originalname);
-        req.session.data.photoloc ='/uploads/'+ photoname;
-        callback(null,photoname);
-      }
-    })
-     var upload = multer({
-      storage : storage,
-    }).single('file');
-
-app.post('/uploadphoto',middleware.checkSession,(req,res)=>{
-  upload(req,res,(err)=>{
-        if(err)
-        {
-          throw err;
-        }
-        else{
-          UsersNames.updateOne({"_id":req.session._id},{$set:{"photoloc":'/uploads/'+photoname}},function(error,result){
-              console.log("photo updated to database"+result)
-              req.session.data.photoloc = 'uploads/'+photoname;
-              res.redirect('/homewithedit');
-           })
-        }
-      })
-})
-
-app.get('/editprofile' ,middleware.checkSession, (req,res)=>{
-  UsersNames.findOne({"_id":req.session._id}, function(err, result) {
-    var userdata=new Object();
-    userdata.interests=result.interests
-    userdata.aboutyou=result.aboutyou
-    userdata.expectations=result.expectations
-    res.render('editprofile',{data: req.session.data,userdata:userdata});
- })
-})
-
-module.exports=app
+module.exports = app;

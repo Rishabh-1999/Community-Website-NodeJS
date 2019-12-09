@@ -1,0 +1,38 @@
+{
+  "name": "community-website-web-project",
+  "version": "1.0.0",
+  "description": "It is a Website developed under UCA class for our Web Project.\r To run this website run this command on command prompt on root folder.\r ```\r npm start\r ```\r It will run under the url http://127.0.0.1:3000/",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rishabh-1999/Community-Website-Web-Project.git"
+  },
+  "keywords": [],
+  "author": "Rishabh Anand",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rishabh-1999/Community-Website-Web-Project/issues"
+  },
+  "homepage": "https://github.com/Rishabh-1999/Community-Website-Web-Project#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "connect-mongo": "^3.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "mongoose": "^5.7.14",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.2",
+    "node-pre-gyp": "^0.14.0",
+    "nodemailer": "^6.4.1",
+    "passport": "^0.4.0",
+    "passport-github": "^1.1.0",
+    "serve-favicon": "^2.5.0",
+    "socket.io": "^2.3.0",
+    "bcrpyt": "2.4.3"
+  }
+}
