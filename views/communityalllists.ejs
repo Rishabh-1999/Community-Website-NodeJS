@@ -20,10 +20,11 @@
 </head>
 
 <body>
-	<% include paritials/topbar.ejs %>
+	<%- include ('paritials/topbar.ejs') %>
 	<% if(data.isActive == "true"){ %>
-	<% include paritials/sidebar.ejs %>
+	<%- include ('paritials/sidebar.ejs') %>
 	<% } %>
+
 	<div id="page-content-wrapper" style="margin-bottom: 100px;">
 		<div class="container-fluid page-content-div" style="padding:0;">
 			<div class="row">

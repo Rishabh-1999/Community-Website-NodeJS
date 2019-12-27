@@ -31,9 +31,9 @@
 </head>
 
 <body>
-  <% include paritials/topbar.ejs %>
-  <% if(data.status == "Confirmed"){ %>
-  <% include paritials/sidebar.ejs %>
+  <%- include ('paritials/topbar.ejs') %>
+  <% if(data.isActive == "true"){ %>
+  <%- include ('paritials/sidebar.ejs') %>
   <% } %>
   <!-- Edit Modal-->
   <center>

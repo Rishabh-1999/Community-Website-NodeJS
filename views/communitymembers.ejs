@@ -27,9 +27,9 @@
 
 <body>
 
-  <% include paritials/topbar.ejs %>
+  <%- include ('paritials/topbar.ejs') %>
   <% if(data.isActive == "true"){ %>
-  <% include paritials/sidebar.ejs %>
+  <%- include ('paritials/sidebar.ejs') %>
   <% } %>
 
   <style>
