@@ -8,7 +8,8 @@ var user = new mongoose.Schema({
   },
   password: {
     type: String,
-    default: ""
+    required: true,
+    select: false
   },
   gender: {
     type: String
@@ -29,7 +30,8 @@ var user = new mongoose.Schema({
     type: String
   },
   role: {
-    type: String
+    type: String,
+    required: true
   },
   status: {
     type: String

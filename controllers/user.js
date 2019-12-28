@@ -47,7 +47,7 @@ module.exports.checkLogin = async function (req, res, next) {
                 });
             }
         }
-    ).catch(err => {
+    ).select("+password").catch(err => {
         console.error(err);
         res.send(error);
     });
@@ -192,7 +192,7 @@ module.exports.changePassword = async function (req, res, next) {
                 }
             }
         }
-    );
+    ).select("+password");
 };
 
 module.exports.checkDuplicate = async function (req, res, next) {
