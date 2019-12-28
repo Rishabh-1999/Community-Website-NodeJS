@@ -12,7 +12,6 @@ document.getElementById("submit").addEventListener("click", function (event) {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(ob));
     xhr.addEventListener("load", function (event) {
-      console.log(xhr.responseText);
       if (xhr.responseText == "false")
         alert("Incorrect old password");
       else

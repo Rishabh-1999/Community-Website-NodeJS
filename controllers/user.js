@@ -11,7 +11,6 @@ module.exports.checkLogin = async function (req, res, next) {
             restrict: "false"
         },
         function (err, result) {
-            console.log(result);
             if (result == null) res.send("wrong details");
             else {
                 bcrypt.compare(req.body.password, result.password, function (

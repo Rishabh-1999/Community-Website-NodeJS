@@ -132,7 +132,6 @@ module.exports.edittag = async function (req, res, next) {
         if (error)
             res.send("false")
         else {
-            console.log("Updated tag ->edittag");
             res.send("true");
         }
     })

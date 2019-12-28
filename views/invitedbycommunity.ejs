@@ -168,7 +168,6 @@
             xml.setRequestHeader("Content-Type", "application/json");
             xml.addEventListener("load", function () {
                 var data = JSON.parse(xml.responseText);
-                console.log(data)
                 $('#div' + id).fadeOut(600, function () {
                     $(this).remove();
                 });

@@ -40,7 +40,8 @@ var user = new mongoose.Schema({
     type: String
   },
   isActive: {
-    type: String
+    type: String,
+    required: true
   },
   interests: {
     type: String

@@ -46,7 +46,6 @@ document.getElementById('btnaddUser').addEventListener('click', function () {
 		})
 
 		x.send(JSON.stringify(ob));
-		console.log(ob);
 		xml.send(JSON.stringify(obj));
 
 		//alert('User Created');

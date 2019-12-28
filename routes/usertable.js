@@ -60,9 +60,8 @@ app.get(
         githubid: req.session.passport.user._json.id
       },
       function (err, result) {
-        console.log("githubsignin succesful");
+        console.log("githubsignin succesfull");
         if (result != null) {
-          console.log("result not null");
           req.session.isLogin = 1;
           req.session._id = result._id;
           req.session.name = result.name;

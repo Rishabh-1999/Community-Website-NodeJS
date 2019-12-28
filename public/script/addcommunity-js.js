@@ -53,7 +53,6 @@ function createCommunity() {
   datestr = datestr + " (" + formatAMPM(dat) + ")";
   obj.createdate = datestr;
 
-  console.log(obj)
   var xml = new XMLHttpRequest();
 
   xml.open("POST", "/communityTable/addCommunity");

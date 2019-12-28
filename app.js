@@ -202,7 +202,7 @@ let transporter = nodemailer.createTransport({
 });
 
 /* POST function for mail send */
-app.post("/sendMail", middleware.checkSession, function(req, res) {
+app.post("/sendMail", middleware.checkSession, function (req, res) {
   transporter.sendMail(req.body, (error, info) => {
     if (error) res.send("false");
     else {
@@ -212,15 +212,14 @@ app.post("/sendMail", middleware.checkSession, function(req, res) {
 });
 
 /* Logout Function */
-app.post("/logout", middleware.checkSession, function(req, res) {
+app.post("/logout", middleware.checkSession, function (req, res) {
   req.session.destroy();
   res.redirect("/");
-  console.log("logouted");
 });
 
 /* Socket for comment */
-io.on("connection", function(socket) {
-  socket.on("comment", function(data) {
+io.on("connection", function (socket) {
+  socket.on("comment", function (data) {
     var commentData = new comment(data);
     commentData.save();
     socket.broadcast.emit("comment", data);
@@ -228,8 +227,8 @@ io.on("connection", function(socket) {
 });
 
 /* Socket for replies */
-io.on("connection", function(socket) {
-  socket.on("reply", function(data) {
+io.on("connection", function (socket) {
+  socket.on("reply", function (data) {
     var replyData = new reply(data);
     replyData.save();
     socket.broadcast.emit("reply", data);

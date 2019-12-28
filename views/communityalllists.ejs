@@ -71,7 +71,6 @@
 				start: start,
 				end: end,
 			}
-			console.log(obj);
 			document.getElementById('search').innerHTML = "";
 			var xml = new XMLHttpRequest()
 			xml.open("POST", "/communityTable/getAllActive")
@@ -82,7 +81,7 @@
 				for (var i = 0; i < tempdata.length; i++) {
 					addToDOM(tempdata[i])
 				}
-				console.log(tempdata);
+
 			}
 			xml.setRequestHeader("Content-Type", "application/json");
 			xml.send(JSON.stringify(obj));
@@ -99,13 +98,11 @@
 		}
 
 		function getScrollTop() {
-			console.log("getScrollTop");
 			return (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body
 				.parentNode || document.body).scrollTop;
 		}
 
 		window.onscroll = function () {
-			console.log("onscroll");
 			if (getScrollTop() == getDocumentHeight() - window.innerHeight) {
 				start += 4;
 				end = 4;
@@ -211,7 +208,7 @@
 			document.getElementById('search').innerHTML = ""
 			var val = document.getElementById('searchinput').value;
 			for (i in tempdata) {
-				console.log(tempdata[i])
+
 				if ((tempdata[i].name).includes(val) || (tempdata[i].description).includes(val))
 					addToDOM(tempdata[i])
 			}

@@ -1,13 +1,17 @@
 var mongoose = require('mongoose');
 var tag = new mongoose.Schema({
   tagname: {
-    type: String
+    type: String,
+    unique: true,
+    required:true
   },
   createdby: {
-    type: String
+    type: String,
+    required:true
   },
   createddate: {
-    type: String
+    type: String,
+    required:true
   },
   deleted: {
     type: String,

@@ -97,14 +97,12 @@ app.post('/addCommunity', middleware.checkSession, middleware.checkSuperAdminOrC
   })
   newProduct.save()
     .then(data => {
-      console.log("->" + data);
       tempid = data._id;
       res.send("true")
       upload(req, res, (err) => {
         if (err)
           throw err;
         else {
-          console.log(res);
           tempid = res._id;
           res.send("true")
         }
@@ -118,7 +116,6 @@ app.post('/addCommunity', middleware.checkSession, middleware.checkSuperAdminOrC
 var storagecomm = multer.diskStorage({
   destination: './public/uploads/',
   filename: function (req, file, callback) {
-    console.log("tempid" + tempid)
     tempcomm = 'community' + tempid + path.extname(file.originalname);
     callback(null, tempcomm);
   }
@@ -129,7 +126,6 @@ var uploadcomm = multer({
 }).single('file');
 
 app.post('/uploadphotoCommunity', middleware.checkSession, middleware.checkSuperAdminOrCommunityManagers, (req, res) => {
-  console.log("uploadphotoCommunity")
   uploadcomm(req, res, (err) => {
     if (err) {
       throw err;
@@ -141,7 +137,6 @@ app.post('/uploadphotoCommunity', middleware.checkSession, middleware.checkSuper
           "photoloc": '/uploads/' + tempcomm
         }
       }, function (error, result) {
-        console.log("photo updated to database" + result)
         communitys.findOne({
           "_id": tempid
         }, function (err, result) {

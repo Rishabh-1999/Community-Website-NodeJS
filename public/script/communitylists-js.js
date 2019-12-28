@@ -45,7 +45,6 @@ function initaliseTable2() {
 }
 
 function addToDOM(obj, s) {
-  console.log(obj)
   var div1 = document.createElement('div');
   div1.setAttribute("class", "col-sm-12 col-xs-12 myCommunity community-div");
   div1.setAttribute("style", "display: flex;");

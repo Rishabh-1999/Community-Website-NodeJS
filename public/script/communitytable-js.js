@@ -75,10 +75,6 @@ function initaliseTable() {
 var gd;
 
 function addadatetoinfo(desc) {
-  console.log(desc)
-  // document.getElementById("CommunityProfilePic").src=photoloc;
-  // document.getElementById("CommunityInfoPop").innerHTML="Community " + name;
-  // document.getElementById("communityDesc").innerHTML=desc;
 
   $(document).on("click", "#btninfomation", function () {
     let d = $(this).parent().parent()[0].children;
@@ -102,7 +98,7 @@ document.getElementById("editsubmit").addEventListener("click", function () {
   obj.id = gd;
   obj.name = $("#CommuityName").val();
   obj.status = $("#communityStatus").val();
-  console.log(obj);
+
   var xml = new XMLHttpRequest();
   xml.open("POST", "/communityTable/communityupdate");
   xml.onload = function () {

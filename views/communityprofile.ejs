@@ -210,7 +210,6 @@
 			document.getElementById("special").innerHTML = "";
 			xml.addEventListener("load", function () {
 				var data = JSON.parse(xml.responseText);
-				console.log(data)
 				if (data.length == 0) {
 					//noUser();
 				} else {
@@ -251,7 +250,7 @@
 			xml.setRequestHeader("Content-Type", "application/json");
 			xml.addEventListener("load", function () {
 				var data = JSON.parse(xml.responseText);
-				console.log(data);
+
 				var o = 0;
 				for (i in data) {
 					//addtoUserDOM(data[i]);

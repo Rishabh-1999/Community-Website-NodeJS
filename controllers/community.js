@@ -10,8 +10,6 @@ module.exports.getUsersInvited = async function (req, res, next) {
         if (err)
             return err;
         else {
-            console.log("Got Users for community table /getinveted")
-            console.log()
             res.send(result)
         }
     })
@@ -189,7 +187,6 @@ module.exports.getArrayOwnCommunity = async function (req, res, next) {
     communitys.find({
         'ownerid': req.session._id
     }, function (err, result) {
-        console.log("Got Array in which User is Owner");
         res.send(result);
     });
 }
@@ -208,7 +205,6 @@ module.exports.getArrayOtherCommunity = async function (req, res, next) {
             }
         }]
     }, function (err, result) {
-        console.log("Got Array in which User in Member in Community");
         res.send(result);
     });
 }
@@ -235,7 +231,6 @@ module.exports.getArrayOtherCommunityInvited = async function (req, res, next) {
             }
         }]
     }, function (err, result) {
-        console.log("Got array in which User has Requested to join Community");
         res.send(result);
     });
 }
@@ -312,7 +307,6 @@ module.exports.getManagers = async function (req, res, next) {
         if (err)
             return err;
         else {
-            console.log("Got Users for community table /getManagers")
             res.send(JSON.stringify(result.managers))
         }
     })
@@ -326,7 +320,6 @@ module.exports.getinveted = async function (req, res, next) {
         if (err)
             return err;
         else {
-            console.log("Got Users for community table /getinveted")
             res.send(JSON.stringify(result.invited))
         }
     })
@@ -340,7 +333,6 @@ module.exports.getrequest = async function (req, res, next) {
         if (err)
             return err;
         else {
-            console.log("Got Users for community table /getrequest")
             res.send(JSON.stringify(result.request))
         }
     })
@@ -353,7 +345,6 @@ module.exports.getUsers = async function (req, res, next) {
         if (err)
             return err;
         else {
-            console.log("Got Users for community table /getUsers");
             res.send(JSON.stringify(result.users))
         }
     })
@@ -545,7 +536,6 @@ module.exports._id = async function (req, res, next) {
         if (err)
             throw err;
         else {
-            console.log("Manage Community");
             res.render('manageCommunity', {
                 data: req.session.data,
                 data2: result
@@ -562,7 +552,6 @@ module.exports.edit_id = async function (req, res, next) {
         if (err)
             throw err;
         else {
-            console.log("Edit Profile of Community");
             res.render('editcommunity', {
                 data: req.session.data,
                 data2: result
@@ -579,7 +568,6 @@ module.exports.userprofile_id = async function (req, res, next) {
         if (err)
             throw err;
         else {
-            console.log("User Profile For Community");
             res.render('userprofile', {
                 data: req.session.data,
                 data2: result

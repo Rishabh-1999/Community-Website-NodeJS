@@ -231,7 +231,6 @@
     var email_id = "<%= data.email %>";
     var currentUser = "<%= data.name %>"
     var currentId = "<%= data._id %>"
-    //console.log(currentId)
 
     $(document).ready(function () {
       initaliseusers();
@@ -265,7 +264,6 @@
       xml.setRequestHeader("Content-Type", "application/json");
       xml.addEventListener("load", function () {
         var data = JSON.parse(xml.responseText);
-        console.log(data)
         for (j in data) {
           if (data[j].createdBy == n) {
             addtoDiscussionDOM(data[j])
@@ -335,21 +333,19 @@
       obj.createdDate = today;
       obj.ownerId = "<%= data._id %>";
       obj.communityId = commid;
-      console.log(obj);
 
       var request = new XMLHttpRequest();
       request.open('POST', "/discussion/addnewDiscussion");
       request.setRequestHeader("Content-Type", "application/json");
       request.send(JSON.stringify(obj))
       request.addEventListener("load", function () {
-        console.log("Data Posted Successfully");
         alert("New Discussion Is Registred");
       });
       location.reload();
     })
 
     function addtoDiscussionDOM(obj) {
-      //console.log(obj)
+
       var div = '<div class="container discussion-container">' +
         '<div class="panel panel-default allSidesSoft" style="background:white;">' +
         '<div class="dropup" style="margin-right: 10px;">' +
@@ -416,7 +412,7 @@
     }
 
     function displayComments(disId) {
-      //console.log(disId)
+
       var inp = document.getElementById('enterComments' + disId)
       inp.setAttribute("style", "visibility:visible");
       var subButton = document.getElementById('send' + disId)
@@ -432,7 +428,6 @@
       xml.setRequestHeader("Content-Type", "application/json");
       xml.addEventListener("load", function () {
         var data = JSON.parse(xml.responseText);
-        console.log(data)
         for (j in data) {
           $('.comments' + data[j].discussionId).append(
             '<div class="panel-body" style="padding:5px;background:#f9f9f9;">' +
@@ -465,7 +460,6 @@
     }
 
     function hideComments(disId) {
-      console.log('d')
       document.getElementById('enterComments' + disId).setAttribute("style", "visibility:hidden");
       document.getElementById('send' + disId).setAttribute("style", "visibility:hidden");
       $('.comments' + disId).empty();
@@ -505,7 +499,6 @@
         for (j in data1) {
           if (data1[j].comment == comment) {
             commentId = data1[j]._id;
-            console.log(commentId)
             $('.comments' + oa).append('<div class="panel-body" style="padding:5px;background:#f9f9f9;">' +
               '<div class="col-sm-1 col-xs-3"><a href="">' +
               '<img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"' +
@@ -537,7 +530,6 @@
     }
 
     socket.on('comment', function (data) {
-      //console.log(data)
       var data1;
       var commentId;
       var comment = $('#comment' + data.discussionId).val();
@@ -587,7 +579,6 @@
 
       var ob = new Object();
       ob.commentId = disId;
-      console.log(disId)
 
       $('.replies' + disId).empty();
 
@@ -640,7 +631,6 @@
           'discussionId': discussionId,
           'createdDate': today
         };
-        console.log(data)
         $('.replies' + commentId).append('<div class="col-sm-4"></div>' +
           '<div class="col-sm-1 col-xs-3"><a href="">' +
           '<img src="<%=data2.photoloc%>" class="discussion-com-profile-pic allSidesSoft" id="dpimage"' +
@@ -656,7 +646,6 @@
     }
 
     socket.on('reply', function (data) {
-      //  console.log(data)
 
       $('.replies' + data.commentId).append('<div class="col-sm-4"></div>' +
         '<div class="col-sm-1 col-xs-3"><a href="">' +
@@ -676,7 +665,6 @@
       request.addEventListener("load", function (event) {
         alert("Discussion Deleted")
         location.reload();
-        //console.log(request.responseText);
       });
     }
 
@@ -724,8 +712,6 @@
 
       var Difference_In_Time = date2.getTime() - date1.getTime();
       var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-
-      //console.log(Difference_In_Days)
 
       if (Difference_In_Days > 31) {
         Difference_In_Days = Math.round(Difference_In_Days / 30);
