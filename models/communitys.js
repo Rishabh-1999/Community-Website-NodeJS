@@ -17,30 +17,30 @@ var communitys = new mongoose.Schema({
   },
   "rule": {
     type: String,
-    required:true
+    required: true
   },
   "communityloc": {
     type: String
   },
   "createdate": {
     type: String,
-    required:true
+    required: true
   },
   "description": {
     type: String,
-    defualt:""
+    defualt: ""
   },
   "owner": {
     type: String,
-    required:true
+    required: true
   },
   "status": {
     type: String,
-    required:true
+    required: true
   },
   "ownerid": {
     type: String,
-    required:true
+    required: true
   },
   "request": [{
     'type': mongoose.Schema.Types.ObjectId,

@@ -1,5 +1,12 @@
 var bcrypt = require("bcrypt");
 const saltRounds = 10;
+var cloundinary = require("cloudinary").v2;
+
+cloundinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECERT
+});
 
 // Models
 var UsersNames = require("../models/usernames");
@@ -124,32 +131,6 @@ module.exports.changetemprole = async function (req, res, next) {
         req.session.data.temprole = "SuperAdmin";
         res.send("changed");
     }
-};
-
-module.exports.updateprofile = async function (req, res, next) {
-    UsersNames.updateOne({
-            _id: req.session._id
-        }, {
-            $set: {
-                status: "Confirmed",
-                isActive: "true",
-                name: req.body.name,
-                DOB: req.body.DOB,
-                city: req.body.city,
-                gender: req.body.gender,
-                phoneno: req.body.phoneno,
-                interests: req.body.interests,
-                aboutyou: req.body.aboutyou,
-                expectations: req.body.expectations
-            }
-        },
-        function (error, result) {
-            if (error) throw error;
-            else req.session.data.isActive = "true";
-            console.log("Updated from /updateprofile");
-            res.send("true");
-        }
-    );
 };
 
 module.exports.changePassword = async function (req, res, next) {

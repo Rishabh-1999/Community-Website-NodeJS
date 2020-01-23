@@ -1,11 +1,17 @@
 var express = require("express");
 var path = require("path");
 var app = express();
+var bodyParser = require("body-parser");
 var session = require("express-session");
 var nodemailer = require("nodemailer");
+var fileupload = require("express-fileupload");
 var mongoStore = require("connect-mongo")(session);
 var favicon = require("serve-favicon");
+
 var morgan = require("morgan");
+var http = require("http");
+var server = http.Server(app);
+var PORT = process.env.PORT || 3000;
 require("dotenv").config();
 
 app.use(morgan("dev"));
@@ -15,19 +21,28 @@ var io = require("socket.io")(http);
 
 /* Acces static files */
 app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(favicon(path.join(__dirname, "public//images/", "favicon.ico")));
 
+app.use(
+  fileupload({
+    useTempFiles: true
+  })
+);
+
+/* DB */
+require("./static/db");
+
 /* Mongoose Connectopn */
 var mongoose = require("mongoose");
-var mongoDB = "mongodb://localhost/myDB";
-mongoose.Promise = global.Promise;
 var db = mongoose.connection;
-mongoose.set("useCreateIndex", true);
-mongoose.connect(mongoDB, {
-  useNewUrlParser: true
-});
 
 /* Session */
 app.use(
@@ -62,15 +77,6 @@ app.use(
   })
 );
 app.use(express.json());
-
-/* Mongoose Connection Checking */
-mongoose.connection.on("error", err => {
-  console.log("DB connection Error");
-});
-
-mongoose.connection.on("connected", err => {
-  console.log("DB connected");
-});
 
 /* Views */
 /* Login Page */
@@ -235,5 +241,6 @@ io.on("connection", function (socket) {
   });
 });
 
-console.log("Running on port 3000");
-http.listen(3000);
+server.listen(PORT, () => {
+  console.log("Sever on port: " + PORT);
+});

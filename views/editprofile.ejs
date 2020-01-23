@@ -69,102 +69,103 @@
                 <div class="col-12">
                   <div class="card allSidesSoft">
                     <div class="card-body">
-                      <div class="d-flex">
-                        <div class="image-container" id="profilepicform">
-                          <img src="<%= data.photoloc %>" id="user-profile-image" style="width: 150px; height: 150px"
-                            class="img-thumbnail allSidesSoft">
-                          <div class="middle">
-                            <div class="upload-btn-wrapper">
-                              <form method="post" action="/userTable/uploadphoto" id="profilepicform1"
-                                enctype="multipart/form-data">
-                                <button id="uploadfiletodatabase" class="btn">Upload a file</button>
-                                <input type="file" id="up" name="file" />
-                              </form>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <br>
-                      <div class="panel-group">
-                        <div class="panel panel-default editUserPanel">
-                          <div class="panel-heading">Basic Info</div>
-                          <div class="panel-body">
-                            <div class="form-group marginbox">
-                              <label>Email :</label>
-                              <input type="text" value="<%= data.email %>" class="form-control" name="username"
-                                id="email" disabled="true">
-                            </div>
-                            <div class="form-group marginbox">
-                              <label>Name :</label>
-                              <input type="text" class="form-control" name="fullname" autocomplete="off" required=""
-                                placeholder="Name" id="name" value="<%= data.name %>">
-                            </div>
-                            <div class="form-group col-sm-5" style="display: inline-block;">
-                              <label>DOB :</label>
-                              <input class="form-control dobDate" name="dob" placeholder="MM/DD/YYYY" id="DOB"
-                                type="date" autocomplete="off" required="" value="<%= data.DOB %>">
-                            </div>
-                            <div class="form-group col-sm-5" style="display: inline-block;">
-                              <label>Gender :</label>
-                              <select name="gender" id="gender" class="form-control" style="height:34px;">
-                                <optgroup label="Select Gender">
-                                  <option value="Male" id="male">Male</option>
-                                  <option value="Female" id="female">Female</option>
-                                  <option value="Transgender" id="Transgender">Transgender</option>
-                                </optgroup>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="panel panel-default editUserPanel">
-                          <div class="panel-heading">Contact Info</div>
-                          <div class="panel-body">
-                            <div class="form-group marginbox">
-                              <label>Phone :</label>
-                              <input type="text" value="<%= data.phoneno %>" class="form-control" name="phone"
-                                maxlength="10" required="" id="phoneno">
-                            </div>
-                            <div class="form-group marginbox">
-                              <label>City :</label>
-                              <input type="text" class="form-control" name="city" required="" id="city"
-                                value="<%= data.city %>">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="panel panel-default editUserPanel">
-                          <div class="panel-heading">Personal Info</div>
-                          <div class="panel-body">
-                            <div class="form-group">
-                              <label>Interests :</label>
-                              <div class="tag-conatiner-custom-div">
-                                <input class="select2-search__field" type="search" tabindex="0" autocomplete="off"
-                                  autocorrect="off" autocapitalize="off" spellcheck="false" role="textbox"
-                                  aria-autocomplete="list" placeholder="Enter interests..." style="width: 100%;"
-                                  id="interests" value="<%= userdata.interests %>">
+                      <form action="/userTable/updateprofile" method="POST" enctype="multipart/form-data">
+                        <div class="d-flex">
+                          <div class="image-container" id="profilepicform">
+                            <img src="<%= data.photoloc %>" id="user-profile-image" style="width: 150px; height: 150px"
+                              class="img-thumbnail allSidesSoft">
+                            <div class="middle">
+                              <div class="upload-btn-wrapper">
+
+                                <button class="btn">Upload a file</button>
+                                <input type="file" class="userfile" id="userfile" name="userfile">
+
                               </div>
-                            </div>
-                            <div class="form-group">
-                              <label>Tell us a bit more about your journey:</label>
-                              <textarea type="text" class="form-control" name="aboutjourney"
-                                id="aboutyou"><%= userdata.aboutyou %></textarea>
-                            </div>
-                            <div class="form-group">
-                              <label>What are your expectations from the communities?</label>
-                              <textarea type="text" class="form-control" name="comExpectations"
-                                id="expectations"><%= userdata.expectations %></textarea>
                             </div>
                           </div>
                         </div>
                         <br>
-                        <div class="form-group">
-                          <% if(data.isActive == "true"){ %>
-                          <a href="/changePassPage" class="btn btn-warning pull-left btnEditForm">Change Password</a>
-                          <% } %>
-                          <a href="/userTable/editprofile" class="btn btn-danger pull-right btnEditForm">Cancel</a>
-                          <input type="submit" class="btn btn-primary pull-right btnEditForm" style="margin-right:5px;"
-                            id="update" value="Update">
+                        <div class="panel-group">
+                          <div class="panel panel-default editUserPanel">
+                            <div class="panel-heading">Basic Info</div>
+                            <div class="panel-body">
+                              <div class="form-group marginbox">
+                                <label>Email :</label>
+                                <input type="text" value="<%= data.email %>" class="form-control" name="username"
+                                  id="email" disabled="true">
+                              </div>
+                              <div class="form-group marginbox">
+                                <label>Name :</label>
+                                <input type="text" class="form-control" name="fullname" autocomplete="off" required=""
+                                  placeholder="Name" id="name" value="<%= data.name %>">
+                              </div>
+                              <div class="form-group col-sm-5" style="display: inline-block;">
+                                <label>DOB :</label>
+                                <input class="form-control dobDate" name="dob" placeholder="MM/DD/YYYY" id="DOB"
+                                  type="date" autocomplete="off" required="" value="<%= data.DOB %>">
+                              </div>
+                              <div class="form-group col-sm-5" style="display: inline-block;">
+                                <label>Gender :</label>
+                                <select name="gender" id="gender" class="form-control" style="height:34px;">
+                                  <optgroup label="Select Gender">
+                                    <option value="Male" id="male">Male</option>
+                                    <option value="Female" id="female">Female</option>
+                                    <option value="Transgender" id="Transgender">Transgender</option>
+                                  </optgroup>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="panel panel-default editUserPanel">
+                            <div class="panel-heading">Contact Info</div>
+                            <div class="panel-body">
+                              <div class="form-group marginbox">
+                                <label>Phone :</label>
+                                <input type="text" value="<%= data.phoneno %>" class="form-control" name="phoneno"
+                                  maxlength="10" required="" id="phoneno">
+                              </div>
+                              <div class="form-group marginbox">
+                                <label>City :</label>
+                                <input type="text" class="form-control" name="city" required="" id="city"
+                                  value="<%= data.city %>">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="panel panel-default editUserPanel">
+                            <div class="panel-heading">Personal Info</div>
+                            <div class="panel-body">
+                              <div class="form-group">
+                                <label>Interests :</label>
+                                <div class="tag-conatiner-custom-div">
+                                  <input class="select2-search__field" type="search" tabindex="0" autocomplete="off"
+                                    autocorrect="off" autocapitalize="off" spellcheck="false" role="textbox"
+                                    aria-autocomplete="list" placeholder="Enter interests..." style="width: 100%;"
+                                    id="interests" name="interests" value="<%= userdata.interests %>">
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label>Tell us a bit more about your journey:</label>
+                                <textarea type="text" class="form-control" name="aboutyou"
+                                  id="aboutyou"><%= userdata.aboutyou %></textarea>
+                              </div>
+                              <div class="form-group">
+                                <label>What are your expectations from the communities?</label>
+                                <textarea type="text" class="form-control" name="expectations"
+                                  id="expectations"><%= userdata.expectations %></textarea>
+                              </div>
+                            </div>
+                          </div>
+                          <br>
+                          <div class="form-group">
+                            <% if(data.isActive == "true"){ %>
+                            <a href="/changePassPage" class="btn btn-warning pull-left btnEditForm">Change Password</a>
+                            <% } %>
+                            <a href="/userTable/editprofile" class="btn btn-danger pull-right btnEditForm">Cancel</a>
+                            <input type="submit" class="btn btn-primary pull-right btnEditForm"
+                              style="margin-right:5px;" id="update" value="Update">
+                          </div>
                         </div>
-                      </div>
+                      </form>
                     </div>
                   </div>
                 </div>

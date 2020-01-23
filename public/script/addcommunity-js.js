@@ -60,7 +60,7 @@ function createCommunity() {
   xml.addEventListener("load", function () {
     var res = xml.responseText;
     if (res == "true") {
-      document.getElementById("communityform").submit();
+      // document.getElementById("communityform").submit();
       alert("Community Created");
 
       window.location = "/communityPage"

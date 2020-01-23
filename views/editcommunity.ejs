@@ -135,36 +135,37 @@
 							<div class="col-12">
 								<div class="card allSidesSoft">
 									<div class="card-body">
-										<div class="d-flex">
-											<div class="image-container" id="profilepicform">
-												<img src="<%= data2.photoloc %>" id="user-profile-image"
-													style="width: 150px; height: 150px"
-													class="img-thumbnail allSidesSoft">
-												<div class="middle">
-													<div class="upload-btn-wrapper">
-														<form method="post"
-															action="/communityTable/uploadphotoCommunity"
-															id="profilepicform1" enctype="multipart/form-data">
-															<button id="uploadfiletodatabase" class="btn">Upload a
+										<form method="post" action="/communityTable/updatecomm"
+											enctype="multipart/form-data">
+											<input type="hidden" id="communityfile" name="_id"
+												value="<%= data2._id %>" />
+											<div class="d-flex">
+												<div class="image-container" id="profilepicform">
+													<img src="<%= data2.photoloc %>" id="user-profile-image"
+														style="width: 150px; height: 150px"
+														class="img-thumbnail allSidesSoft">
+													<div class="middle">
+														<div class="upload-btn-wrapper">
+															<form method="post" <button id="uploadfiletodatabase"
+																class="btn">Upload a
 																file</button>
-															<input type="file" id="up" name="file" />
-														</form>
+																<input type="file" id="communityfile"
+																	name="communityfile" />
+														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-										<br>
-										<form class="communitypicform" method="post" action="/#">
+											<br>
 											<div class="panel-group">
 												<div class="form-group">
 													<label>Community Name :</label>
 													<input type="text" value="<%= data2.name %>" class="form-control"
-														name="communityName" maxlength="70" required="" id="commname">
+														name="name" maxlength="70" required="" id="commname">
 												</div>
 												<div class="form-group">
 													<label>Community Rule:</label>
-													<select class="form-control" name="communityMembershipRule"
-														style="height:auto" id="rule">
+													<select class="form-control" name="rule" style="height:auto"
+														id="rule">
 														<option value="Permission">Permission</option>
 														<option value="Direct" selected="">Direct</option>
 													</select>
@@ -172,14 +173,14 @@
 												<div class="form-group">
 													<label>Community Description:</label>
 													<textarea type="text" class="form-control trumbowyg-textarea"
-														rows="15" name="communityDescription" id="description"
-														required="" tabindex="-1"
+														rows="15" name="description" id="description" required=""
+														tabindex="-1"
 														style="height: 260px;"><%= data2.description %></textarea>
 												</div>
 											</div>
 											<div class="form-group">
 												<input type="submit" class="btn btn-primary pull-right btnEditForm"
-													style="margin:1px" value="Update" id="updatebtn">
+													style="margin:1px" value="Update" id="">
 											</div>
 										</form>
 									</div>
@@ -191,7 +192,7 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
 		function strip_html_tags(str) {
 			if ((str === null) || (str === ''))
 				return false;
@@ -227,7 +228,7 @@
 			})
 			xml.send(JSON.stringify(obj));
 		})
-	</script>
+	</script> -->
 </body>
 
 </html>

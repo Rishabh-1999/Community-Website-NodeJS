@@ -5,6 +5,13 @@ const app = express.Router();
 const multer = require("multer");
 const passport = require("passport");
 const GitHubStrategy = require("passport-github").Strategy;
+var cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECERT
+});
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -38,9 +45,9 @@ passport.deserializeUser(function (user, done) {
 
 passport.use(
   new GitHubStrategy({
-      clientID: "8ede64fb43d1cbae067d",
-      clientSecret: "03f3b259e25e48efe13fdb8ca7701daa219f8e3e",
-      callbackURL: "http://127.0.0.1:3000/userTable/auth/github/callback"
+      clientID: process.env.GITHUB_CLIENTID,
+      clientSecret: process.env.GITHUB_CLIENTSECERT,
+      callbackURL: process.env.GITHUB_CALLBACKURL
     },
     function (accessToken, refreshToken, profile, cb) {
       return cb(null, profile);
@@ -143,7 +150,8 @@ app.post(
   "/addUserToDataBase",
   middleware.checkSession,
   middleware.checkSuperAdmin,
-  controllers.user.addUserToDataBase);
+  controllers.user.addUserToDataBase
+);
 
 app.post(
   "/updatetodatabase",
@@ -174,11 +182,83 @@ app.post(
 );
 
 //Update Profile of Users
-app.post(
-  "/updateprofile",
-  middleware.checkSession,
-  controllers.user.updateprofile
-);
+app.post("/updateprofile", middleware.checkSession, function (req, res) {
+  console.log(req.body)
+  console.log(req.files.userfile)
+  if (req.files.userfile.size != 0) {
+    console.log("file exists")
+    const file = req.files.userfile;
+    var reqpath = "community/" + "user" + "/" + req.session._id;
+    cloudinary.uploader.upload(
+      file.tempFilePath, {
+        public_id: reqpath,
+        overwrite: true
+      },
+      function (err, result) {
+        if (err) console.log(err);
+        else {
+          UsersNames.updateOne({
+              _id: req.session._id
+            }, {
+              $set: {
+                status: "Confirmed",
+                isActive: "true",
+                photoloc: result.url,
+                name: req.body.fullname,
+                DOB: req.body.dob,
+                city: req.body.city,
+                gender: req.body.gender,
+                phoneno: req.body.phoneno,
+                interests: req.body.interests,
+                aboutyou: req.body.aboutyou,
+                expectations: req.body.expectations
+              }
+            },
+            function (error, result) {
+              if (error) throw error;
+              else req.session.data.isActive = "true";
+              req.session.data.photoloc = result.url;
+              console.log("Updated from /updateprofile");
+              res.writeHead(200, {
+                "Content-Type": "text/html"
+              });
+              res.write('<script>window.location= "/home"</script>');
+              res.end();
+            }
+          );
+        }
+      }
+    );
+  } else {
+    UsersNames.updateOne({
+        _id: req.session._id
+      }, {
+        $set: {
+          status: "Confirmed",
+          isActive: "true",
+          name: req.body.fullname,
+          DOB: req.body.dob,
+          city: req.body.city,
+          gender: req.body.gender,
+          phoneno: req.body.phoneno,
+          interests: req.body.interests,
+          aboutyou: req.body.aboutyou,
+          expectations: req.body.expectations
+        }
+      },
+      function (error, result) {
+        if (error) throw error;
+        else req.session.data.isActive = "true";
+        console.log("Updated from /updateprofile");
+        res.writeHead(200, {
+          "Content-Type": "text/html"
+        });
+        res.write('<script>window.location= "/home"</script>');
+        res.end();
+      }
+    );
+  }
+});
 
 app.post(
   "/changePassword",
@@ -200,39 +280,39 @@ app.post(
   controllers.user.usersTable
 );
 
-var storage = multer.diskStorage({
-  destination: "./public/uploads/",
-  filename: function (req, file, callback) {
-    photoname = req.session._id + path.extname(file.originalname);
-    req.session.data.photoloc = "/uploads/" + photoname;
-    callback(null, photoname);
-  }
-});
-var upload = multer({
-  storage: storage
-}).single("file");
+// var storage = multer.diskStorage({
+//   destination: "./public/uploads/",
+//   filename: function (req, file, callback) {
+//     photoname = req.session._id + path.extname(file.originalname);
+//     req.session.data.photoloc = "/uploads/" + photoname;
+//     callback(null, photoname);
+//   }
+// });
+// var upload = multer({
+//   storage: storage
+// }).single("file");
 
-app.post("/uploadphoto", middleware.checkSession, (req, res) => {
-  upload(req, res, err => {
-    if (err) {
-      throw err;
-    } else {
-      UsersNames.updateOne({
-          _id: req.session._id
-        }, {
-          $set: {
-            photoloc: "/uploads/" + photoname
-          }
-        },
-        function (error, result) {
-          console.log("photo updated to database" + result);
-          req.session.data.photoloc = "uploads/" + photoname;
-          res.redirect("/homewithedit");
-        }
-      );
-    }
-  });
-});
+// app.post("/uploadphoto", middleware.checkSession, controllers.cloudinary.uploadphoto);
+// upload(req, res, err => {
+//   if (err) {
+//     throw err;
+//   } else {
+//     UsersNames.updateOne({
+//         _id: req.session._id
+//       }, {
+//         $set: {
+//           photoloc: "/uploads/" + photoname
+//         }
+//       },
+//       function (error, result) {
+//         console.log("photo updated to database" + result);
+//         req.session.data.photoloc = "uploads/" + photoname;
+//         res.redirect("/homewithedit");
+//       }
+//     );
+//   }
+// });
+// });
 
 app.get("/editprofile", middleware.checkSession, controllers.user.editprofile);
 

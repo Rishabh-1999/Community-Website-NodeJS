@@ -1,11 +1,21 @@
 var mongoose = require('mongoose');
 
 var repliesSchema = new mongoose.Schema({
-    reply: String,
-    commentId: String,
-    repliedBy: String,
-    ownerId: String,
-    discussionId: String
+    reply: {
+        type: String,
+    },
+    commentId: {
+        type: String,
+    },
+    repliedBy: {
+        type: String,
+    },
+    ownerId: {
+        type: String,
+    },
+    discussionId: {
+        type: String,
+    }
 })
 
 var relpies = mongoose.model('replies', repliesSchema);

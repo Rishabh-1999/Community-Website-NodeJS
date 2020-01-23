@@ -3,6 +3,13 @@ const path = require('path');
 const bodyParser = require('body-parser')
 const app = express.Router();
 const multer = require('multer');
+var cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECERT
+});
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
@@ -113,17 +120,17 @@ app.post('/addCommunity', middleware.checkSession, middleware.checkSuperAdminOrC
     })
 })
 
-var storagecomm = multer.diskStorage({
-  destination: './public/uploads/',
-  filename: function (req, file, callback) {
-    tempcomm = 'community' + tempid + path.extname(file.originalname);
-    callback(null, tempcomm);
-  }
-})
+// var storagecomm = multer.diskStorage({
+//   destination: './public/uploads/',
+//   filename: function (req, file, callback) {
+//     tempcomm = 'community' + tempid + path.extname(file.originalname);
+//     callback(null, tempcomm);
+//   }
+// })
 
-var uploadcomm = multer({
-  storage: storagecomm,
-}).single('file');
+// var uploadcomm = multer({
+//   storage: storagecomm,
+// }).single('file');
 
 app.post('/uploadphotoCommunity', middleware.checkSession, middleware.checkSuperAdminOrCommunityManagers, (req, res) => {
   uploadcomm(req, res, (err) => {
@@ -157,28 +164,76 @@ app.post('/uploadphotoCommunity', middleware.checkSession, middleware.checkSuper
 app.post('/getAllActive', middleware.checkSession, controllers.community.getAllActive);
 
 app.post('/updatecomm', middleware.checkSession, function (req, res) {
-  tempid = req.body._id;
-  communitys.findOneAndUpdate({
-    "_id": req.body._id
-  }, {
-    "name": req.body.name,
-    "description": req.body.description,
-    "rule": req.body.rule
-  }, function (err, result) {
-    if (err)
-      throw err
-    else {
-      communitys.findOne({
-        "_id": req.body._id
-      }, function (err, result) {
-        if (err)
-          throw err;
+  console.log(req.files.communityfile)
+  console.log(req.body)
+  if (req.files.size != 0) {
+    const file = req.files.communityfile;
+    var reqpath = "community/" + "community" + "/" + req.session._id;
+    cloudinary.uploader.upload(
+      file.tempFilePath, {
+        public_id: reqpath,
+        overwrite: true
+      },
+      function (err, result) {
+        if (err) console.log(err);
         else {
-          res.send("true")
+          communitys.findOneAndUpdate({
+            "_id": req.body._id
+          }, {
+            "name": req.body.name,
+            "description": req.body.description,
+            "rule": req.body.rule,
+            "photoloc": result.url
+          }, function (err, result) {
+            if (err)
+              throw err
+            else {
+              communitys.findOne({
+                "_id": req.body._id
+              }, function (err, result) {
+                if (err)
+                  throw err;
+                else {
+                  res.writeHead(200, {
+                    "Content-Type": "text/html"
+                  });
+                  res.write('<script>window.location= "/communityPage"</script>');
+                  res.end();
+                }
+              })
+            }
+          });
         }
-      })
-    }
-  });
+      }
+    );
+  } else {
+    communitys.findOneAndUpdate({
+      "_id": req.body._id
+    }, {
+      "name": req.body.name,
+      "description": req.body.description,
+      "rule": req.body.rule
+    }, function (err, result) {
+      if (err)
+        throw err
+      else {
+        communitys.findOne({
+          "_id": req.body._id
+        }, function (err, result) {
+          if (err)
+            throw err;
+          else {
+            res.writeHead(200, {
+              "Content-Type": "text/html"
+            });
+            res.write('<script>window.location= "/communityPage"</script>');
+            res.end();
+          }
+        })
+      }
+    });
+  }
+
 })
 
 app.get('/:pro', middleware.checkSession, controllers.community._id);

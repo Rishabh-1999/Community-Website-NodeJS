@@ -3,15 +3,15 @@ var tag = new mongoose.Schema({
   tagname: {
     type: String,
     unique: true,
-    required:true
+    required: true
   },
   createdby: {
     type: String,
-    required:true
+    required: true
   },
   createddate: {
     type: String,
-    required:true
+    required: true
   },
   deleted: {
     type: String,
