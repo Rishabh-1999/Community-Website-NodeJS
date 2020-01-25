@@ -167,6 +167,7 @@ module.exports.changePassword = async function (req, res, next) {
                                 );
                             });
                         }
+                        else
                         res.send("false");
                     });
                 }
