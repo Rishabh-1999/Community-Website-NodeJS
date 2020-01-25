@@ -7,6 +7,17 @@ npm start or node app.js
 ```
 It will run under the url http://127.0.0.1:3000/
 
+Email and Password for Online Website:<br>
+User:<br>
+Email Id: user@gmail.com<br>
+Password: user<br>
+
+Admin   :<br>
+Email    :batman@gmail.com<br>
+Password: batman<br>
+Email    :ironman@gmail.com<br>
+Password: ironman<br>
+
 Features
 --------
 - Dynamic Data by mongoose database
