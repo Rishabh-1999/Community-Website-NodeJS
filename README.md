@@ -1,6 +1,6 @@
 # Community-Website-Web-Project
 
-It is a Website developed under UCA class for our Web Project.
+Website in which community can interact with each other.It is a Website developed under UCA class for our Web Project.
 To run this website run this command on command prompt on root folder.
 ```
 npm start or node app.js
