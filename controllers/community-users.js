@@ -17,7 +17,7 @@ module.exports.inviteusersbyname = async function (req, res, next) {
                 throw err;
             else {
                 res.render('inviteusers', {
-                    data: req.session.data,
+                    data: req.session.passport.user,
                     data2: result
                 });
             }

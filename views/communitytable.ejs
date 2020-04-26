@@ -25,10 +25,11 @@
 </head>
 
 <body>
-  <%- include ('paritials/topbar.ejs') %>
-  <% if(data.isActive == "true"){ %>
-  <%- include ('paritials/sidebar.ejs') %>
-  <% } %>
+<% include partials/topbar.ejs %>
+
+<% if(data.isActive == "true"){ %>
+<% include partials/sidebar.ejs %>
+<% } %>
 
   <!-- Edit Modal -->
   <div class="modal fade" id="updateCommunity" role="dialog" style="z-index: 9999; display: none;">

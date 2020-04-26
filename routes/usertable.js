@@ -35,108 +35,6 @@ var middleware = require("../middlewares/middleware");
 // Controllers
 var controllers = require("../controllers");
 
-passport.serializeUser(function (user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function (user, done) {
-  done(null, user);
-});
-
-passport.use(
-  new GitHubStrategy({
-      clientID: process.env.GITHUB_CLIENTID,
-      clientSecret: process.env.GITHUB_CLIENTSECERT,
-      callbackURL: process.env.GITHUB_CALLBACKURL
-    },
-    function (accessToken, refreshToken, profile, cb) {
-      return cb(null, profile);
-    }
-  )
-);
-
-app.get("/auth/github", passport.authenticate("github"));
-
-app.get(
-  "/auth/github/callback",
-  passport.authenticate("github", {
-    failureRedirect: "index.html"
-  }),
-  function (req, res) {
-    UsersNames.findOne({
-        githubid: req.session.passport.user._json.id
-      },
-      function (err, result) {
-        console.log("githubsignin succesfull");
-        if (result != null) {
-          req.session.isLogin = 1;
-          req.session._id = result._id;
-          req.session.name = result.name;
-          req.session.password = req.body.password;
-          var ob = new Object();
-          ob.name = result.name;
-          ob._id = result._id;
-          ob.email = result.email;
-          ob.photoloc = result.photoloc;
-          ob.gender = result.gender;
-          ob.city = result.city;
-          ob.DOB = result.DOB;
-          ob.phoneno = result.phoneno;
-          ob.role = result.role;
-          ob.status = result.status;
-          ob.restrict = result.restrict;
-          ob.isActive = result.isActive;
-          ob.githubid = result.githubid;
-          ob.temprole = result.role;
-          req.session.name = result.name;
-          req.session.data = ob;
-          res.redirect("/home");
-        } else {
-          var obj = {
-            name: req.session.passport.user._json.name,
-            email: req.session.passport.user._json.email,
-            city: req.session.passport.user._json.location,
-            status: "Pending",
-            role: "User",
-            githubid: req.session.passport.user._json.id,
-            photoloc: "/images/logo.png",
-            isActive: "true",
-            email: req.body.email,
-            gender: "",
-            DOB: "",
-            phoneno: req.body.phoneno,
-            restrict: "false",
-            interests: "",
-            boutyou: "",
-            expectations: "",
-            email: req.body.email
-          };
-          UsersNames.create(obj, function (error, result) {
-            if (error) throw error;
-            else {
-              req.session.data = obj;
-              UsersNames.find({
-                  githubid: req.session.passport.user._json.id
-                })
-                .then(data => {
-                  req.session.data._id = data[0]._id;
-                })
-                .catch(err => {
-                  throw err;
-                });
-              res.render("home", {
-                data: req.session.data
-              });
-            }
-          });
-        }
-      }
-    ).catch(err => {
-      res.send(err);
-    });
-  }
-);
-
 app.post(
   "/activatesuperadmin",
   middleware.checkSession,
@@ -144,7 +42,11 @@ app.post(
   controllers.user.activatesuperadmin
 );
 
-app.post("/checkLogin", controllers.user.checkLogin);
+app.post("/checkLogin", passport.authenticate("local", {
+  successRedirect: "/home",
+  failureRedirect: "/",
+  failureFlash: true,
+}));
 
 app.post(
   "/addUserToDataBase",
@@ -216,8 +118,8 @@ app.post("/updateprofile", middleware.checkSession, function (req, res) {
             },
             function (error, result) {
               if (error) throw error;
-              else req.session.data.isActive = "true";
-              req.session.data.photoloc = result.url;
+              else req.session.passport.user.isActive = "true";
+              req.session.passport.user.photoloc = result.url;
               console.log("Updated from /updateprofile");
               res.writeHead(200, {
                 "Content-Type": "text/html"
@@ -248,7 +150,7 @@ app.post("/updateprofile", middleware.checkSession, function (req, res) {
       },
       function (error, result) {
         if (error) throw error;
-        else req.session.data.isActive = "true";
+        else req.session.passport.user.isActive = "true";
         console.log("Updated from /updateprofile");
         res.writeHead(200, {
           "Content-Type": "text/html"
@@ -284,7 +186,7 @@ app.post(
 //   destination: "./public/uploads/",
 //   filename: function (req, file, callback) {
 //     photoname = req.session._id + path.extname(file.originalname);
-//     req.session.data.photoloc = "/uploads/" + photoname;
+//     req.session.passport.user.photoloc = "/uploads/" + photoname;
 //     callback(null, photoname);
 //   }
 // });
@@ -306,7 +208,7 @@ app.post(
 //       },
 //       function (error, result) {
 //         console.log("photo updated to database" + result);
-//         req.session.data.photoloc = "uploads/" + photoname;
+//         req.session.passport.user.photoloc = "uploads/" + photoname;
 //         res.redirect("/homewithedit");
 //       }
 //     );

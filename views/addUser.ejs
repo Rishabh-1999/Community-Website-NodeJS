@@ -18,10 +18,11 @@
 </head>
 
 <body>
-	<%- include ('paritials/topbar.ejs') %>
-	<% if(data.isActive == "true"){ %>
-	<%- include ('paritials/sidebar.ejs') %>
-	<% } %>
+	<% include partials/topbar.ejs %>
+
+<% if(data.isActive == "true"){ %>
+<% include partials/sidebar.ejs %>
+<% } %>
 
 	<div class="outer" style="padding-top: 80px;">
 		<div class="adduser-container">

@@ -25,10 +25,11 @@
 
 <body>
 
-  <%- include ('paritials/topbar.ejs') %>
-  <% if(data.isActive == "true"){ %>
-  <%- include ('paritials/sidebar.ejs') %>
-  <% } %>
+<% include partials/topbar.ejs %>
+
+<% if(data.isActive == "true"){ %>
+<% include partials/sidebar.ejs %>
+<% } %>
 
   <div class="usercontainer" style="padding-top:60px;margin-left:45px;">
     <div class="row" style="margin-right:0px">

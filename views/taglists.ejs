@@ -31,10 +31,11 @@
 </head>
 
 <body>
-  <%- include ('paritials/topbar.ejs') %>
-  <% if(data.isActive == "true"){ %>
-  <%- include ('paritials/sidebar.ejs') %>
-  <% } %>
+<% include partials/topbar.ejs %>
+
+<% if(data.isActive == "true"){ %>
+<% include partials/sidebar.ejs %>
+<% } %>
   <!-- Edit Modal-->
   <center>
     <div id="editModal" class="modal fade" role="dialog" style="z-index:9999;">

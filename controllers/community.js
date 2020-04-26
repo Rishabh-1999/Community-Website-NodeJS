@@ -260,7 +260,7 @@ module.exports.communityDicussion_id = async function (req, res, next) {
             throw err;
         else {
             res.render('discussion', {
-                data: req.session.data,
+                data: req.session.passport.user,
                 data2: result
             });
         }
@@ -276,7 +276,7 @@ module.exports.profile_id = async function (req, res, next) {
             throw err;
         else {
             res.render('communityprofile', {
-                data: req.session.data,
+                data: req.session.passport.user,
                 data2: result
             });
         }
@@ -537,7 +537,7 @@ module.exports._id = async function (req, res, next) {
             throw err;
         else {
             res.render('manageCommunity', {
-                data: req.session.data,
+                data: req.session.passport.user,
                 data2: result
             });
         }
@@ -553,7 +553,7 @@ module.exports.edit_id = async function (req, res, next) {
             throw err;
         else {
             res.render('editcommunity', {
-                data: req.session.data,
+                data: req.session.passport.user,
                 data2: result
             });
         }
@@ -569,7 +569,7 @@ module.exports.userprofile_id = async function (req, res, next) {
             throw err;
         else {
             res.render('userprofile', {
-                data: req.session.data,
+                data: req.session.passport.user,
                 data2: result
             });
         }
@@ -585,7 +585,7 @@ module.exports.communitymembers_id = async function (req, res, next) {
             throw err;
         else {
             res.render('communitymembers', {
-                data: req.session.data,
+                data: req.session.passport.user,
                 data2: result
             });
         }
@@ -601,7 +601,7 @@ module.exports.inviteusers_id = async function (req, res, next) {
             throw err;
         else {
             res.render('inviteusers', {
-                data: req.session.data,
+                data: req.session.passport.user,
                 data2: result
             });
         }

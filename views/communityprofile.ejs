@@ -40,10 +40,11 @@
 
 <body>
 
-	<%- include ('paritials/topbar.ejs') %>
-	<% if(data.isActive == "true"){ %>
-	<%- include ('paritials/sidebar.ejs') %>
-	<% } %>
+	<% include partials/topbar.ejs %>
+
+<% if(data.isActive == "true"){ %>
+<% include partials/sidebar.ejs %>
+<% } %>
 	<div id="page-content-wrapper" style="position: relative;top: 70px;">
 		<div class="container-fluid page-content-div" style="padding:0">
 			<div class="row">

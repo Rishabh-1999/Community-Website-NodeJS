@@ -151,7 +151,7 @@ app.post('/uploadphotoCommunity', middleware.checkSession, middleware.checkSuper
             throw err;
           else {
             res.render('manageCommunity', {
-              data: req.session.data,
+              data: req.session.passport.user,
               data2: result
             });
           }

@@ -1,63 +1,91 @@
 var express = require("express");
 var path = require("path");
-var app = express();
 var bodyParser = require("body-parser");
 var session = require("express-session");
 var nodemailer = require("nodemailer");
 var fileupload = require("express-fileupload");
 var mongoStore = require("connect-mongo")(session);
 var favicon = require("serve-favicon");
-
+var engine = require("ejs-mate");
 var morgan = require("morgan");
+var mongoose = require("mongoose");
+var flash = require("express-flash");
+const passport = require("passport");
+
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
+
+var app = express();
+
 var http = require("http");
 var server = http.Server(app);
 var PORT = process.env.PORT || 3000;
-require("dotenv").config();
+
+/* DB */
+require("./config/db");
 
 app.use(morgan("dev"));
 
-var http = require("http").Server(app);
+/* Socket */
 var io = require("socket.io")(http);
-
-/* Acces static files */
-app.use(express.static(path.join(__dirname, "public")));
-app.use(bodyParser.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
-);
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-app.use(favicon(path.join(__dirname, "public//images/", "favicon.ico")));
-
-app.use(
-  fileupload({
-    useTempFiles: true
-  })
-);
-
-/* DB */
-require("./static/db");
-
-/* Mongoose Connectopn */
-var mongoose = require("mongoose");
-var db = mongoose.connection;
 
 /* Session */
 app.use(
   session({
     secret: "abcUCAChitkara",
     resave: true,
-    saveUninitialized: false,
+    saveUninitialized: true,
     store: new mongoStore({
-      mongooseConnection: db
-    })
+      mongooseConnection: mongoose.connection,
+    }),
   })
 );
 
+/* Acces static files */
+app.use(favicon(path.join(__dirname, "public//images/", "favicon.ico")));
+app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+
+app.engine("ejs", engine);
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+app.use(flash());
+
+/* Passport Config */
+require("./config/passport")(passport);
+
+
+
+app.use(
+  fileupload({
+    useTempFiles: true,
+  })
+);
+
+/* Bodyparser */
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+app.use(express.json());
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
 /* Middleware */
 var middleware = require("./middlewares/middleware");
+
+/* Models Required */
+var comment = require("./models/comment");
+var reply = require("./models/reply");
 
 /* Routing Implementation */
 app.use("/tagTable", require("./routes/tagtable"));
@@ -65,36 +93,40 @@ app.use("/userTable", require("./routes/usertable"));
 app.use("/communityTable", require("./routes/community"));
 app.use("/discussion", require("./routes/discussion"));
 
-/* Models Required */
-var discussion = require("./models/discussion");
-var comment = require("./models/comment");
-var reply = require("./models/reply");
-
-/* Bodyparser */
-app.use(
-  express.urlencoded({
-    extended: true
-  })
-);
-app.use(express.json());
-
 /* Views */
 /* Login Page */
 app.get("/", middleware.isAllowed, (req, res) => {
-  res.redirect("/");
+  var err_msg = req.flash("errors")[0]
+  if (req.isAuthenticated()) {
+    req.logout();
+  }
+  res.render("login", {
+    errors: err_msg == undefined ? [] : err_msg,
+    success: req.flash("success")
+  });
 });
 
 /* Profile Page */
-app.get("/home", middleware.checkSession, (req, res) => {
-  res.render("home", {
-    data: req.session.data
-  });
+app.get("/home", (req, res) => {
+  //console.log(req.session.passport.user)
+  if (req.session.passport.user.status == "Pending")
+    res.render("editprofile", {
+      data: req.session.passport.user,
+      title: req.session.passport.user.name,
+
+    });
+  else
+    res.render("home", {
+      data: req.session.passport.user,
+      title: req.session.passport.user.name,
+    });
 });
 
 /* Profile Page with Edit option */
 app.get("/homewithedit", middleware.checkSession, (req, res) => {
   res.render("homewithedit", {
-    data: req.session.data
+    data: req.session.passport.user,
+    title: req.session.name,
   });
 });
 
@@ -105,7 +137,8 @@ app.get(
   middleware.checkSuperAdmin,
   (req, res) => {
     res.render("addUser", {
-      data: req.session.data
+      data: req.session.passport.user,
+      title: req.session.name,
     });
   }
 );
@@ -117,7 +150,8 @@ app.get(
   middleware.checkSuperAdmin,
   (req, res) => {
     res.render("usertable", {
-      data: req.session.data
+      data: req.session.passport.user,
+      title: req.session.name,
     });
   }
 );
@@ -125,21 +159,24 @@ app.get(
 /* Tag Creation Page */
 app.get("/tagpage", middleware.checkSession, (req, res) => {
   res.render("tagpage", {
-    data: req.session.data
+    data: req.session.passport.user,
+    title: req.session.name,
   });
 });
 
 /* Tag Table Page */
 app.get("/taglists", middleware.checkSession, (req, res) => {
   res.render("taglists", {
-    data: req.session.data
+    data: req.session.passport.user,
+    title: req.session.name,
   });
 });
 
 /* Add Community Page */
 app.get("/invitedbycommunity", middleware.checkSession, (req, res) => {
   res.render("invitedbycommunity", {
-    data: req.session.data
+    data: req.session.passport.user,
+    title: req.session.name,
   });
 });
 
@@ -150,7 +187,8 @@ app.get(
   middleware.checkSuperAdminOrCommunityManagers,
   (req, res) => {
     res.render("addCommunity", {
-      data: req.session.data
+      data: req.session.passport.user,
+      title: req.session.name,
     });
   }
 );
@@ -162,7 +200,8 @@ app.get(
   middleware.checkSuperAdmin,
   (req, res) => {
     res.render("communitytable", {
-      data: req.session.data
+      data: req.session.passport.user,
+      title: req.session.name,
     });
   }
 );
@@ -170,28 +209,32 @@ app.get(
 /* Edit Community Page */
 app.get("/editcommunity", middleware.checkSession, (req, res) => {
   res.render("editcommunity", {
-    data: req.session.data
+    data: req.session.passport.user,
+    title: req.session.name,
   });
 });
 
 /* All Community Page */
 app.get("/communityalllists", middleware.checkSession, (req, res) => {
   res.render("communityalllists", {
-    data: req.session.data
+    data: req.session.passport.user,
+    title: req.session.name,
   });
 });
 
 /* Community Page */
 app.get("/communityPage", middleware.checkSession, (req, res) => {
   res.render("communitylists", {
-    data: req.session.data
+    data: req.session.passport.user,
+    title: req.session.name,
   });
 });
 
 /* Change Password Page */
 app.get("/changePassPage", middleware.checkSession, (req, res) => {
   res.render("changepassword", {
-    data: req.session.data
+    data: req.session.passport.user,
+    title: req.session.name,
   });
 });
 
@@ -199,12 +242,12 @@ app.get("/changePassPage", middleware.checkSession, (req, res) => {
 let transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "rishabhanand33@gmail.com",
-    pass: process.env.password
+    user: process.env.NODEMAILER_EMAIL,
+    pass: process.env.NODEMAILER_PASSWORD,
   },
   tls: {
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,
+  },
 });
 
 /* POST function for mail send */

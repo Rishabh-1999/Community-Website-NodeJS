@@ -27,10 +27,11 @@
 
 <body>
 
-  <%- include ('paritials/topbar.ejs') %>
-  <% if(data.isActive == "true"){ %>
-  <%- include ('paritials/sidebar.ejs') %>
-  <% } %>
+<% include partials/topbar.ejs %>
+
+<% if(data.isActive == "true"){ %>
+<% include partials/sidebar.ejs %>
+<% } %>
 
   <style>
     .communitymembers-head-btn {

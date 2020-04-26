@@ -48,7 +48,7 @@ module.exports.discussionOwner_id = async function (req, res, next) {
             if (err) throw err;
             else
                 res.render("discussionOwnerInfo", {
-                    data: req.session.data,
+                    data: req.session.passport.user,
                     newdata: data
                 });
         }

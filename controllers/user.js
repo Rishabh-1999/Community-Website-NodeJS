@@ -46,7 +46,8 @@ module.exports.checkLogin = async function (req, res, next) {
                         ob.githubid = result.githubid;
                         ob.temprole = result.role;
                         req.session.name = result.name;
-                        req.session.data = ob;
+                        req.session.passport.user = ob;
+
                         if (result.status == "Pending") res.send("not");
                         else res.send("Logined");
                     } else res.send("wrong details");
@@ -124,11 +125,11 @@ module.exports.deactivateUser = async function (req, res, next) {
 };
 
 module.exports.changetemprole = async function (req, res, next) {
-    if (req.session.data.temprole == "SuperAdmin") {
-        req.session.data.temprole = "User";
+    if (req.session.passport.user.temprole == "SuperAdmin") {
+        req.session.passport.user.temprole = "User";
         res.send("changed");
     } else {
-        req.session.data.temprole = "SuperAdmin";
+        req.session.passport.user.temprole = "SuperAdmin";
         res.send("changed");
     }
 };
@@ -166,9 +167,8 @@ module.exports.changePassword = async function (req, res, next) {
                                     }
                                 );
                             });
-                        }
-                        else
-                        res.send("false");
+                        } else
+                            res.send("false");
                     });
                 }
             }
@@ -318,7 +318,7 @@ module.exports.editprofile = async function (req, res, next) {
             userdata.aboutyou = result.aboutyou;
             userdata.expectations = result.expectations;
             res.render("editprofile", {
-                data: req.session.data,
+                data: req.session.passport.user,
                 userdata: userdata
             });
         }
@@ -358,5 +358,5 @@ module.exports.addUserToDataBase = async function (req, res, next) {
 
 module.exports.activatesuperadmin = async function (req, res, next) {
     console.log("Activated issuperadmin /activatesuperadmin");
-    req.session.data.issuperadmin = "true";
+    req.session.passport.user.issuperadmin = "true";
 }
