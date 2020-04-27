@@ -20,6 +20,18 @@
             </div>
             <% } %>
         </div>
+        <% if (errors.length > 0) { %>
+        <br>
+        <div class="alert alert-danger text-center ml-5 mr-5">
+            <%= errors %>
+        </div>
+        <% } %>
+        <% if (success.length > 0) { %>
+        <br>
+        <div class="alert alert-success text-center ml-5 mr-5">
+            <%= success %>
+        </div>
+        <% } %>
         <div class=" d-flex home-con">
             <div class="col-home-div shadow">
                 <div class="panel-home-heading">Email</div>

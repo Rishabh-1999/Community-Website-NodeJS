@@ -85,49 +85,85 @@ app.post(
 
 //Update Profile of Users
 app.post("/updateprofile", middleware.checkSession, function (req, res) {
-  console.log(req.body)
-  console.log(req.files.userfile)
+
+  var updateObj = new Object();
+
+  updateObj["status"] = "Confirmed"
+  updateObj["isActive"] = "true";
+
+  if (req.body.name) {
+    updateObj["name"] = req.body.name
+  }
+
+  if (req.body.dob) {
+    updateObj["DOB"] = req.body.dob
+  }
+
+  if (req.body.city) {
+    updateObj["city"] = req.body.city
+  }
+
+  if (req.body.gender) {
+    updateObj["gender"] = req.body.gender
+  }
+
+  if (req.body.phoneno) {
+    updateObj["phoneno"] = req.body.phoneno
+  }
+
+  if (req.body.interests) {
+    updateObj["interests"] = req.body.interests
+  }
+
+  if (req.body.aboutyou) {
+    updateObj["aboutyou"] = req.body.aboutyou
+  }
+
+  if (req.body.expectations) {
+    updateObj["expectations"] = req.body.expectations;
+  }
+
+  if (req.body.name) {
+    updateObj["name"] = req.body.name
+  }
+
+  console.log(updateObj)
+
   if (req.files.userfile.size != 0) {
-    console.log("file exists")
+
     const file = req.files.userfile;
     var reqpath = "community/" + "user" + "/" + req.session.passport.user._id;
+
     cloudinary.uploader.upload(
       file.tempFilePath, {
         public_id: reqpath,
         overwrite: true
       },
       function (err, result) {
-        if (err) console.log(err);
-        else {
+        if (err) {
+          throw err;
+        } else {
+          updateObj["photoloc"] = result.url;
           UsersNames.updateOne({
-              _id: req.session.passport.user._id
-            }, {
-              $set: {
-                status: "Confirmed",
-                isActive: "true",
-                photoloc: result.url,
-                name: req.body.fullname,
-                DOB: req.body.dob,
-                city: req.body.city,
-                gender: req.body.gender,
-                phoneno: req.body.phoneno,
-                interests: req.body.interests,
-                aboutyou: req.body.aboutyou,
-                expectations: req.body.expectations
-              }
-            },
-            function (error, result) {
-              if (error) throw error;
-              else req.session.passport.user.isActive = "true";
-              req.session.passport.user.photoloc = result.url;
-              console.log("Updated from /updateprofile");
-              res.writeHead(200, {
-                "Content-Type": "text/html"
-              });
-              res.write('<script>window.location= "/home"</script>');
-              res.end();
+            _id: req.session.passport.user._id
+          }, {
+            $set: updateObj
+          }, function (error, result) {
+            if (error) {
+              throw error;
             }
-          );
+            req.session.passport.user.isActive = "true";
+            req.session.passport.user.photoloc = result.url;
+
+            req.flash('success', 'Profile Updated');
+            res.render("home", {
+              data: req.session.passport.user,
+              editoption: true,
+              title: req.session.passport.user.name,
+              success: req.flash("success"),
+              errors: req.flash("errors")
+            });
+          });
         }
       }
     );
@@ -135,28 +171,21 @@ app.post("/updateprofile", middleware.checkSession, function (req, res) {
     UsersNames.updateOne({
         _id: req.session.passport.user._id
       }, {
-        $set: {
-          status: "Confirmed",
-          isActive: "true",
-          name: req.body.fullname,
-          DOB: req.body.dob,
-          city: req.body.city,
-          gender: req.body.gender,
-          phoneno: req.body.phoneno,
-          interests: req.body.interests,
-          aboutyou: req.body.aboutyou,
-          expectations: req.body.expectations
-        }
+        $set: updateObj
       },
       function (error, result) {
-        if (error) throw error;
-        else req.session.passport.user.isActive = "true";
-        console.log("Updated from /updateprofile");
-        res.writeHead(200, {
-          "Content-Type": "text/html"
+        if (error)
+          throw error;
+        req.session.passport.user.isActive = "true";
+
+        req.flash('success', 'Profile Updated');
+        res.render("home", {
+          data: req.session.passport.user,
+          editoption: true,
+          title: req.session.passport.user.name,
+          success: req.flash("success"),
+          errors: req.flash("errors")
         });
-        res.write('<script>window.location= "/home"</script>');
-        res.end();
       }
     );
   }

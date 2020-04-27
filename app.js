@@ -95,7 +95,7 @@ app.use("/discussion", require("./routes/discussion"));
 
 /* Views */
 /* Login Page */
-app.get("/", middleware.isAllowed, (req, res) => {
+app.get("/", (req, res) => {
   var err_msg = req.flash("errors")[0]
   if (req.isAuthenticated()) {
     req.logout();
@@ -120,6 +120,8 @@ app.get("/home", (req, res) => {
       data: req.session.passport.user,
       editoption: false,
       title: req.session.passport.user.name,
+      success: req.flash("success"),
+      errors: req.flash("errors")
     });
 });
 
@@ -129,6 +131,8 @@ app.get("/home/edit", middleware.checkSession, (req, res) => {
     data: req.session.passport.user,
     editoption: true,
     title: req.session.passport.user.name,
+    success: req.flash("success"),
+    errors: req.flash("errors")
   });
 });
 
