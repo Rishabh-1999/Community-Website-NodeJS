@@ -40,11 +40,11 @@
 
 <body>
 
-	<% include partials/topbar.ejs %>
+	<% include partials/navbar.ejs %>
 
-<% if(data.isActive == "true"){ %>
-<% include partials/sidebar.ejs %>
-<% } %>
+	<% if(data.isActive == "true"){ %>
+	<% include partials/sidebar.ejs %>
+	<% } %>
 	<div id="page-content-wrapper" style="position: relative;top: 70px;">
 		<div class="container-fluid page-content-div" style="padding:0">
 			<div class="row">
@@ -130,7 +130,7 @@
 											</div>
 										</div>
 										<div class="panel-footer community-panel-sideBtn-link">
-											<a href="#" style="" id="mem">
+											<a href="#" id="mem">
 												No Members
 											</a>
 											<a href="#" style="float:right" id="leavecommunitytxt"

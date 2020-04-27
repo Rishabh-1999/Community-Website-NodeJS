@@ -1,203 +1,131 @@
-<!DOCTYPE html>
-<html>
+<% layout('layout/layout') %>
 
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CQ - <%= data.name %></title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css">
+<link rel="stylesheet" type="text/css" href="/css/editprofile.css">
 
-  <link rel="stylesheet" type="text/css" href="/css/navBar.css">
-  <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
-  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+<script type="text/javascript" src="/script/select2.js"></script>
 
-  <link rel="stylesheet" type="text/css" href="/css/editprofile.css">
-
-  <script src="/script/jquery-3.2.1.min.js">
-    >
-  </script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-  <script type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-  <script type="text/javascript" src="/script/select2.js"></script>
-  <style>
-    .panel-body {
-      padding: 15px;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .form-control {
-      display: block;
-      width: 100%;
-      height: 34px;
-      padding: 6px 12px;
-      font-size: 14px;
-      line-height: 1.42857143;
-      color: #555;
-      background-color: #fff;
-      background-image: none;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-      -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-      -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-      transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    }
-  </style>
-</head>
-
-<body>
-<% include partials/topbar.ejs %>
+<% include partials/navbar.ejs %>
 
 <% if(data.isActive == "true"){ %>
 <% include partials/sidebar.ejs %>
 <% } %>
 
-  <div id="page-content-wrapper" style="position: relative;top: 70px;">
-    <div class="container-fluid page-content-div" style="padding:0">
-      <div class="row">
-        <div class="col-lg-12 scoll-possible" style="padding:0">
-          <div class="col-lg-12 scoll-possible">
-            <div class="container">
-              <div style="margin-top:30px;">
-                <div class="col-12">
-                  <div class="card allSidesSoft">
-                    <div class="card-body">
-                      <form action="/userTable/updateprofile" method="POST" enctype="multipart/form-data">
-                        <div class="d-flex">
-                          <div class="image-container" id="profilepicform">
-                            <img src="<%= data.photoloc %>" id="user-profile-image" style="width: 150px; height: 150px"
-                              class="img-thumbnail allSidesSoft">
-                            <div class="middle">
-                              <div class="upload-btn-wrapper">
+<div class="container" style="padding-top: 90px;">
+  <div class="card scoll-possible allSidesSoft">
+    <div class="card-body m-3">
+      <form action="/userTable/updateprofile" method="POST" enctype="multipart/form-data">
 
-                                <button class="btn">Upload a file</button>
-                                <input type="file" class="userfile" id="userfile" name="userfile">
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <br>
-                        <div class="panel-group">
-                          <div class="panel panel-default editUserPanel">
-                            <div class="panel-heading">Basic Info</div>
-                            <div class="panel-body">
-                              <div class="form-group marginbox">
-                                <label>Email :</label>
-                                <input type="text" value="<%= data.email %>" class="form-control" name="username"
-                                  id="email" disabled="true">
-                              </div>
-                              <div class="form-group marginbox">
-                                <label>Name :</label>
-                                <input type="text" class="form-control" name="fullname" autocomplete="off" required=""
-                                  placeholder="Name" id="name" value="<%= data.name %>">
-                              </div>
-                              <div class="form-group col-sm-5" style="display: inline-block;">
-                                <label>DOB :</label>
-                                <input class="form-control dobDate" name="dob" placeholder="MM/DD/YYYY" id="DOB"
-                                  type="date" autocomplete="off" required="" value="<%= data.DOB %>">
-                              </div>
-                              <div class="form-group col-sm-5" style="display: inline-block;">
-                                <label>Gender :</label>
-                                <select name="gender" id="gender" class="form-control" style="height:34px;">
-                                  <optgroup label="Select Gender">
-                                    <option value="Male" id="male">Male</option>
-                                    <option value="Female" id="female">Female</option>
-                                    <option value="Transgender" id="Transgender">Transgender</option>
-                                  </optgroup>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="panel panel-default editUserPanel">
-                            <div class="panel-heading">Contact Info</div>
-                            <div class="panel-body">
-                              <div class="form-group marginbox">
-                                <label>Phone :</label>
-                                <input type="text" value="<%= data.phoneno %>" class="form-control" name="phoneno"
-                                  maxlength="10" required="" id="phoneno">
-                              </div>
-                              <div class="form-group marginbox">
-                                <label>City :</label>
-                                <input type="text" class="form-control" name="city" required="" id="city"
-                                  value="<%= data.city %>">
-                              </div>
-                            </div>
-                          </div>
-                          <div class="panel panel-default editUserPanel">
-                            <div class="panel-heading">Personal Info</div>
-                            <div class="panel-body">
-                              <div class="form-group">
-                                <label>Interests :</label>
-                                <div class="tag-conatiner-custom-div">
-                                  <input class="select2-search__field" type="search" tabindex="0" autocomplete="off"
-                                    autocorrect="off" autocapitalize="off" spellcheck="false" role="textbox"
-                                    aria-autocomplete="list" placeholder="Enter interests..." style="width: 100%;"
-                                    id="interests" name="interests" value="<%= userdata.interests %>">
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label>Tell us a bit more about your journey:</label>
-                                <textarea type="text" class="form-control" name="aboutyou"
-                                  id="aboutyou"><%= userdata.aboutyou %></textarea>
-                              </div>
-                              <div class="form-group">
-                                <label>What are your expectations from the communities?</label>
-                                <textarea type="text" class="form-control" name="expectations"
-                                  id="expectations"><%= userdata.expectations %></textarea>
-                              </div>
-                            </div>
-                          </div>
-                          <br>
-                          <div class="form-group">
-                            <% if(data.isActive == "true"){ %>
-                            <a href="/changePassPage" class="btn btn-warning pull-left btnEditForm">Change Password</a>
-                            <% } %>
-                            <a href="/userTable/editprofile" class="btn btn-danger pull-right btnEditForm">Cancel</a>
-                            <input type="submit" class="btn btn-primary pull-right btnEditForm"
-                              style="margin-right:5px;" id="update" value="Update">
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
+        <div class="d-flex p-3">
+          <div class="image-container">
+            <img src="<%= data.photoloc %>" style="width: 150px; height: 150px" class="img-thumbnail">
+            <div class="middle">
+              <div class="upload-btn-wrapper">
+                <button class="btn">Upload a file</button>
+                <input type="file" class="userfile" name="userfile">
               </div>
             </div>
           </div>
         </div>
+
+        <div class="card panel-group">
+
+          <div class="edit-User-Card p-3">
+            <div class="card-header">Basic Info</div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>Email :</label>
+                <input type="text" value="<%= data.email %>" class="form-control" name="username" readonly>
+              </div>
+              <div class="form-group">
+                <label>Name :</label>
+                <input type="text" class="form-control" name="fullname" autocomplete="off" required placeholder="Name"
+                  value="<%= data.name %>">
+              </div>
+              <div class="d-flex bd-highlight">
+                <div class="form-group flex-fill bd-highlight col-sm-4">
+                  <label>DOB :</label>
+                  <input class="form-control" name="dob" placeholder="MM/DD/YYYY" type="date" autocomplete="off"
+                    required value="<%= data.DOB %>">
+                </div>
+                <div class="form-group flex-fill bd-highlight col-sm-4">
+                  <label>Gender :</label>
+                  <select name="gender" class="form-control" id="gender" style="height:34px;">
+                    <option value="Male" selected=`<%= data.gender %>===Male` name="Male">Male</option>
+                    <option value="Female" selected=`<%= data.gender %>===Female` name="Female">Female</option>
+                    <option value="Transgender" name="Transgender">Transgender</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="edit-User-Card p-3">
+            <div class="card-header">Contact Info</div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>Phone :</label>
+                <input type="text" value="<%= data.phoneno %>" class="form-control" name="phoneno" maxlength="10"
+                  required>
+              </div>
+              <div class="form-group">
+                <label>City :</label>
+                <input type="text" class="form-control" name="city" required value="<%= data.city %>">
+              </div>
+            </div>
+          </div>
+
+          <div class="edit-User-Card p-3">
+            <div class="card-header">Personal Info</div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>Interests :</label>
+                <div class="tag-conatiner-custom-div">
+                  <input class="select2-search__field" type="search" tabindex="0" autocomplete="off" autocorrect="off"
+                    autocapitalize="off" spellcheck="false" role="textbox" aria-autocomplete="list"
+                    placeholder="Enter interests..." style="width: 100%;" name="interests"
+                    value="<%= userdata.interests %>">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Tell us a bit more about your journey:</label>
+                <textarea type="text" class="form-control" name="aboutyou"><%= userdata.aboutyou %></textarea>
+              </div>
+              <div class="form-group">
+                <label>What are your expectations from the communities?</label>
+                <textarea type="text" class="form-control" name="expectations"><%= userdata.expectations %></textarea>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="form-group m-3">
+            <% if(data.isActive == "true"){ %>
+            <a href="/changePassPage" class="btn btn-lg btn-warning pull-left ">Change Password</a>
+            <% } %>
+            <a href="/userTable/editprofile" class="btn btn-lg btn-danger pull-right ">Cancel</a>
+            <input type="submit" class="btn btn-lg btn-primary pull-right" style="margin-right:5px;" value="Update">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="errorModal" role="dialog" style="z-index: 9999; display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><b>Required!!!</b></h2>
+      </div>
+      <div class="modal-body">
+        <p id="errorMsg"></b></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
-  <div class="modal" id="errorModal" role="dialog" style="z-index: 9999; display: none;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2><b>Required!!!</b></h2>
-        </div>
-        <div class="modal-body">
-          <p id="errorMsg"></b></p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script type="text/javascript" src="/script/editprofile-js.js"></script>
+
   <script type="text/javascript">
     document.getElementById('gender').value = "<%= data.gender %>"
   </script>
-</body>
-
-</html>

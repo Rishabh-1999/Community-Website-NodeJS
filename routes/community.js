@@ -100,7 +100,7 @@ app.post('/addCommunity', middleware.checkSession, middleware.checkSuperAdminOrC
     "description": req.body.description,
     "owner": req.session.name,
     "status": "Active",
-    "ownerid": req.session._id
+    "ownerid": req.session.passport.user._id
   })
   newProduct.save()
     .then(data => {
@@ -168,7 +168,7 @@ app.post('/updatecomm', middleware.checkSession, function (req, res) {
   console.log(req.body)
   if (req.files.size != 0) {
     const file = req.files.communityfile;
-    var reqpath = "community/" + "community" + "/" + req.session._id;
+    var reqpath = "community/" + "community" + "/" + req.session.passport.user._id;
     cloudinary.uploader.upload(
       file.tempFilePath, {
         public_id: reqpath,

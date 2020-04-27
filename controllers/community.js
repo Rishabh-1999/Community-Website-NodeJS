@@ -4,7 +4,7 @@ var communitys = require('../models/communitys');
 module.exports.getUsersInvited = async function (req, res, next) {
     communitys.find({
         "invited": {
-            "$in": req.session._id
+            "$in": req.session.passport.user._id
         }
     }).exec(function (err, result) {
         if (err)
@@ -137,13 +137,13 @@ module.exports.joinandrequestcommunity = async function (req, res, next) {
             "_id": req.body._id
         }, {
             $push: {
-                "users": req.session._id
+                "users": req.session.passport.user._id
             }
         }, function (error, result) {
             if (error)
                 throw error;
             else {
-                console.log(req.session._id + " joined community " + req.body._id)
+                console.log(req.session.passport.user._id + " joined community " + req.body._id)
                 res.send("true");
             }
         })
@@ -152,13 +152,13 @@ module.exports.joinandrequestcommunity = async function (req, res, next) {
             "_id": req.body._id
         }, {
             $push: {
-                "request": req.session._id
+                "request": req.session.passport.user._id
             }
         }, function (error, result) {
             if (error)
                 throw error;
             else {
-                console.log(req.session._id + " requested community " + req.body._id)
+                console.log(req.session.passport.user._id + " requested community " + req.body._id)
             }
             res.send("true");
         })
@@ -185,7 +185,7 @@ module.exports.communityupdate = async function (req, res, next) {
 
 module.exports.getArrayOwnCommunity = async function (req, res, next) {
     communitys.find({
-        'ownerid': req.session._id
+        'ownerid': req.session.passport.user._id
     }, function (err, result) {
         res.send(result);
     });
@@ -195,12 +195,12 @@ module.exports.getArrayOtherCommunity = async function (req, res, next) {
     communitys.find({
         $and: [{
             "users": {
-                "$in": [req.session._id]
+                "$in": [req.session.passport.user._id]
             }
         }, {
             "ownerid": {
                 "$not": {
-                    "$eq": req.session._id
+                    "$eq": req.session.passport.user._id
                 }
             }
         }]
@@ -213,20 +213,20 @@ module.exports.getArrayOtherCommunityInvited = async function (req, res, next) {
     communitys.find({
         $and: [{
             "invited": {
-                "$in": [req.session._id]
+                "$in": [req.session.passport.user._id]
             }
         }, {
             "users": {
-                "$nin": [req.session._id]
+                "$nin": [req.session.passport.user._id]
             }
         }, {
             "managers": {
-                "$nin": [req.session._id]
+                "$nin": [req.session.passport.user._id]
             }
         }, {
             "ownerid": {
                 "$not": {
-                    "$eq": req.session._id
+                    "$eq": req.session.passport.user._id
                 }
             }
         }]
@@ -238,13 +238,13 @@ module.exports.getArrayOtherCommunityInvited = async function (req, res, next) {
 module.exports.getAllActive = async function (req, res, next) {
     communitys.find({
         'ownerid': {
-            "$ne": req.session._id
+            "$ne": req.session.passport.user._id
         },
         "users": {
-            "$nin": [req.session._id]
+            "$nin": [req.session.passport.user._id]
         },
         "request": {
-            "$nin": [req.session._id]
+            "$nin": [req.session.passport.user._id]
         }
     }).skip(req.body.start).limit(req.body.end).exec(function (error, result) {
         res.send(result);
@@ -355,10 +355,10 @@ module.exports.acceptinvites = async function (req, res, next) {
         "_id": req.body._id
     }, {
         $pull: {
-            "invited": req.session._id
+            "invited": req.session.passport.user._id
         },
         $push: {
-            "users": req.session._id
+            "users": req.session.passport.user._id
         }
     }, function (error, result) {
         if (error)
@@ -485,7 +485,7 @@ module.exports.leaveCommunity = async function (req, res, next) {
         "_id": req.body.commid
     }, {
         $pull: {
-            "users": req.session._id
+            "users": req.session.passport.user._id
         }
     }, function (error, result) {
         if (error)

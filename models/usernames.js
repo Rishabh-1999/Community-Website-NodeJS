@@ -23,7 +23,6 @@ var user = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: false,
     trim: true
   },
   DOB: {
@@ -56,9 +55,6 @@ var user = new mongoose.Schema({
     type: String,
     default: "/images/logo.png"
   },
-  githubid: {
-    type: String
-  }
 })
 
 var UsersNames = mongoose.model('usernames', user);

@@ -1,70 +1,49 @@
-<!DOCTYPE html>
-<html>
+<% layout('layout/layout') %>
 
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>CQ - <%= data.name %></title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+<link rel="stylesheet" type="text/css" href="/css/addUser-css.css">
 
-	<link rel="stylesheet" type="text/css" href="/css/navBar.css">
-	<link rel="stylesheet" type="text/css" href="/css/sidebar.css">
-	<link rel="stylesheet" type="text/css" href="/css/addUser-css.css">
-
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-</head>
-
-<body>
-	<% include partials/topbar.ejs %>
-
+<% include partials/navbar.ejs %>
 <% if(data.isActive == "true"){ %>
 <% include partials/sidebar.ejs %>
 <% } %>
 
-	<div class="outer" style="padding-top: 80px;">
-		<div class="adduser-container">
-			<div class="alert alert-dismissible" style="border: 1px solid rgb(226, 229, 225);"
-				id="alert-div-avilability">
-				<center>
-					<label id="avilability" style="color: rgb(139, 139, 139);"></label>
-				</center>
-			</div>
-			<div class="adduser-head">
-				<h1>Add User</h1>
-			</div>
+<div class="outer" style="padding-top: 80px;">
+	<div class="adduser-container">
+		<div class="alert alert-dismissible" style="border: 1px solid rgb(226, 229, 225);" id="alert-div-avilability">
+			<center>
+				<label id="avilability" style="color: rgb(139, 139, 139);"></label>
+			</center>
+		</div>
+		<div class="adduser-head">
+			<h1>Add User</h1>
+		</div>
 
-			<div class="adduser-input">
-				<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-					id="adduser-name" placeholder="Name" name="name" required="required">
-				<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-					id="adduser-email" placeholder="Email" name="email" required="required" onChange="checkDuplicate()">
-				<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-					id="adduser-password" placeholder="User Password" name="password" required="required">
-				<input type="number" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-					id="adduser-phoneno" placeholder="Phone" name="phoneno" required="required">
-				<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-					id="adduser-city" placeholder="City" name="city" required="required">
+		<div class="adduser-input">
+			<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+				id="adduser-name" placeholder="Name" name="name" required="required">
+			<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+				id="adduser-email" placeholder="Email" name="email" required="required" onChange="checkDuplicate()">
+			<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+				id="adduser-password" placeholder="User Password" name="password" required="required">
+			<input type="number" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+				id="adduser-phoneno" placeholder="Phone" name="phoneno" required="required">
+			<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+				id="adduser-city" placeholder="City" name="city" required="required">
 
-				<label>Role :</label><br>
-				<select id="addUser-select">
-					<optgroup label="Select User Role">
-						<option value="User">User</option>
-						<option value="Commuity Builder">Community Builder</option>
-						<option value="SuperAdmin">SuperAdmin</option>
-					</optgroup>
-				</select>
-			</div>
-			<div class="form-group">
-				<input type="submit" value="Add User" class="btn btn-success" id="btnaddUser">
-				<a value="Add User" class="btn btn-danger" href="/addUser">Cancel</a>
-			</div>
+			<label>Role :</label><br>
+			<select id="addUser-select">
+				<optgroup label="Select User Role">
+					<option value="User">User</option>
+					<option value="Commuity Builder">Community Builder</option>
+					<option value="SuperAdmin">SuperAdmin</option>
+				</optgroup>
+			</select>
+		</div>
+		<div class="form-group">
+			<input type="submit" value="Add User" class="btn btn-success" id="btnaddUser">
+			<a value="Add User" class="btn btn-danger" href="/addUser">Cancel</a>
 		</div>
 	</div>
+</div>
 
-	<script type="text/javascript" src="script/addUser.js"></script>
-</body>
-
-</html>
+<script type="text/javascript" src="script/addUser.js"></script>

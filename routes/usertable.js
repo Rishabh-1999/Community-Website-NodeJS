@@ -90,7 +90,7 @@ app.post("/updateprofile", middleware.checkSession, function (req, res) {
   if (req.files.userfile.size != 0) {
     console.log("file exists")
     const file = req.files.userfile;
-    var reqpath = "community/" + "user" + "/" + req.session._id;
+    var reqpath = "community/" + "user" + "/" + req.session.passport.user._id;
     cloudinary.uploader.upload(
       file.tempFilePath, {
         public_id: reqpath,
@@ -100,7 +100,7 @@ app.post("/updateprofile", middleware.checkSession, function (req, res) {
         if (err) console.log(err);
         else {
           UsersNames.updateOne({
-              _id: req.session._id
+              _id: req.session.passport.user._id
             }, {
               $set: {
                 status: "Confirmed",
@@ -133,7 +133,7 @@ app.post("/updateprofile", middleware.checkSession, function (req, res) {
     );
   } else {
     UsersNames.updateOne({
-        _id: req.session._id
+        _id: req.session.passport.user._id
       }, {
         $set: {
           status: "Confirmed",
@@ -185,7 +185,7 @@ app.post(
 // var storage = multer.diskStorage({
 //   destination: "./public/uploads/",
 //   filename: function (req, file, callback) {
-//     photoname = req.session._id + path.extname(file.originalname);
+//     photoname = req.session.passport.user._id + path.extname(file.originalname);
 //     req.session.passport.user.photoloc = "/uploads/" + photoname;
 //     callback(null, photoname);
 //   }
@@ -200,7 +200,7 @@ app.post(
 //     throw err;
 //   } else {
 //     UsersNames.updateOne({
-//         _id: req.session._id
+//         _id: req.session.passport.user._id
 //       }, {
 //         $set: {
 //           photoloc: "/uploads/" + photoname

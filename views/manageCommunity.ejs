@@ -24,11 +24,11 @@
 </head>
 
 <body>
-<% include partials/topbar.ejs %>
+  <% include partials/navbar.ejs %>
 
-<% if(data.isActive == "true"){ %>
-<% include partials/sidebar.ejs %>
-<% } %>
+  <% if(data.isActive == "true"){ %>
+  <% include partials/sidebar.ejs %>
+  <% } %>
   <div id="page-content-wrapper">
     <div class="container-fluid page-content-div" style="padding:0">
       <div class="row">
@@ -70,7 +70,7 @@
                   data-toggle="dropdown">
                   <i class="fa fa-bars"></i>
                 </button>
-                <ul class="dropdown-menu custom-commuity-dropdown dropdown-menu-right" style="">
+                <ul class="dropdown-menu custom-commuity-dropdown dropdown-menu-right">
                   <li>
                     <a href="#" class="community-profile-option-btn">
                       Discussions

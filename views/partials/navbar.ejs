@@ -1,0 +1,23 @@
+<div class="header p-3">
+    <div class="d-flex col-sm-4">
+        <div class="pr-5 font-weight-bold display-4 pointer">
+            Community
+        </div>
+    </div>
+    <div class="d-flex col-sm-2 font-weight-bold mr-5">
+        <div class="user-data-header rounded m-2 p-3" style="background-color: rgb(240, 173, 78);">
+            <%= data.role %>
+        </div>
+        <div class="user-data-header m-2 p-3" style="background-color: rgb(87, 191, 87);">
+            <%= data.name %>
+        </div>
+        <div class="img-header align-middle mr-5 align-items-center">
+            <a href="/home/edit">
+                <img style="width: 50px;height: 50px;" src="<%= data.photoloc %>" />
+            </a>
+        </div>
+        <div class="icon-header">
+            <i class="glyphicon glyphicon-th-large display-4"></i>
+        </div>
+    </div>
+</div>

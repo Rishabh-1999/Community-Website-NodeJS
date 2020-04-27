@@ -26,7 +26,7 @@ module.exports.checkLogin = async function (req, res, next) {
                 ) {
                     if (password) {
                         req.session.isLogin = 1;
-                        req.session._id = result._id;
+                        req.session.passport.user._id = result._id;
                         req.session.name = result.name;
 
                         req.session.password = req.body.password;
@@ -136,7 +136,7 @@ module.exports.changetemprole = async function (req, res, next) {
 
 module.exports.changePassword = async function (req, res, next) {
     UsersNames.findOne({
-            _id: req.session._id
+            _id: req.session.passport.user._id
         },
         function (error, result) {
             if (error) throw error;
@@ -150,7 +150,7 @@ module.exports.changePassword = async function (req, res, next) {
                         if (boolans == true) {
                             bcrypt.hash(req.body.newpass, saltRounds, function (err, newpass) {
                                 UsersNames.updateOne({
-                                        _id: req.session._id
+                                        _id: req.session.passport.user._id
                                     }, {
                                         $set: {
                                             password: newpass
@@ -310,7 +310,7 @@ module.exports.usersTable = async function (req, res, next) {
 
 module.exports.editprofile = async function (req, res, next) {
     UsersNames.findOne({
-            _id: req.session._id
+            _id: req.session.passport.user._id
         },
         function (err, result) {
             var userdata = new Object();
@@ -319,6 +319,7 @@ module.exports.editprofile = async function (req, res, next) {
             userdata.expectations = result.expectations;
             res.render("editprofile", {
                 data: req.session.passport.user,
+                title: req.session.passport.user.name,
                 userdata: userdata
             });
         }

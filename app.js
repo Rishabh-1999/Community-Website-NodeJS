@@ -118,15 +118,17 @@ app.get("/home", (req, res) => {
   else
     res.render("home", {
       data: req.session.passport.user,
+      editoption: false,
       title: req.session.passport.user.name,
     });
 });
 
 /* Profile Page with Edit option */
-app.get("/homewithedit", middleware.checkSession, (req, res) => {
-  res.render("homewithedit", {
+app.get("/home/edit", middleware.checkSession, (req, res) => {
+  res.render("home", {
     data: req.session.passport.user,
-    title: req.session.name,
+    editoption: true,
+    title: req.session.passport.user.name,
   });
 });
 
