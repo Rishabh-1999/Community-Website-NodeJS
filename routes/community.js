@@ -98,7 +98,7 @@ app.post('/addCommunity', middleware.checkSession, middleware.checkSuperAdminOrC
     "communityloc": "Not Known",
     "createdate": datestr,
     "description": req.body.description,
-    "owner": req.session.name,
+    "owner": req.session.passport.user.name,
     "status": "Active",
     "ownerid": req.session.passport.user._id
   })

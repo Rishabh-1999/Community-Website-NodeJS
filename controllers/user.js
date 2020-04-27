@@ -27,7 +27,7 @@ module.exports.checkLogin = async function (req, res, next) {
                     if (password) {
                         req.session.isLogin = 1;
                         req.session.passport.user._id = result._id;
-                        req.session.name = result.name;
+                        req.session.passport.user.name = result.name;
 
                         req.session.password = req.body.password;
                         var ob = new Object();
@@ -45,7 +45,7 @@ module.exports.checkLogin = async function (req, res, next) {
                         ob.isActive = result.isActive;
                         ob.githubid = result.githubid;
                         ob.temprole = result.role;
-                        req.session.name = result.name;
+                        req.session.passport.user.name = result.name;
                         req.session.passport.user = ob;
 
                         if (result.status == "Pending") res.send("not");
@@ -135,20 +135,30 @@ module.exports.changetemprole = async function (req, res, next) {
 };
 
 module.exports.changePassword = async function (req, res, next) {
-    UsersNames.findOne({
-            _id: req.session.passport.user._id
-        },
-        function (error, result) {
-            if (error) throw error;
-            else {
-                if (result == null) res.send("false");
+
+    if (req.body.oldPassword == req.body.newPassword) {
+        req.flash('errors', 'Password Are not same');
+        res.render("changepassword", {
+            data: req.session.passport.user,
+            title: req.session.passport.user.name,
+            success: req.flash("success"),
+            errors: req.flash("errors")
+        });
+    } else
+        UsersNames.findOne({
+                _id: req.session.passport.user._id
+            },
+            async function (error, result) {
+                if (error) throw error;
                 else {
-                    bcrypt.compare(req.body.oldpass, result.password, function (
+                    bcrypt.compare(req.body.oldPassword, result.password, function (
                         err,
                         boolans
                     ) {
-                        if (boolans == true) {
-                            bcrypt.hash(req.body.newpass, saltRounds, function (err, newpass) {
+                        if (boolans) {
+                            bcrypt.hash(req.body.newPassword, saltRounds, function (err, newpass) {
+                                if (err)
+                                    throw err;
                                 UsersNames.updateOne({
                                         _id: req.session.passport.user._id
                                     }, {
@@ -159,21 +169,30 @@ module.exports.changePassword = async function (req, res, next) {
                                     function (error, result) {
                                         if (error) throw error;
                                         else {
-                                            if (result == null) res.send("false");
-                                            else {
-                                                res.send("true");
-                                            }
+                                            req.flash('success', 'Password Updated');
+                                            res.render("changepassword", {
+                                                data: req.session.passport.user,
+                                                title: req.session.passport.user.name,
+                                                success: req.flash("success"),
+                                                errors: req.flash("errors")
+                                            });
                                         }
                                     }
                                 );
                             });
-                        } else
-                            res.send("false");
+                        } else {
+                            req.flash('errors', 'Current Password is wrong');
+                            res.render("changepassword", {
+                                data: req.session.passport.user,
+                                title: req.session.passport.user.name,
+                                success: req.flash("success"),
+                                errors: req.flash("errors")
+                            });
+                        }
                     });
                 }
             }
-        }
-    ).select("+password");
+        ).select("+password");
 };
 
 module.exports.checkDuplicate = async function (req, res, next) {

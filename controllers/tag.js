@@ -72,7 +72,7 @@ module.exports.getTagTable = async function (req, res, next) {
 module.exports.addTag = async function (req, res, next) {
     let newTag = new tagmodel({
         tagname: req.body.value,
-        createdby: req.session.name,
+        createdby: req.session.passport.user.name,
         createddate: req.body.datestr,
         deleted: '0'
     })

@@ -144,7 +144,7 @@ app.get(
   (req, res) => {
     res.render("addUser", {
       data: req.session.passport.user,
-      title: req.session.name,
+      title: req.session.passport.user.name,
     });
   }
 );
@@ -157,7 +157,7 @@ app.get(
   (req, res) => {
     res.render("usertable", {
       data: req.session.passport.user,
-      title: req.session.name,
+      title: req.session.passport.user.name,
     });
   }
 );
@@ -166,7 +166,7 @@ app.get(
 app.get("/tagpage", middleware.checkSession, (req, res) => {
   res.render("tagpage", {
     data: req.session.passport.user,
-    title: req.session.name,
+    title: req.session.passport.user.name,
   });
 });
 
@@ -174,7 +174,7 @@ app.get("/tagpage", middleware.checkSession, (req, res) => {
 app.get("/taglists", middleware.checkSession, (req, res) => {
   res.render("taglists", {
     data: req.session.passport.user,
-    title: req.session.name,
+    title: req.session.passport.user.name,
   });
 });
 
@@ -182,7 +182,7 @@ app.get("/taglists", middleware.checkSession, (req, res) => {
 app.get("/invitedbycommunity", middleware.checkSession, (req, res) => {
   res.render("invitedbycommunity", {
     data: req.session.passport.user,
-    title: req.session.name,
+    title: req.session.passport.user.name,
   });
 });
 
@@ -194,7 +194,7 @@ app.get(
   (req, res) => {
     res.render("addCommunity", {
       data: req.session.passport.user,
-      title: req.session.name,
+      title: req.session.passport.user.name,
     });
   }
 );
@@ -207,7 +207,7 @@ app.get(
   (req, res) => {
     res.render("communitytable", {
       data: req.session.passport.user,
-      title: req.session.name,
+      title: req.session.passport.user.name,
     });
   }
 );
@@ -216,7 +216,7 @@ app.get(
 app.get("/editcommunity", middleware.checkSession, (req, res) => {
   res.render("editcommunity", {
     data: req.session.passport.user,
-    title: req.session.name,
+    title: req.session.passport.user.name,
   });
 });
 
@@ -224,7 +224,7 @@ app.get("/editcommunity", middleware.checkSession, (req, res) => {
 app.get("/communityalllists", middleware.checkSession, (req, res) => {
   res.render("communityalllists", {
     data: req.session.passport.user,
-    title: req.session.name,
+    title: req.session.passport.user.name,
   });
 });
 
@@ -232,7 +232,7 @@ app.get("/communityalllists", middleware.checkSession, (req, res) => {
 app.get("/communityPage", middleware.checkSession, (req, res) => {
   res.render("communitylists", {
     data: req.session.passport.user,
-    title: req.session.name,
+    title: req.session.passport.user.name,
   });
 });
 
@@ -240,7 +240,9 @@ app.get("/communityPage", middleware.checkSession, (req, res) => {
 app.get("/changePassPage", middleware.checkSession, (req, res) => {
   res.render("changepassword", {
     data: req.session.passport.user,
-    title: req.session.name,
+    title: req.session.passport.user.name,
+    success: req.flash("success"),
+    errors: req.flash("errors")
   });
 });
 
