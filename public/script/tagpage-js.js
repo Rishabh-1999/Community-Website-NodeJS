@@ -11,30 +11,38 @@ function formatAMPM(date) {
 
 var go = false;
 
+function putDOM(dombool) {
+  var dom;
+  if (dombool)
+    dom = '<div class="btn btn-success pl-5 pr-5"><h3>Added Successfully</h3></div>'
+  else {
+    dom = '<div class="btn btn-warning pl-5 pr-5"><h3>Duplicate Tag Exists</h3></div>'
+  }
+  console.log(dom)
+  document.getElementById("tag-div").innerHTML = dom;
+}
+
 function addTag() {
   var v = document.getElementById('tagname').value;
-  if (go == false)
-    return;
+
   var dat = new Date();
   var datestr = "";
   datestr = dat.getDate();
   datestr = datestr + "-" + dat.getMonth();
   datestr = datestr + "-" + dat.getFullYear();
   datestr = datestr + " (" + formatAMPM(dat) + ")";
+
   var xml = new XMLHttpRequest();
   xml.open("POST", "/tagTable/addTag");
   xml.setRequestHeader("Content-Type", "application/json");
   xml.addEventListener("load", function () {
     var d = xml.responseText;
     if (d == "true") {
-      $("#errorMsg").text("Tag Added");
-      $('#errorModal').modal('show');
-      go = false
+      putDOM(true)
       document.getElementById('tagname').value = "";
-    } else {
-      $("#errorMsg").text("Tag Not added");
-      $('#errorModal').modal('show');
-    }
+    } else
+      putDOM(false)
+    go = false
   })
   xml.send(JSON.stringify({
     value: v,
@@ -42,15 +50,9 @@ function addTag() {
   }));
 }
 
-function taglists() {
-  window.location = "/taglists";
-}
-
 function checkDuplicate() {
-  var v = document.getElementById('tagname').value;
-  if (v == "") {
-    $("#errorMsg").text("First Enter some Input");
-    $('#errorModal').modal('show');
+  if (document.getElementById('tagname').value == "") {
+    document.getElementById("tag-div").innerHTML = '<div class="btn btn-danger pl-5 pr-5"><h3>Input Empty First</h3></div>'
     return;
   }
   var xml = new XMLHttpRequest();
@@ -62,8 +64,7 @@ function checkDuplicate() {
   xml.addEventListener('load', function () {
     var d = xml.responseText;
     if (d == "true") {
-      $("#errorMsg").text("Tag Already Exists");
-      $('#errorModal').modal('show');
+      putDOM(false)
       go = false;
     } else {
       go = true;

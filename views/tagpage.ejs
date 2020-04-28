@@ -1,66 +1,28 @@
-<!DOCTYPE html>
-<html>
+<% layout('layout/layout') %>
 
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CQ - <%= data.name %></title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-
-  <link rel="stylesheet" type="text/css" href="/css/navBar.css">
-  <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
-
-  <script src="/script/jquery-3.2.1.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
-  <style type="text/css">
-    .containertag .col-sm-6 {
-      border: 5px solid rgba(0, 0, 0, 0.1);
-      padding: 30px;
-    }
-  </style>
-</head>
-
-<body>
 <% include partials/navbar.ejs %>
 
 <% if(data.isActive == "true"){ %>
 <% include partials/sidebar.ejs %>
 <% } %>
 
-  <center>
-    <div class="containertag" style="padding-top:100px;">
-      <div class="col-sm-6">
-        <h3 class="page-header" style="color:#707070;border-bottom: 1px solid #eee;">Create Tag</h3>
-        <div class="form-group" style="padding: 7px;">
-          <input class="form-control" type="text" name="tagName" placeholder="Tag Name" id="tagname">
-        </div>
-        <div class="form-group">
-          <input class="form-control btn btn-primary" type="submit" value="Submit" id="tagSubmitBtn"
-            onclick="checkDuplicate()" autocomplete="off">
-        </div>
+<center>
+  <div class="container" style="margin-top: 100px;">
+    <div class="col-sm-6 p-5" style="border: 5px solid rgba(0, 0, 0, 0.1);">
+      <h2 class="card-header display-3 m-2" style="border-bottom: 1px solid #eee;"><u>Create Tag</u></h2>
+      <div id="tag-div">
       </div>
-      <a id="tags" class="btn btn-warning btn-m" style="margin-top:10px;font-size:110%;" onclick="taglists()">Tag
-        Lists</a>
-    </div>
-  </center>
-  <div class="modal" id="errorModal" role="dialog" style="z-index: 9999; display: none;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2><b>Attention !!!</b></h2>
-        </div>
-        <div class="modal-body">
-          <p id="errorMsg"></b></p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+      <div class="form-group p-2">
+        <input class="form-control form-control-lg" type="text" name="tagName" placeholder="Add Tag Name" id="tagname">
+      </div>
+      <div class="form-group">
+        <input class="btn btn-lg btn-primary" type="submit" value="Submit" id="tagSubmitBtn" onclick="checkDuplicate()"
+          autocomplete="off">
       </div>
     </div>
+    <a href="/taglists" id="tags" class="btn btn-warning btn-lg" style="margin-top:10px;">Tag
+      Lists</a>
   </div>
-  <script type="text/javascript" src="/script/tagpage-js.js"></script>
-</body>
+</center>
 
-</html>
+<script type="text/javascript" src="/script/tagpage-js.js"></script>

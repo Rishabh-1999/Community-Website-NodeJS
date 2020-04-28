@@ -104,18 +104,19 @@ module.exports.deletetag = async function (req, res, next) {
 }
 
 module.exports.checkDuplicate = async function (req, res, next) {
-    tagmodel.find({
-        deleted: '0'
+    tagmodel.findOne({
+        deleted: '0',
+        tagname: req.body.tagname
     }).exec(function (error, result) {
         if (error)
             throw error;
         else {
-            var temp = [];
-            var returnflag = "false";
-            temp = result;
-            for (i in result)
-                if (req.body.tagname == temp[i].tagname)
-                    returnflag = "true";
+            var returnflag;
+            console.log(result)
+            if (result == null)
+                returnflag = "false";
+            else
+                returnflag = "true"
             res.send(returnflag);
         }
     })
