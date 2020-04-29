@@ -23,9 +23,9 @@
 <body>
 	<% include partials/navbar.ejs %>
 
-<% if(data.isActive == "true"){ %>
-<% include partials/sidebar.ejs %>
-<% } %>
+	<% if(data.isActive == "true"){ %>
+	<% include partials/sidebar.ejs %>
+	<% } %>
 
 	<div id="page-content-wrapper" style="margin-bottom: 100px;">
 		<div class="container-fluid page-content-div" style="padding:0;">
@@ -90,7 +90,6 @@
 		}
 
 		function getDocumentHeight() {
-			console.log("getDocumentHeight");
 			const body = document.body;
 			const html = document.documentElement;
 

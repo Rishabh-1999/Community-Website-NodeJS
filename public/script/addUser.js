@@ -1,17 +1,12 @@
 var go;
 document.getElementById('btnaddUser').addEventListener('click', function () {
-
 	if (document.getElementById('adduser-name').value == "" ||
 		document.getElementById('adduser-email').value == "" ||
 		document.getElementById('adduser-password').value == "" ||
 		document.getElementById('adduser-phoneno').value == "" ||
-		document.getElementById('adduser-city').value == "")
-		alert('Fill the Required Field');
-	else if (go != "true")
-		alert('Email Already Exsists');
-	else if (checkEmail())
-		alert('Enter Valid Email');
-	else {
+		document.getElementById('adduser-city').value == "") {
+		document.getElementById("avilability").value = "Enter field first"
+	} else {
 		var obj = new Object();
 		obj.name = document.getElementById('adduser-name').value;
 		obj.email = document.getElementById('adduser-email').value;
@@ -27,67 +22,59 @@ document.getElementById('btnaddUser').addEventListener('click', function () {
 
 		var i = document.getElementById("addUser-select").selectedIndex;
 		obj.role = document.getElementById("addUser-select").options[i].text;
+
 		var xml = new XMLHttpRequest();
 		xml.open("POST", "/userTable/addUserToDataBase");
 		xml.setRequestHeader("Content-Type", "application/json");
-		xml.addEventListener('onload', function () {
-
-			//window.location='/addUser';
+		xml.addEventListener('load', function () {
+			var res = xml.responseText;;
+			console.log(res)
+			if (res == "true") {
+				alert("Account Created in Name of \"" + document.getElementById('adduser-name').value + "\"");
+				go = false;
+				window.location.reload();
+			} else {
+				alert("Failed to create Account");
+			}
 		})
-		var x = new XMLHttpRequest();
-		var ob = new Object();
-		ob.to = document.getElementById('adduser-email').value;
-		ob.text = "Welcome to cq Community " + document.getElementById('adduser-name').value + " Your password is " + document.getElementById('adduser-password').value + ".Thank You";
-		ob.subject = "Welcome to cq";
-		x.open("POST", "/sendMail");
-		x.setRequestHeader("Content-Type", "application/json");
-		x.addEventListener('onload', function () {
-			window.location = '/addUser';
-		})
-
-		x.send(JSON.stringify(ob));
 		xml.send(JSON.stringify(obj));
-
-		//alert('User Created');
-		alert('User Created');
-		//window.location='/addUser';
 	}
 })
 
 function checkDuplicate() {
-	var email = document.getElementById('adduser-email');
-	if (email.value == "") {
-		document.getElementById('avilability').innerHTML = "Nothing";
+	if (document.getElementById('adduser-email').value == "") {
+		document.getElementById('email_available').innerHTML = '<i class="fa fa-times-circle"></i> Enter Email Id first';
+		document.getElementById('email_available').style = "color: red;"
 		return;
 	}
 	var xml = new XMLHttpRequest();
 	xml.open("POST", "/userTable/checkDuplicate");
 	xml.setRequestHeader("Content-Type", "application/json");
-	var ob = new Object();
-	ob.email = document.getElementById('adduser-email').value;
-	xml.send(JSON.stringify(ob));
+	xml.send(JSON.stringify({
+		email: document.getElementById('adduser-email').value
+	}));
 	xml.addEventListener('load', function () {
 		var d = xml.responseText;
-		document.getElementById('alert-div-avilability').style.display = "block";
 		if (d == "true") {
-			document.getElementById('avilability').innerHTML = "User " + email.value + " is already exist";
+			document.getElementById('email_available').innerHTML = '<i class="fa fa-times-circle"></i> User already exists';
+			document.getElementById('email_available').style = "color: orange;"
 			go = "false";
 		} else {
-			document.getElementById('avilability').innerHTML = email.value + " is available";
+			document.getElementById('email_available').innerHTML = '<i class="fa fa-check"></i> Available';
+			document.getElementById('email_available').style = "color: green;"
 			go = "true";
 		}
 	})
 }
 
-function checkEmail() {
-	var email = document.getElementById('adduser-email').value;
-	if (validateEmail(email))
-		return false;
-	else
-		return true;
-}
-
 function validateEmail(email) {
 	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	return re.test(email);
+}
+
+function checkEmail() {
+	if (validateEmail(document.getElementById('adduser-email').value))
+		return false;
+	else
+		return true;
 }

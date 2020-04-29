@@ -246,28 +246,6 @@ app.get("/changePassPage", middleware.checkSession, (req, res) => {
   });
 });
 
-/* Mail transporter */
-let transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.NODEMAILER_EMAIL,
-    pass: process.env.NODEMAILER_PASSWORD,
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
-});
-
-/* POST function for mail send */
-app.post("/sendMail", middleware.checkSession, function (req, res) {
-  transporter.sendMail(req.body, (error, info) => {
-    if (error) res.send("false");
-    else {
-      res.send("true");
-    }
-  });
-});
-
 /* Logout Function */
 app.post("/logout", middleware.checkSession, function (req, res) {
   req.session.destroy();

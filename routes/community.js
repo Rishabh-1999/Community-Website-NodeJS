@@ -164,8 +164,6 @@ app.post('/uploadphotoCommunity', middleware.checkSession, middleware.checkSuper
 app.post('/getAllActive', middleware.checkSession, controllers.community.getAllActive);
 
 app.post('/updatecomm', middleware.checkSession, function (req, res) {
-  console.log(req.files.communityfile)
-  console.log(req.body)
   if (req.files.size != 0) {
     const file = req.files.communityfile;
     var reqpath = "community/" + "community" + "/" + req.session.passport.user._id;

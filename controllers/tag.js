@@ -112,7 +112,7 @@ module.exports.checkDuplicate = async function (req, res, next) {
             throw error;
         else {
             var returnflag;
-            console.log(result)
+
             if (result == null)
                 returnflag = "false";
             else

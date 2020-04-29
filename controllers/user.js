@@ -11,6 +11,11 @@ cloundinary.config({
 // Models
 var UsersNames = require("../models/usernames");
 
+/* Config */
+var {
+    sendAccountCreationMail
+} = require("../config/mail")
+
 module.exports.checkLogin = async function (req, res, next) {
     console.log("login data recieved");
     UsersNames.findOne({
@@ -346,7 +351,7 @@ module.exports.editprofile = async function (req, res, next) {
 };
 
 module.exports.addUserToDataBase = async function (req, res, next) {
-    bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+    bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
         let newProduct = new UsersNames({
             email: req.body.email,
             password: hash,
@@ -364,14 +369,16 @@ module.exports.addUserToDataBase = async function (req, res, next) {
             expectations: "",
             photoloc: "/images/logo.png"
         });
-        newProduct
+        await newProduct
             .save()
-            .then(data => {
+            .then(async (data_user) => {
+                await sendAccountCreationMail(req.body.email, req.body.name, req.body.password);
                 console.log("New User created");
-                res.send(data);
+                res.send("true")
             })
             .catch(err => {
-                res.send(err);
+                console.log(err)
+                res.send("false");
             });
     });
 }
