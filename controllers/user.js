@@ -66,27 +66,31 @@ module.exports.checkLogin = async function (req, res, next) {
 }
 
 module.exports.updatetodatabase = async function (req, res, next) {
-    UsersNames.updateOne({
-            email: req.body.email
-        }, {
-            $set: {
-                isActive: "true",
-                email: req.body.email,
-                phoneno: req.body.phoneno,
-                city: req.body.city,
-                status: req.body.status,
-                role: req.body.role
+    console.log(req.body)
+    if (req.body.email == "" ||
+        req.body.phoneno == "" ||
+        req.body.city == "" ||
+        req.body.status == "" ||
+        req.body.role == ""
+    )
+        throw new Error("Insufficent Imporant Data to update to Database")
+    else
+        UsersNames.updateOne({
+                email: req.body.email
+            }, {
+                $set: {
+                    isActive: "true",
+                    phoneno: req.body.phoneno,
+                    city: req.body.city,
+                    status: req.body.status,
+                    role: req.body.role
+                }
+            },
+            function (error, result) {
+                if (error) throw new Error("Error while Updating Imporant Details to Database by Admin");
+                res.send("true");
             }
-        },
-        function (error, result) {
-            if (error) throw error;
-            else {
-                if (req.session.emailid != req.body.email)
-                    req.session.emailid = req.body.email;
-            }
-            res.send("1");
-        }
-    );
+        );
 };
 
 module.exports.activateUser = async function (req, res, next) {
@@ -98,11 +102,8 @@ module.exports.activateUser = async function (req, res, next) {
             }
         },
         function (error, result) {
-            if (error) throw error;
+            if (error) throw new Error("Error while Activating User by Admin");
             else {
-                if (req.session.emailid == req.body.old)
-                    req.session.emailid = req.body.emailid;
-                console.log("Activated Requested User /activateUser");
                 res.send("true");
             }
         }
@@ -118,11 +119,8 @@ module.exports.deactivateUser = async function (req, res, next) {
             }
         },
         function (error, result) {
-            if (error) throw error;
+            if (error) throw new Error("Error while Deactivating User by Admin");
             else {
-                if (req.session.emailid == req.body.old)
-                    req.session.emailid = req.body.emailid;
-                console.log("Deactivated Requested User /deactivateUser");
                 res.send("true");
             }
         }

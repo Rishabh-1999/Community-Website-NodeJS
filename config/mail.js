@@ -26,3 +26,15 @@ module.exports.sendAccountCreationMail = async function (email, name, password) 
             console.log(error)
     });
 }
+
+module.exports.sendMail = async function (obj_data) {
+    var obj = new Object();
+    obj.to = obj_data.to;
+    obj.text = obj_data.text;
+    obj.subject = obj_data.subject;
+    await transporter.sendMail(obj, async (error, info) => {
+        if (error)
+            console.log(error)
+    });
+    return "true";
+}

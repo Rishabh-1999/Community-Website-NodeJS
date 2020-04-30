@@ -60,8 +60,6 @@ app.use(flash());
 /* Passport Config */
 require("./config/passport")(passport);
 
-
-
 app.use(
   fileupload({
     useTempFiles: true,
@@ -82,6 +80,9 @@ app.use(passport.session());
 
 /* Middleware */
 var middleware = require("./middlewares/middleware");
+var {
+  sendMail
+} = require("./config/mail")
 
 /* Models Required */
 var comment = require("./models/comment");
@@ -234,6 +235,15 @@ app.get("/communityPage", middleware.checkSession, (req, res) => {
     data: req.session.passport.user,
     title: req.session.passport.user.name,
   });
+});
+
+app.post("/sendMail", middleware.checkSession, async (req, res) => {
+  var result = (await sendMail({
+    "to": req.body.to,
+    "subject": req.body.subject,
+    "text": req.body.text
+  }))
+  res.send(result);
 });
 
 /* Change Password Page */
