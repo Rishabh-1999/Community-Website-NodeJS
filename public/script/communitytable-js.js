@@ -45,7 +45,7 @@ function initaliseTable() {
         "targets": -2,
         "render": function (data, type, row, meta) {
           let addadatetoinfo = "addadatetoinfo(\'" + data.description + "\')";
-          data = '<a id="editComm" class="btn btn-sm editbtn actionbtns" onclick=addToEdit("' + row.status + '","' + row.name + '","' + row._id + '") data-toggle="modal" data-target="#updateCommunity" style="margin-top:35px;margin-right:5px;background-color: #2D312C;color: #fff"><span class="fa fa-edit"></span></a><a id="btninfomation" class="btn btn-sm infobtn actionbtns" data-toggle="modal" data-target="#CommunityInfo" onclick=\"' + addadatetoinfo + '\" style="margin-top:35px;background-color: #2D312C;color: #fff"><span class="fa fa-info"></span></a>';
+          data = '<button id="editComm" class="btn btn-lg editbtn actionbtns mt-5 ml-5 mb-5 mr-1" onclick=addToEdit("' + row.status + '","' + row.name + '","' + row._id + '") data-toggle="modal" data-target="#updateCommunity" style="background-color: #2D312C;color: #fff"><span class="fa fa-edit"></span></button><button id="btninfomation" class="btn btn-lg infobtn actionbtns mt-5 ml-1 mb-5 mr-5" data-toggle="modal" data-target="#CommunityInfo" onclick=\"' + addadatetoinfo + '\" style="margin-top:35px;background-color: #2D312C;color: #fff"><span class="fa fa-info"></span></button>';
           return data;
         }
       },
@@ -75,7 +75,6 @@ function initaliseTable() {
 var gd;
 
 function addadatetoinfo(desc) {
-
   $(document).on("click", "#btninfomation", function () {
     let d = $(this).parent().parent()[0].children;
     document.getElementById("CommunityInfoPop").innerHTML = d[0].innerHTML;
