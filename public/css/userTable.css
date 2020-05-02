@@ -72,3 +72,10 @@
 .actionbtns {
     margin: 5px;
 }
+
+#tagdiv {
+    border: 2px solid #2D312C;
+    background-color: #2D312C;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
