@@ -3,11 +3,17 @@
 Website in which community can interact with each other.It is a Website developed under UCA class for our Web Project.
 To run this website run this command on command prompt on root folder.
 
+It will run under the url http://127.0.0.1:3000/
+
+### To Run
 ```
 npm start or node app.js
 ```
 
-It will run under the url http://127.0.0.1:3000/
+### To Install Dependiences
+```
+npm install
+```
 
 Email and Password for Online Website:<br>
 User:<br>
@@ -15,6 +21,8 @@ Email Id: user@gmail.com<br>
 Password: user<br>
 
 Admin :<br>
+Email :admin@gmail.com<br>
+Password: admin<br>
 Email :batman@gmail.com<br>
 Password: batman<br>
 Email :ironman@gmail.com<br>
@@ -35,7 +43,8 @@ Password: ironman<br>
 
 - Node JS (Tested on v12.14.0)
 - Mongoose
-- Pre-requisites or Dependencies(Below)
+- MongoDB Compass ( Optional )
+- Pre-requisites or Dependencies( Defined Below )
 
 ## Schema
 
@@ -58,7 +67,6 @@ Password: ironman<br>
 | aboutyou     | String | No       | No     | No        |
 | expectations | String | No       | No     | No        |
 | photoloc     | String | No       | No     | No        |
-| githubid     | String | No       | No     | No        |
 
 <h4><b>Community Schema</b></h4>
 
@@ -131,16 +139,40 @@ Password: ironman<br>
 npm install express
 ```
 
-- EJS
+- Serve Favicon
 
 ```
-npm install ejs
+npm install serve-favicon
 ```
 
 - Express-Session
 
 ```
 npm install express-session
+```
+
+- Express Fileupload
+
+```
+npm install express-fileupload
+```
+
+- Express Flash
+
+```
+npm install express-flash
+```
+
+- EJS
+
+```
+npm install ejs
+```
+
+- EJS-Mate
+
+```
+npm install ejs-mate
 ```
 
 - Multer
@@ -155,16 +187,22 @@ npm install multer
 npm install mongoose
 ```
 
+- Morgan
+
+```
+npm install morgan
+```
+
+- Connect Mongo
+
+```
+npm install connect-mongo
+```
+
 - Node Mailer
 
 ```
 npm install nodemailer
-```
-
-- Passport-GitHub
-
-```
-npm install passport-github
 ```
 
 - Dotenv
@@ -173,10 +211,28 @@ npm install passport-github
 npm install dotenv
 ```
 
+- Nodemon
+
+```
+npm install nodemon
+```
+
 - Bcrpty
 
 ```
 npm install bcrpty  / npm i bcrpty
+```
+
+- Body Parser
+
+```
+npm install body-parser
+```
+
+- Cloudinary
+
+```
+npm install cloudinary
 ```
 
 - Socket
@@ -185,11 +241,42 @@ npm install bcrpty  / npm i bcrpty
 npm install socket
 ```
 
+- Passport
+
+```
+npm install passport
+```
+
+- Passport-Local
+
+```
+npm install passport-local
+```
+
 ## Directory
 
 ```bash
 |___ Root
+|   |--- config
+|   |    |--- db.js
+|   |    |--- passport.js
+|   |    |--- mail.js
+|   |
 |   |--- app.js
+|   |
+|   |--- Procfile ( Heroku )
+|   |
+|   |--- Dump (Mongoose Dump) (Dump)
+|   |
+|   |--- .env ( Environment Module )
+|   |
+|   |--- testing_module
+|   |    |--- testing.csv
+|   |
+|   |--- config
+|   |    |--- db.js
+|   |    |--- passport.js
+|   |    |--- mail.js
 |   |
 |   |--- Controller
 |   |    |--- community.js
@@ -198,8 +285,6 @@ npm install socket
 |   |    |--- index.js
 |   |    |--- tag.js
 |   |    |--- user.js
-|   |
-|   |--- Dump (Mongoose Dump) (Dump)
 |   |
 |   |--- Middlewares
 |   |    |--- middleware.js
@@ -214,11 +299,10 @@ npm install socket
 |   |
 |   |--- Public
 |   |    |--- css (Static)
-|   |    |--- images (Staic and Dynamic)
+|   |    |--- images (Static)
 |   |    |--- script (Static)
-|   |    |--- index.html
 |   |
-|   |--- Routes
+|   |--- routes
 |   |    |--- community.js
 |   |    |--- discussion.js
 |   |    |--- tagtable.js
@@ -226,9 +310,17 @@ npm install socket
 |   |
 |   |--- viwes
 |   |    |--- js (static)
+|   |    |--- layout
+|   |    |    |--- layout.ejs
+|   |    | 
 |   |    |--- partials
+|   |    |    |--- includes
+|   |    |    |    |--- link-css.ejs
+|   |    |    |    |--- link-js.ejs
+|   |    |    |--- header.ejs
+|   |    |    |--- navbar.ejs
 |   |    |    |--- sidebar.ejs
-|   |    |    |--- topar.ejs
+|   |    |
 |   |    |--- addCommunity.ejs
 |   |    |--- addUser.ejs
 |   |    |--- changepassword.ejs
@@ -241,10 +333,10 @@ npm install socket
 |   |    |--- editcommunity.ejs
 |   |    |--- editprofile.ejs
 |   |    |--- home.ejs
-|   |    |--- homewithedit.ejs
 |   |    |--- invitedbycommunity.ejs
 |   |    |--- invitedusers.ejs
 |   |    |--- loading.ejs
+|   |    |--- login.ejs
 |   |    |--- manageCommunity.ejs
 |   |    |--- taglists.ejs
 |   |    |--- tagpage.ejs
