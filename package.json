@@ -4,7 +4,7 @@
   "description": "It is a Website developed under UCA class for our Web Project.\r To run this website run this command on command prompt on root folder.\r ```\r npm start\r ```\r It will run under the url http://127.0.0.1:3000/",
   "main": "app.js",
   "dependencies": {
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cloudinary": "^1.21.0",
     "connect-mongo": "^3.2.0",
