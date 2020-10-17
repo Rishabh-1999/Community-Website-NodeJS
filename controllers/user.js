@@ -16,55 +16,6 @@ var {
     sendAccountCreationMail
 } = require("../config/mail")
 
-module.exports.checkLogin = async function (req, res, next) {
-    console.log("login data recieved");
-    UsersNames.findOne({
-            email: req.body.email,
-            restrict: "false"
-        },
-        function (err, result) {
-            if (result == null) res.send("wrong details");
-            else {
-                bcrypt.compare(req.body.password, result.password, function (
-                    err,
-                    password
-                ) {
-                    if (password) {
-                        req.session.isLogin = 1;
-                        req.session.passport.user._id = result._id;
-                        req.session.passport.user.name = result.name;
-
-                        req.session.password = req.body.password;
-                        var ob = new Object();
-                        ob.name = result.name;
-                        ob._id = result._id;
-                        ob.email = result.email;
-                        ob.photoloc = result.photoloc;
-                        ob.gender = result.gender;
-                        ob.city = result.city;
-                        ob.DOB = result.DOB;
-                        ob.phoneno = result.phoneno;
-                        ob.role = result.role;
-                        ob.status = result.status;
-                        ob.restrict = result.restrict;
-                        ob.isActive = result.isActive;
-                        ob.githubid = result.githubid;
-                        ob.temprole = result.role;
-                        req.session.passport.user.name = result.name;
-                        req.session.passport.user = ob;
-
-                        if (result.status == "Pending") res.send("not");
-                        else res.send("Logined");
-                    } else res.send("wrong details");
-                });
-            }
-        }
-    ).select("+password").catch(err => {
-        console.error(err);
-        res.send(error);
-    });
-}
-
 module.exports.updatetodatabase = async function (req, res, next) {
     console.log(req.body)
     if (req.body.email == "" ||
